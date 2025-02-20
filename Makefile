@@ -26,7 +26,7 @@ endif
 
 # Rutas
 TAILWIND_SRC := src/assets/tailwind.css
-TAILWIND_OUT := src/public/styles/app.css
+TAILWIND_OUT := src/assets/app.css
 
 .PHONY: build-css
 build-css: tailwindcss

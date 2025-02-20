@@ -15,7 +15,7 @@ func NewPortfolio(user *service.User) *Portfolio {
 }
 
 func (p *Portfolio) RegisterRoutes(f *fuego.Server) {
-	fuego.Get(f, "/", p.Index)
+	fuego.Get(f, "/home", p.Index)
 }
 
 func (p *Portfolio) Index(c fuego.ContextNoBody) (fuego.Gomponent, error) {

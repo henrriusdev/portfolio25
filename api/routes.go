@@ -8,5 +8,5 @@ import (
 
 func portfolioRoutes(f *fuego.Server, services service.Service) {
 	portfolio := handlers.NewPortfolio(services.User)
-	portfolio.RegisterRoutes(fuego.Group(f, "/"))
+	portfolio.RegisterRoutes(f)
 }

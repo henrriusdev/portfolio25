@@ -3,13 +3,14 @@ package api
 import (
 	"github.com/go-fuego/fuego"
 	"github.com/henrriusdev/portfolio/pkg/service"
+	"github.com/henrriusdev/portfolio/src/assets"
 	"gorm.io/gorm"
 	"log"
 )
 
 func Start(db *gorm.DB) {
 	s := fuego.NewServer()
-
+	fuego.Handle(s, "/static/{filepath...}", assets.Handler())
 	services := newServices(db)
 
 	portfolioRoutes(s, services)
