@@ -12,7 +12,7 @@ func Base(title string, content g.Node) g.Node {
 			Head(title),
 		),
 		html.Body(
-			html.Div(html.Class("min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900"),
+			html.Div(html.Class("min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-50"),
 				components.Navbar(),
 				html.Main(html.Class("flex-grow"), content),
 				components.Footer(),

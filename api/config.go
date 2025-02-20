@@ -10,7 +10,8 @@ import (
 
 func Start(db *gorm.DB) {
 	s := fuego.NewServer()
-	fuego.Handle(s, "/static/{filepath...}", assets.Handler())
+	//fuego.Handle(s, "/static/{filepath...}", assets.Handler())
+	fuego.Handle(s, "/static/", assets.Static())
 	services := newServices(db)
 
 	portfolioRoutes(s, services)

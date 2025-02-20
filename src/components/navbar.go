@@ -10,21 +10,29 @@ import (
 func Navbar() Node {
 	return b.Navbar(
 		e.AriaNavigation,
+		b.FixedTop,
+		b.Info,
 		e.AriaLabel("main navigation"),
 		b.NavbarBrand(
 			b.NavbarAHref(
-				"https://bulma.io",
-				e.ImgSrc(
-					"https://bulma.io/assets/images/bulma-logo.png",
-					e.Width("112"), e.Height("28"),
-				),
+				"/",
+				"Henrry Bourgeot",
+				b.FontSize(3),
+				b.TextBlack,
+				b.WeightBold,
+				b.PaddingHorizontal(b.Spacing5),
+				b.Monospace,
 			),
 		),
 		b.NavbarStart(
-			b.NavbarAHref("#", "Home"),
-			b.NavbarAHref("#", "Documentation"),
+			b.NavbarAHref("#", "Home", b.TextBlack),
+			b.NavbarAHref("#", "Documentation", b.TextBlack),
 			b.NavbarDropdown(
-				"More",
+				b.OnLink(
+					e.Span,
+					b.TextBlack,
+					"More",
+				),
 				b.Hoverable,
 				b.NavbarAHref("#", "About"),
 				b.NavbarAHref("#", "Jobs"),
