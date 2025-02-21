@@ -2,6 +2,7 @@ package pages
 
 import (
 	"github.com/henrriusdev/portfolio/pkg/model"
+	"github.com/henrriusdev/portfolio/src/components"
 	"github.com/henrriusdev/portfolio/src/layout"
 	b "github.com/willoma/bulma-gomponents"
 	e "github.com/willoma/gomplements"
@@ -18,8 +19,15 @@ func HomePage(experiences ...model.Experience) Node {
 			Company:     "LinkTIC SAS",
 			StartDate:   time.Date(2022, 11, 5, 0, 0, 0, 0, time.UTC),
 			EndDate:     &endDate,
-			Description: "",
+			Description: "Developer in many technologies such as Svelte, React, Vue, SvelteKit, Java, Quasar.",
 			Role:        "Developer",
+		})
+		experiences = append(experiences, model.Experience{
+			Company:     "Sera",
+			StartDate:   time.Date(2024, 8, 5, 0, 0, 0, 0, time.UTC),
+			EndDate:     nil,
+			Description: "Go Backend Developer with echo framework.",
+			Role:        "Backen Developer",
 		})
 	}
 	return layout.Base("Inicio",
@@ -39,12 +47,11 @@ func HomePage(experiences ...model.Experience) Node {
 				e.Class("bg-sky-950"),
 				b.Title("Experience", e.ID("experience"), b.TextGreyLighter, b.FontSize(2), b.MarginBottom(b.Spacing3), b.TextCentered),
 				b.Content(
-					Map(experiences, func(exp model.Experience) Node {
-						return b.Section(
-							b.Title(exp.Role+". "+exp.StartDate.Format(time.DateOnly)+" - "+exp.EndDate.Format(time.DateOnly), b.TextWhite, b.TitleLevel3),
-							b.Subtitle("At "+exp.Company, b.TitleLevel5, b.TextGreyLighter),
-						)
-					}),
+					components.Timeline(
+						Map(experiences, func(exp model.Experience) Node {
+							return components.TimelineItem(exp)
+						}),
+					),
 				),
 			),
 		),

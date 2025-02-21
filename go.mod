@@ -5,6 +5,7 @@ go 1.24.0
 require (
 	github.com/caarlos0/env/v6 v6.10.1 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
+	github.com/delaneyj/gomponents-iconify v0.0.20241016 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
 	github.com/getkin/kin-openapi v0.129.0 // indirect
 	github.com/go-fuego/fuego v0.18.2 // indirect
@@ -45,6 +46,7 @@ require (
 	gorm.io/driver/postgres v1.5.11 // indirect
 	gorm.io/gorm v1.25.12 // indirect
 	maragu.dev/gomponents v1.0.0 // indirect
+	maragu.dev/gomponents-heroicons/v3 v3.0.0 // indirect
 )
 
 tool github.com/go-fuego/fuego/cmd/fuego

@@ -38,7 +38,7 @@ cover:
 
 .PHONY: start
 start: build-css
-	go run ./cmd/app
+	air
 
 .PHONY: tailwindcss
 tailwindcss:
