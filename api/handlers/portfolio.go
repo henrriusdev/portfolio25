@@ -18,6 +18,6 @@ func (p *Portfolio) RegisterRoutes(f *fuego.Server) {
 	fuego.Get(f, "/home", p.Index)
 }
 
-func (p *Portfolio) Index(c fuego.ContextNoBody) (fuego.Gomponent, error) {
+func (p *Portfolio) Index(c fuego.ContextNoBody) (fuego.Templ, error) {
 	return pages.HomePage(), nil
 }

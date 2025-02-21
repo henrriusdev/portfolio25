@@ -1,0 +1,118 @@
+package pages
+
+import "github.com/henrriusdev/portfolio/src/components"
+import "github.com/henrriusdev/portfolio/src/layout"
+import "github.com/henrriusdev/portfolio/pkg/model"
+import "time"
+
+var seraStart = time.Date(2024, 8, 5, 0, 0, 0, 0, time.UTC)
+var linkticStart = time.Date(2022, 12, 5, 0, 0, 0, 0, time.UTC)
+
+templ HomePage() {
+	@layout.Base("Portfolio") {
+		<main>
+			<!-- Hero Section -->
+			<section class="min-h-screen relative">
+                    <div class="container mx-auto px-4">
+                        <div class="flex flex-col lg:flex-row items-center justify-between min-h-screen gap-8 py-16">
+                            <!-- Text Content -->
+                            <div class="w-full lg:w-1/2 z-10">
+                                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 dark:text-white">
+                                    Hello, I'm Henrry
+                                </h1>
+                                <p class="text-lg md:text-xl mb-8 text-gray-700 dark:text-gray-300 max-w-lg">
+                                    Go Backend Developer with more about 2 years professional experience. Also with knowledge about TypeScript, Java and Python and frontend frameworks.
+                                </p>
+                                <div class="flex gap-4">
+                                    <a
+                                        href="#contact"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg inline-block transition-colors"
+                                    >
+                                        Get in touch
+                                    </a>
+                                    <a
+                                        href="#portfolio"
+                                        class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 rounded-lg inline-block transition-colors"
+                                    >
+                                        View Portfolio
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Image Side -->
+                            <div class="w-full lg:w-1/2 h-full">
+                                <div class="relative aspect-square">
+                                    <img
+                                        src="/static/header.png"
+                                        alt="Hero Image"
+                                        class="rounded-2xl shadow-2xl object-cover w-full h-full"
+                                    />
+                                    <!-- Optional decorative elements -->
+                                    <div class="absolute -z-10 top-4 right-4 w-full h-full bg-blue-600/10 rounded-2xl"></div>
+                                    <div class="absolute -z-20 top-8 right-8 w-full h-full bg-blue-600/5 rounded-2xl"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+			<!-- Experience Section -->
+			@components.ExperienceTimeline([]model.Experience{
+				{
+					Role:        "Senior Developer",
+					Company:     "Tech Corp",
+					Description: "Led development of key features...",
+					StartDate:   linkticStart,
+					EndDate:     &seraStart,
+				},
+				{
+					Role:        "Full Stack Developer",
+					Company:     "Start Up",
+					Description: "Developed full stack applications...",
+					StartDate:   seraStart,
+					EndDate:     nil,
+				},
+			})
+			<!-- Projects Section -->
+			<section class="py-12 bg-gray-50 dark:bg-gray-900">
+				<div class="container mx-auto px-4">
+					<h2 class="text-3xl font-bold mb-8 text-center">Projects</h2>
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+						@components.ProjectCard(components.ProjectItem{
+							Title:        "Project 1",
+							Description:  "A brief description of the project...",
+							ImageURL:     "/assets/project1.png",
+							Technologies: []string{"React", "Node.js", "MongoDB"},
+							LiveURL:      "https://project1.com",
+							GithubURL:    "https://github.com/username/project1",
+						})
+						@components.ProjectCard(components.ProjectItem{
+							Title:        "Project 2",
+							Description:  "Another amazing project...",
+							ImageURL:     "/assets/project2.png",
+							Technologies: []string{"Vue.js", "Firebase", "Tailwind"},
+							LiveURL:      "https://project2.com",
+							GithubURL:    "https://github.com/username/project2",
+						})
+					</div>
+				</div>
+			</section>
+			<!-- Blog Section -->
+			<section class="py-12">
+				<div class="container mx-auto px-4">
+					<h2 class="text-3xl font-bold mb-8 text-center">Latest from the Blog</h2>
+					<div class="max-w-2xl mx-auto">
+						/*@BlogPreview(BlogPost{
+                        Title: "Understanding Modern Web Development",
+                        Preview: "In this post, we explore the latest trends...",
+                        Date: "Mar 15, 2024",
+                        ReadTime: "5 min",
+                        ImageURL: "/assets/blog1.png",
+                        Author: "Your Name",
+                        AuthorImg: "/assets/author.png",
+                    }) */
+					</div>
+				</div>
+			</section>
+		</main>
+	}
+}

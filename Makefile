@@ -36,8 +36,12 @@ build-css: tailwindcss
 cover:
 	go tool cover -html=cover.out
 
+.PHONY: templ
+templ:
+	templ generate
+
 .PHONY: start
-start: build-css
+start: build-css templ
 	air
 
 .PHONY: tailwindcss
