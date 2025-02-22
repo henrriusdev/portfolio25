@@ -46,7 +46,7 @@ func Login() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8\" style=\"min-height: calc(100vh - 72px)\"><div class=\"max-w-md w-full space-y-8\"><div><h2 class=\"mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white\">Sign in to your account</h2></div><form class=\"mt-8 space-y-6\" action=\"/login\" method=\"POST\"><div class=\"rounded-md shadow-sm -space-y-px\"><div class=\"w-full max-w-md mb-4\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8\" style=\"min-height: calc(100vh - 72px)\"><div class=\"max-w-md w-full space-y-8\"><div><h2 class=\"mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white\">Sign in to your account</h2></div><form class=\"mt-8 space-y-6\" action=\"/log-in\" method=\"POST\"><div class=\"rounded-md shadow-sm -space-y-px\"><div class=\"w-full max-w-md mb-4\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

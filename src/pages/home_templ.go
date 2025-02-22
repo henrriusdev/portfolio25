@@ -76,24 +76,32 @@ func HomePage() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.ProjectCard(components.ProjectItem{
-				Title:        "Project 1",
-				Description:  "A brief description of the project...",
-				ImageURL:     "/assets/project1.png",
-				Technologies: []string{"React", "Node.js", "MongoDB"},
-				LiveURL:      "https://project1.com",
-				GithubURL:    "https://github.com/username/project1",
+			templ_7745c5c3_Err = components.ProjectCard(model.Project{
+				Title:       "Project 1",
+				Description: "A brief description of the project...",
+				ImageURL:    "/assets/project1.png",
+				URL:         "https://project1.com",
+				Repo:        "https://github.com/username/project1",
+				Techs: []model.Technology{
+					{Name: "React"},
+					{Name: "Node.js"},
+					{Name: "MongoDB"},
+				},
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.ProjectCard(components.ProjectItem{
-				Title:        "Project 2",
-				Description:  "Another amazing project...",
-				ImageURL:     "/assets/project2.png",
-				Technologies: []string{"Vue.js", "Firebase", "Tailwind"},
-				LiveURL:      "https://project2.com",
-				GithubURL:    "https://github.com/username/project2",
+			templ_7745c5c3_Err = components.ProjectCard(model.Project{
+				Title:       "Project 2",
+				Description: "Another amazing project...",
+				ImageURL:    "/assets/project2.png",
+				URL:         "https://project2.com",
+				Repo:        "https://github.com/username/project2",
+				Techs: []model.Technology{
+					{Name: "Vue.js"},
+					{Name: "Firebase"},
+					{Name: "Tailwind"},
+				},
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

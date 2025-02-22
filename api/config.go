@@ -1,20 +1,24 @@
 package api
 
 import (
+	"log"
+
 	"github.com/go-fuego/fuego"
+	"github.com/henrriusdev/portfolio/pkg/common"
 	"github.com/henrriusdev/portfolio/pkg/service"
 	"github.com/henrriusdev/portfolio/src/assets"
 	"gorm.io/gorm"
-	"log"
 )
 
 func Start(db *gorm.DB) {
 	s := fuego.NewServer()
-	//fuego.Handle(s, "/static/{filepath...}", assets.Handler())
+	common.InitStore()
+	// fuego.Handle(s, "/static/{filepath...}", assets.Handler())
 	fuego.Handle(s, "/static/", assets.Static())
 	services := newServices(db)
 
 	portfolioRoutes(s, services)
+	dashboardRoutes(s, services)
 	if err := s.Run(); err != nil {
 		log.Fatal(err)
 	}

@@ -76,21 +76,29 @@ templ HomePage() {
 				<div class="container mx-auto px-4">
 					<h2 class="text-3xl font-bold mb-8 text-center">Projects</h2>
 					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-						@components.ProjectCard(components.ProjectItem{
-							Title:        "Project 1",
-							Description:  "A brief description of the project...",
-							ImageURL:     "/assets/project1.png",
-							Technologies: []string{"React", "Node.js", "MongoDB"},
-							LiveURL:      "https://project1.com",
-							GithubURL:    "https://github.com/username/project1",
+						@components.ProjectCard(model.Project{
+							Title:       "Project 1",
+							Description: "A brief description of the project...",
+							ImageURL:    "/assets/project1.png",
+							URL:         "https://project1.com",
+							Repo:        "https://github.com/username/project1",
+							Techs: []model.Technology{
+								{Name: "React"},
+								{Name: "Node.js"},
+								{Name: "MongoDB"},
+							},
 						})
-						@components.ProjectCard(components.ProjectItem{
-							Title:        "Project 2",
-							Description:  "Another amazing project...",
-							ImageURL:     "/assets/project2.png",
-							Technologies: []string{"Vue.js", "Firebase", "Tailwind"},
-							LiveURL:      "https://project2.com",
-							GithubURL:    "https://github.com/username/project2",
+						@components.ProjectCard(model.Project{
+							Title:       "Project 2",
+							Description: "Another amazing project...",
+							ImageURL:    "/assets/project2.png",
+							URL:         "https://project2.com",
+							Repo:        "https://github.com/username/project2",
+							Techs: []model.Technology{
+								{Name: "Vue.js"},
+								{Name: "Firebase"},
+								{Name: "Tailwind"},
+							},
 						})
 					</div>
 				</div>
