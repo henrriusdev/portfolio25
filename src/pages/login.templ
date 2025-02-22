@@ -1,0 +1,63 @@
+package pages
+
+import (
+	"github.com/axzilla/templui/pkg/components"
+	"github.com/henrriusdev/portfolio/src/layout"
+)
+
+templ Login() {
+	@layout.Base("Log in") {
+		<div class="flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8" style="min-height: calc(100vh - 72px)">
+			<div class="max-w-md w-full space-y-8">
+				<div>
+					<h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+						Sign in to your account
+					</h2>
+				</div>
+				<form class="mt-8 space-y-6" action="/login" method="POST">
+					<div class="rounded-md shadow-sm -space-y-px">
+						<div class="w-full max-w-md mb-4">
+							@components.FormItem(components.FormItemProps{}) {
+								@components.FormLabel(components.FormLabelProps{
+									Text: "Username",
+									For:  "username-form",
+								})
+								@components.Input(components.InputProps{
+									ID:          "username-form",
+									Type:        "text",
+									Name:        "username",
+									Placeholder: "example",
+									HasError:    false,
+								})
+								@components.FormDescription(components.FormDescriptionProps{}) {
+									Enter your username for log in to the system.
+								}
+							}
+						</div>
+						<div class="w-full max-w-md">
+							@components.FormItem(components.FormItemProps{}) {
+								@components.FormLabel(components.FormLabelProps{
+									Text: "Password",
+									For:  "password-form",
+								})
+								@components.Input(components.InputProps{
+									ID:          "password-form",
+									Type:        "password",
+									Name:        "password",
+									Placeholder: "example",
+									HasError:    false,
+								})
+								@components.FormDescription(components.FormDescriptionProps{}) {
+									Enter your username for log in to the system.
+								}
+							}
+						</div>
+					</div>
+					<div>
+						@components.Button(components.ButtonProps{Text: "Log in", Variant: components.ButtonVariantDefault, FullWidth: true, Type: "submit"})
+					</div>
+				</form>
+			</div>
+		</div>
+	}
+}

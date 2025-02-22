@@ -25,6 +25,8 @@ func InitDatabase() (*gorm.DB, error) {
 		&model.Project{},
 		&model.Contact{},
 		&model.Visit{},
+		&model.BlogPost{},
+		&model.Category{},
 	); err != nil {
 		log.Fatal(err)
 	}

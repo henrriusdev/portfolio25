@@ -13,48 +13,47 @@ templ HomePage() {
 		<main>
 			<!-- Hero Section -->
 			<section class="min-h-screen relative">
-                    <div class="container mx-auto px-4">
-                        <div class="flex flex-col lg:flex-row items-center justify-between min-h-screen gap-8 py-16">
-                            <!-- Text Content -->
-                            <div class="w-full lg:w-1/2 z-10">
-                                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 dark:text-white">
-                                    Hello, I'm Henrry
-                                </h1>
-                                <p class="text-lg md:text-xl mb-8 text-gray-700 dark:text-gray-300 max-w-lg">
-                                    Go Backend Developer with more about 2 years professional experience. Also with knowledge about TypeScript, Java and Python and frontend frameworks.
-                                </p>
-                                <div class="flex gap-4">
-                                    <a
-                                        href="#contact"
-                                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg inline-block transition-colors"
-                                    >
-                                        Get in touch
-                                    </a>
-                                    <a
-                                        href="#portfolio"
-                                        class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 rounded-lg inline-block transition-colors"
-                                    >
-                                        View Portfolio
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Image Side -->
-                            <div class="w-full lg:w-1/2 h-full">
-                                <div class="relative aspect-square">
-                                    <img
-                                        src="/static/header.png"
-                                        alt="Hero Image"
-                                        class="rounded-2xl shadow-2xl object-cover w-full h-full"
-                                    />
-                                    <!-- Optional decorative elements -->
-                                    <div class="absolute -z-10 top-4 right-4 w-full h-full bg-blue-600/10 rounded-2xl"></div>
-                                    <div class="absolute -z-20 top-8 right-8 w-full h-full bg-blue-600/5 rounded-2xl"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+				<div class="container mx-auto px-4">
+					<div class="flex flex-col lg:flex-row items-center justify-between min-h-screen gap-8 py-16">
+						<!-- Text Content -->
+						<div class="w-full lg:w-1/2 z-10">
+							<h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 dark:text-white">
+								Hello, I'm Henrry
+							</h1>
+							<p class="text-lg md:text-xl mb-8 text-gray-700 dark:text-gray-300 max-w-lg">
+								Go Backend Developer with more about 2 years professional experience. Also with knowledge about TypeScript, Java and Python and frontend frameworks.
+							</p>
+							<div class="flex gap-4">
+								<a
+									href="#contact"
+									class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg inline-block transition-colors"
+								>
+									Get in touch
+								</a>
+								<a
+									href="#portfolio"
+									class="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 rounded-lg inline-block transition-colors"
+								>
+									View Portfolio
+								</a>
+							</div>
+						</div>
+						<!-- Image Side -->
+						<div class="w-full lg:w-1/2 h-full">
+							<div class="relative aspect-square">
+								<img
+									src="/static/header.png"
+									alt="Hero Image"
+									class="rounded-2xl shadow-2xl object-cover w-full h-full"
+								/>
+								<!-- Optional decorative elements -->
+								<div class="absolute -z-10 top-4 right-4 w-full h-full bg-blue-600/10 rounded-2xl"></div>
+								<div class="absolute -z-20 top-8 right-8 w-full h-full bg-blue-600/5 rounded-2xl"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 			<!-- Experience Section -->
 			@components.ExperienceTimeline([]model.Experience{
 				{
@@ -114,5 +113,6 @@ templ HomePage() {
 				</div>
 			</section>
 		</main>
+		@components.Footer()
 	}
 }
