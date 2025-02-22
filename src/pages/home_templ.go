@@ -87,7 +87,7 @@ func HomePage() templ.Component {
 					{Name: "Node.js"},
 					{Name: "MongoDB"},
 				},
-			}).Render(ctx, templ_7745c5c3_Buffer)
+			}, false).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -102,7 +102,7 @@ func HomePage() templ.Component {
 					{Name: "Firebase"},
 					{Name: "Tailwind"},
 				},
-			}).Render(ctx, templ_7745c5c3_Buffer)
+			}, false).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

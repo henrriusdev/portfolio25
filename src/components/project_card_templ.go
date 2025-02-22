@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "github.com/henrriusdev/portfolio/pkg/model"
 
-func ProjectCard(project model.Project) templ.Component {
+func ProjectCard(project model.Project, internal bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -46,7 +46,7 @@ func ProjectCard(project model.Project) templ.Component {
 			templ_7745c5c3_Err = CardImage(CardImageProps{
 				Src:         project.ImageURL,
 				Alt:         project.Title,
-				Position:    CardImageTop, // from card.templ
+				Position:    CardImageTop,
 				AspectRatio: "16/9",
 			}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
@@ -95,7 +95,7 @@ func ProjectCard(project model.Project) templ.Component {
 						var templ_7745c5c3_Var6 string
 						templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(project.Title)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 16, Col: 34}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 16, Col: 20}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 						if templ_7745c5c3_Err != nil {
@@ -126,7 +126,7 @@ func ProjectCard(project model.Project) templ.Component {
 						var templ_7745c5c3_Var8 string
 						templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(project.Description)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 19, Col: 40}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 19, Col: 26}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 						if templ_7745c5c3_Err != nil {
@@ -156,7 +156,7 @@ func ProjectCard(project model.Project) templ.Component {
 					var templ_7745c5c3_Var9 string
 					templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(tech.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 25, Col: 34}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 25, Col: 17}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 					if templ_7745c5c3_Err != nil {
@@ -230,6 +230,12 @@ func ProjectCard(project model.Project) templ.Component {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
+				}
+				if internal {
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<div class=\"flex gap-2 mt-2\"><button class=\"px-3 py-1 bg-blue-500 text-white rounded\" onclick=\"editProject({ project.ID })\">Edit</button> <button class=\"px-3 py-1 bg-red-500 text-white rounded\" onclick=\"removeProject({ project.ID })\">Remove</button></div>")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
 				}
 				return nil
 			})

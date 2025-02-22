@@ -20,13 +20,7 @@ templ Projects(projects ...model.Project) {
 							Variant: components.ButtonVariantDefault,
 							Size:    components.ButtonSizeMd,
 						})
-					}
-					@components.ModalTrigger("project-select-modal") {
-						@components.Button(components.ButtonProps{
-							Text:    "Update/Delete Project",
-							Variant: components.ButtonVariantSecondary,
-							Size:    components.ButtonSizeMd,
-						})
+						<!-- Removed the Update/Delete modal trigger -->
 					}
 				</div>
 			</div>
@@ -37,7 +31,7 @@ templ Projects(projects ...model.Project) {
 					</p>
 				} else {
 					for _, project := range projects {
-						@components.ProjectCard(project)
+						@components.ProjectCard(project, true)
 					}
 				}
 			</div>
@@ -122,7 +116,5 @@ templ Projects(projects ...model.Project) {
 				</div>
 			}
 		}
-		<!-- Modal for Project Selection (Update/Delete) -->
-		@components.ProjectSelectionModal()
 	}
 }
