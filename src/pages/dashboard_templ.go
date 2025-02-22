@@ -97,7 +97,7 @@ func Dashboard() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container mx-auto px-4 py-8\"><h1 class=\"text-3xl font-bold mb-6\">Dashboard</h1><p>Welcome to the dashboard</p><!-- Projects Section --><section class=\"mb-8\"><h2 class=\"text-2xl font-semibold mb-4\">Projects</h2><div class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container mx-auto px-4 py-8\"><h1 class=\"text-5xl font-bold mb-6\">Dashboard</h1><p>Welcome to the dashboard</p><!-- Projects Section --><section class=\"mb-8\"><h2 class=\"text-2xl font-semibold mb-4\">Projects</h2><div class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

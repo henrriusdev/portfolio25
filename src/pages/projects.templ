@@ -1,0 +1,128 @@
+package pages
+
+import (
+	"github.com/henrriusdev/portfolio/pkg/model"
+	"github.com/henrriusdev/portfolio/src/components"
+	"github.com/henrriusdev/portfolio/src/layout"
+)
+
+templ Projects(projects ...model.Project) {
+	@layout.BaseInternal("Projects - HenrriusDev") {
+		<div class="container mx-auto px-4 py-8">
+			<div class="flex justify-between items-center mb-8">
+				<h1 class="text-3xl font-bold text-gray-800 dark:text-white">
+					Projects
+				</h1>
+				<div class="flex gap-4">
+					@components.ModalTrigger("project-form-modal") {
+						@components.Button(components.ButtonProps{
+							Text:    "Create Project",
+							Variant: components.ButtonVariantDefault,
+							Size:    components.ButtonSizeMd,
+						})
+					}
+					@components.ModalTrigger("project-select-modal") {
+						@components.Button(components.ButtonProps{
+							Text:    "Update/Delete Project",
+							Variant: components.ButtonVariantSecondary,
+							Size:    components.ButtonSizeMd,
+						})
+					}
+				</div>
+			</div>
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+				if len(projects) == 0 {
+					<p class="text-gray-600 dark:text-gray-400">
+						No projects to show
+					</p>
+				} else {
+					for _, project := range projects {
+						@components.ProjectCard(project)
+					}
+				}
+			</div>
+		</div>
+		<!-- Modal for Create/Update Project -->
+		@components.Modal(components.ModalProps{ID: "project-form-modal", Class: "max-w-lg mx-auto"}) {
+			@components.ModalHeader() {
+				<h3 class="text-xl font-bold">Project Form</h3>
+			}
+			@components.ModalBody() {
+				<form id="projectForm">
+					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
+						@components.FormLabel(components.FormLabelProps{
+							For:  "projectTitle",
+							Text: "Title",
+						})
+						@components.Input(components.InputProps{
+							ID:          "projectTitle",
+							Name:        "title",
+							Placeholder: "Enter project title",
+						})
+					}
+					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
+						@components.FormLabel(components.FormLabelProps{
+							For:  "projectDescription",
+							Text: "Description",
+						})
+						@components.Textarea(components.TextareaProps{
+							ID:          "projectDescription",
+							Name:        "description",
+							Placeholder: "Enter project description",
+						})
+					}
+					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
+						@components.FormLabel(components.FormLabelProps{
+							For:  "projectImage",
+							Text: "Image URL",
+						})
+						@components.Input(components.InputProps{
+							ID:          "projectImage",
+							Name:        "image_url",
+							Placeholder: "Enter image URL",
+						})
+					}
+					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
+						@components.FormLabel(components.FormLabelProps{
+							For:  "projectLive",
+							Text: "Live URL",
+						})
+						@components.Input(components.InputProps{
+							ID:          "projectLive",
+							Name:        "url",
+							Placeholder: "Enter live URL",
+						})
+					}
+					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
+						@components.FormLabel(components.FormLabelProps{
+							For:  "projectRepo",
+							Text: "Repo URL",
+						})
+						@components.Input(components.InputProps{
+							ID:          "projectRepo",
+							Name:        "repo",
+							Placeholder: "Enter repository URL",
+						})
+					}
+				</form>
+			}
+			@components.ModalFooter() {
+				<div class="flex gap-2">
+					@components.ModalClose("project-form-modal") {
+						@components.Button(components.ButtonProps{
+							Text:    "Cancel",
+							Variant: components.ButtonVariantDefault,
+						})
+					}
+					@components.Button(components.ButtonProps{
+						Text:    "Save",
+						Variant: components.ButtonVariantDefault,
+						Type:    "submit",
+					})
+				</div>
+			}
+		}
+		<!-- Modal for Project Selection (Update/Delete) -->
+		@components.ProjectSelectionModal()
+	}
+}

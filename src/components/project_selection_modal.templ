@@ -1,0 +1,45 @@
+package components
+
+templ ProjectSelectionModal() {
+	@Modal(ModalProps{ID: "project-select-modal", Class: "max-w-md mx-auto"}) {
+		@ModalHeader() {
+			<h3 class="text-xl font-bold">Select a Project</h3>
+		}
+		@ModalBody() {
+			<form id="projectSelectForm">
+				@FormItem(FormItemProps{Class: "mb-4"}) {
+					@FormLabel(FormLabelProps{
+						For:  "projectSelect",
+						Text: "Choose a project to update or delete:",
+					})
+					@Select(SelectProps{
+						ID:          "projectSelect",
+						Name:        "project_id",
+						Placeholder: "Select a project",
+						Options: []SelectOption{
+							{Label: "Project A", Value: "1"},
+							{Label: "Project B", Value: "2"},
+							{Label: "Project C", Value: "3"},
+						},
+						Class: "mt-1",
+					})
+				}
+			</form>
+		}
+		@ModalFooter() {
+			<div class="flex gap-2">
+				@ModalClose("project-select-modal") {
+					@Button(ButtonProps{
+						Text:    "Cancel",
+						Variant: ButtonVariantDefault,
+					})
+				}
+				@Button(ButtonProps{
+					Text:    "Continue",
+					Variant: ButtonVariantSecondary,
+					Type:    "submit",
+				})
+			</div>
+		}
+	}
+}

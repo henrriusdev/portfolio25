@@ -22,8 +22,14 @@ func (d *Dashboard) RegisterRoutes(f *fuego.Server) {
 		return middleware.AuthMiddleware(http.HandlerFunc(next.ServeHTTP))
 	})
 	fuego.Get(f, "", d.Index)
+	fuego.Get(f, "/projects", d.Projects)
 }
 
 func (d *Dashboard) Index(c fuego.ContextNoBody) (fuego.Templ, error) {
 	return pages.Dashboard(), nil
+}
+
+func (d *Dashboard) Projects(c fuego.ContextNoBody) (fuego.Templ, error) {
+	projects, _ := d.services.Project.GetAll()
+	return pages.Projects(projects...), nil
 }
