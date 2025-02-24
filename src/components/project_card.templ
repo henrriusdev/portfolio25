@@ -13,25 +13,10 @@ templ ProjectCardScript() {
 		<script nonce={ templ.GetNonce(ctx) }>
 			document.addEventListener("alpine:init", () => {
 				Alpine.data("projectEditor", () => ({
-					modalOpen: false,
-					editProject: { id: '', title: '', description: '', image_url: '', url: '', repo: '', techs: [] },
-
-					openEditModal(project) {
-						this.editProject = { 
-							id: project.id,
-							title: project.title,
-							description: project.description,
-							image_url: project.image_url,
-							url: project.url,
-							repo: project.repo,
-							techs: project.techs || []
-						};
-						this.modalOpen = true;
-					},
-
-					closeModal() {
-						this.modalOpen = false;
-					}
+					deleteProject(id) {
+                    fetch(`/dashboard/delete-project/${id}`, { method: 'DELETE' })
+                        .then(() => window.location.reload());
+                }
 				}));
 			});
 		</script>
@@ -48,17 +33,15 @@ func toString(value uint) string {
 }
 
 templ ProjectCard(project model.Project, internal bool, techs ...SelectOption) {
-	@ProjectCardScript() <!-- ✅ Ensures script is loaded -->
-	
-	<div x-data="projectEditor">
+	<div x-data="projectEditor()">
 		@Card(CardProps{Class: "bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden w-full max-w-[600px]"}) {
 			@CardImage(CardImageProps{
 				Src:         project.ImageURL,
 				Alt:         project.Title,
 				Position:    CardImageTop,
 				AspectRatio: "16/9",
-				Width: "full",
-				Class: "mx-auto p-2",
+				Width:       "full",
+				Class:       "mx-auto p-2",
 			})
 			@CardContent() {
 				@CardHeader() {
@@ -79,45 +62,52 @@ templ ProjectCard(project model.Project, internal bool, techs ...SelectOption) {
 				</div>
 			}
 			@CardFooter() {
-				<div class="flex gap-4 justify-start w-full">
-					if project.URL != "" {
-						<a
-							href={ templ.SafeURL(project.URL) }
-							class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium flex items-center gap-1"
-							target="_blank"
-						>
-							@icons.ExternalLink(icons.IconProps{Size: "14"}) Live Demo
-						</a>
-					}
-					if project.Repo != "" {
-						<a
-							href={ templ.SafeURL(project.Repo) }
-							class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-300 font-medium flex items-center gap-1"
-							target="_blank"
-						>
-							@phosphor.GithubLogo(phosphor.Props{Size: "20", Class: "text-muted-foreground"}) GitHub
-						</a>
+				<div class="flex gap-4 justify-between items-center w-full">
+					<div class="flex gap-4 justify-start w-4/5">
+						if project.URL != "" {
+							<a
+								href={ templ.SafeURL(project.URL) }
+								class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium flex items-center gap-1"
+								target="_blank"
+							>
+								@icons.ExternalLink(icons.IconProps{Size: "14"})
+								Live Demo
+							</a>
+						}
+						if project.Repo != "" {
+							<a
+								href={ templ.SafeURL(project.Repo) }
+								class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-300 font-medium flex items-center gap-1"
+								target="_blank"
+							>
+								@phosphor.GithubLogo(phosphor.Props{Size: "20", Class: "text-muted-foreground"})
+								GitHub
+							</a>
+						}
+					</div>
+					<!-- ✅ Internal Admin Buttons -->
+					if internal {
+						<div class="flex w-full justify-end items-center gap-2 mt-2">
+							@ModalTrigger("edit-project-modal-" + toString(project.ID)) {
+								@Button(ButtonProps{
+									Text:    "Edit",
+									Variant: ButtonVariantDefault,
+									Size:    ButtonSizeSm,
+								})
+							}
+							@Button(ButtonProps{
+								Text:    "Remove",
+								Variant: ButtonVariantDestructive,
+								Size:    ButtonSizeSm,
+								Attributes: templ.Attributes{
+									"x-on:click": "deleteProject('" + toString(project.ID) + "')",
+								},
+							})
+						</div>
 					}
 				</div>
-				<!-- ✅ Internal Admin Buttons -->
-				if internal {
-					<div class="flex w-full justify-end items-center gap-2 mt-2">
-						@ModalTrigger("edit-project-modal-"+toString(project.ID)) {
-							<button 
-								class="px-3 py-1 bg-gray-700 text-white rounded-md text-sm">
-								Edit
-							</button>
-						}
-						@Button(ButtonProps{
-							Text:    "Remove",
-							Variant: ButtonVariantDestructive,
-							Size:    ButtonSizeSm,
-						})
-					</div>
-				}
 			}
 		}
-
 		<!-- ✅ Inject the Project Modal with techs -->
 		@ProjectModal("edit-project-modal-"+toString(project.ID), techs, project)
 	</div>

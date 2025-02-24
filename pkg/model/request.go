@@ -9,11 +9,12 @@ type SaveTechRequest struct {
 	Name string `form:"name"` // Technology name
 }
 
-type DeleteTechRequest struct {
+type DeleteRequest struct {
 	ID uint `param:"id"` // Technology ID
 }
 
 type SaveProjectRequest struct {
+	ID           uint     `schema:"id,omitempty"`
 	Title        string   `schema:"title"`
 	Description  string   `schema:"description"`
 	Technologies []string `schema:"techs[]"`

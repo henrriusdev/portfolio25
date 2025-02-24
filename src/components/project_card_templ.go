@@ -62,7 +62,7 @@ func ProjectCardScript() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\r\n\t\t\tdocument.addEventListener(\"alpine:init\", () => {\r\n\t\t\t\tAlpine.data(\"projectEditor\", () => ({\r\n\t\t\t\t\tmodalOpen: false,\r\n\t\t\t\t\teditProject: { id: '', title: '', description: '', image_url: '', url: '', repo: '', techs: [] },\r\n\r\n\t\t\t\t\topenEditModal(project) {\r\n\t\t\t\t\t\tthis.editProject = { \r\n\t\t\t\t\t\t\tid: project.id,\r\n\t\t\t\t\t\t\ttitle: project.title,\r\n\t\t\t\t\t\t\tdescription: project.description,\r\n\t\t\t\t\t\t\timage_url: project.image_url,\r\n\t\t\t\t\t\t\turl: project.url,\r\n\t\t\t\t\t\t\trepo: project.repo,\r\n\t\t\t\t\t\t\ttechs: project.techs || []\r\n\t\t\t\t\t\t};\r\n\t\t\t\t\t\tthis.modalOpen = true;\r\n\t\t\t\t\t},\r\n\r\n\t\t\t\t\tcloseModal() {\r\n\t\t\t\t\t\tthis.modalOpen = false;\r\n\t\t\t\t\t}\r\n\t\t\t\t}));\r\n\t\t\t});\r\n\t\t</script>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\r\n\t\t\tdocument.addEventListener(\"alpine:init\", () => {\r\n\t\t\t\tAlpine.data(\"projectEditor\", () => ({\r\n\t\t\t\t\tdeleteProject(id) {\r\n                    fetch(`/dashboard/delete-project/${id}`, { method: 'DELETE' })\r\n                        .then(() => window.location.reload());\r\n                }\r\n\t\t\t\t}));\r\n\t\t\t});\r\n\t\t</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -106,11 +106,7 @@ func ProjectCard(project model.Project, internal bool, techs ...SelectOption) te
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = ProjectCardScript().Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!-- ✅ Ensures script is loaded --><div x-data=\"projectEditor\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div x-data=\"projectEditor()\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -184,7 +180,7 @@ func ProjectCard(project model.Project, internal bool, techs ...SelectOption) te
 						var templ_7745c5c3_Var9 string
 						templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(project.Title)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 66, Col: 84}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 49, Col: 84}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 						if templ_7745c5c3_Err != nil {
@@ -219,7 +215,7 @@ func ProjectCard(project model.Project, internal bool, techs ...SelectOption) te
 						var templ_7745c5c3_Var11 string
 						templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(project.Description)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 69, Col: 27}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 52, Col: 27}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 						if templ_7745c5c3_Err != nil {
@@ -249,7 +245,7 @@ func ProjectCard(project model.Project, internal bool, techs ...SelectOption) te
 					var templ_7745c5c3_Var12 string
 					templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(tech.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 76, Col: 18}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_card.templ`, Line: 59, Col: 18}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 					if templ_7745c5c3_Err != nil {
@@ -286,7 +282,7 @@ func ProjectCard(project model.Project, internal bool, techs ...SelectOption) te
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<div class=\"flex gap-4 justify-start w-full\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<div class=\"flex gap-4 justify-between items-center w-full\"><div class=\"flex gap-4 justify-start w-4/5\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -336,7 +332,7 @@ func ProjectCard(project model.Project, internal bool, techs ...SelectOption) te
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div><!-- ✅ Internal Admin Buttons --> ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div><!-- ✅ Internal Admin Buttons -->")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -357,7 +353,11 @@ func ProjectCard(project model.Project, internal bool, techs ...SelectOption) te
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<button class=\"px-3 py-1 bg-gray-700 text-white rounded-md text-sm\">Edit</button>")
+						templ_7745c5c3_Err = Button(ButtonProps{
+							Text:    "Edit",
+							Variant: ButtonVariantDefault,
+							Size:    ButtonSizeSm,
+						}).Render(ctx, templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -371,14 +371,21 @@ func ProjectCard(project model.Project, internal bool, techs ...SelectOption) te
 						Text:    "Remove",
 						Variant: ButtonVariantDestructive,
 						Size:    ButtonSizeSm,
+						Attributes: templ.Attributes{
+							"x-on:click": "deleteProject('" + toString(project.ID) + "')",
+						},
 					}).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
 				}
 				return nil
 			})

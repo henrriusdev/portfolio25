@@ -30,6 +30,7 @@ func (d *Dashboard) RegisterRoutes(f *fuego.Server) {
 	fuego.Get(f, "/technologies", d.Technologies)
 	fuego.Post(f, "/save-project", d.SaveProject)
 	fuego.Post(f, "/save-tech", d.SaveTech)
+	fuego.Delete(f, "/delete-project/{id}", d.DeleteProject)
 	fuego.Delete(f, "/delete-tech/{id}", d.DeleteTech)
 }
 
@@ -81,7 +82,12 @@ func (d *Dashboard) SaveProject(c fuego.ContextWithBody[model.SaveProjectRequest
 		Techs:       techs,
 	}
 
-	if err := d.services.Project.Create(&project); err != nil {
+	if req.ID != 0 {
+		project.ID = req.ID
+	}
+
+	if err := d.services.Project.Upsert(&project); err != nil {
+		log.Printf("Error saving project: %v", err)
 		return "", err
 	}
 
@@ -121,7 +127,7 @@ func (d *Dashboard) SaveTech(c fuego.ContextWithBody[model.SaveTechRequest]) (st
 	return "Technology saved successfully", nil
 }
 
-func (d *Dashboard) DeleteTech(c fuego.ContextWithBody[model.DeleteTechRequest]) (string, error) {
+func (d *Dashboard) DeleteTech(c fuego.ContextWithBody[model.DeleteRequest]) (string, error) {
 	// Parse the incoming request to get the tech ID.
 	req, err := c.Body()
 	if err != nil {
@@ -144,4 +150,28 @@ func (d *Dashboard) DeleteTech(c fuego.ContextWithBody[model.DeleteTechRequest])
 
 	// Return a success message or redirect as needed.
 	return "Technology deleted successfully", nil
+}
+
+func (d *Dashboard) DeleteProject(c fuego.ContextWithBody[model.DeleteRequest]) (string, error) {
+	// Parse the incoming request to get the project ID.
+	req, err := c.Body()
+	if err != nil {
+		return "", err
+	}
+	idStr := c.PathParam("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		return "", err
+	}
+
+	if req.ID == 0 {
+		req.ID = uint(id)
+	}
+
+	if err := d.services.Project.Delete(req.ID); err != nil {
+		return "", err
+	}
+
+	// Return a success message or redirect as needed.
+	return "Project deleted successfully", nil
 }

@@ -2,6 +2,7 @@ package components
 
 import (
 	"github.com/henrriusdev/portfolio/pkg/model"
+  "strconv"
 )
 
 // ✅ Ensures script loads only once
@@ -11,14 +12,34 @@ func isEdit(isEditing bool) string {
   if isEditing {
     return "Update"
   }
+
   return "Create"
 }
+
+func setSelected(projectTechs []model.Technology, techs []SelectOption) []SelectOption {
+  var selectedTechs []SelectOption
+
+  for _, tech := range techs {
+    for _, projectTech := range projectTechs {
+      id := strconv.FormatUint(uint64(projectTech.ID), 10)
+      if tech.Value == id {
+        tech.Selected = true
+      }
+    }
+
+    selectedTechs = append(selectedTechs, tech)
+  }
+
+  return selectedTechs
+} 
 
 templ ProjectFormScript() {
 	@projectFormHandle.Once() {
 		<script nonce={ templ.GetNonce(ctx) }>
 			document.addEventListener("alpine:init", () => {
-				Alpine.data("projectFormData", (initialProject = null) => ({
+				Alpine.data("projectFormData", (initialProject = null, availableTechs = []) => {
+          console.log(initialProject)
+          return {
 					project: initialProject || {
 						id: "",
 						title: "",
@@ -28,34 +49,29 @@ templ ProjectFormScript() {
 						repo: "",
 						techs: []
 					},
+					availableTechs: availableTechs,
+
 					formAction() {
-						return this.project.id ? "/dashboard/update-project" : "/dashboard/save-project";
+						return "/dashboard/save-project";
 					},
+
 					setProject(data) {
 						this.project = data;
 					}
-				}));
+				}});
 			});
 		</script>
 	}
 }
 
-templ ProjectModal(modalID string, techs []SelectOption, project ...model.Project) {
+templ ProjectModal(modalID string, techs []SelectOption, project model.Project) {
 	{{
-		isEditing := len(project) > 0
+		isEditing := project.ID != 0
 
-		// ✅ Prepare project data (pass to Alpine.js)
-		var projectData model.Project
-		if isEditing {
-			projectData = project[0]
-		} else {
-			projectData = model.Project{}
-		}
-    projectDataJSON := parseTemplJsonString(projectData)
+		// ✅ Prepare JSON Data
+		projectDataJSON := parseTemplJsonString(project)
+		techsJSON := parseTemplJsonString(techs)
 	}}
-
-	<!-- ✅ Load Project Form Script -->
-	@ProjectFormScript()
 
 	<!-- ✅ Modal Component -->
 	@Modal(ModalProps{ID: modalID, Class: "max-w-lg mx-auto"}) {
@@ -69,15 +85,14 @@ templ ProjectModal(modalID string, techs []SelectOption, project ...model.Projec
 			</h3>
 		}
 		@ModalBody() {
-			<!-- ✅ Pass project data safely using templ.JSFuncCall -->
 			<form
-				id="projectForm"
-				x-data={ templ.SafeScript(`projectFormData(` + string(projectDataJSON) + `)`) }
+				id="projectFormEdit"
+				x-data={ `projectFormData(` + string(projectDataJSON) + `, ` + string(techsJSON) + `)` }
 				x-bind:action="formAction()"
 				method="POST"
 				class="space-y-4"
 			>
-				<input type="hidden" name="id" x-model="project.id">
+				<input type="hidden" name="id" x-model="project.ID">
 
 				@FormItem(FormItemProps{Class: "mb-4"}) {
 					@FormLabel(FormLabelProps{For: "projectTitle", Text: "Title"})
@@ -97,24 +112,23 @@ templ ProjectModal(modalID string, techs []SelectOption, project ...model.Projec
 						Attributes:  templ.Attributes{"x-model": "project.description"},
 					})
 				}
-        @FormItem(FormItemProps{Class: "mb-4"}) {
-          @FormLabel(FormLabelProps{For: "projectTechs", Text: "Technologies"})
-          @Select(SelectProps{
-            ID:         "projectTechs",
-            Name:       "techs",
-            Placeholder: "Select technologies",
-            Options:    techs,
-            Multiple:   true,
-            Attributes: templ.Attributes{"x-model": "project.techs"},
-          })
-        }
+				@FormItem(FormItemProps{Class: "mb-4"}) {
+					@FormLabel(FormLabelProps{For: "projectTechs", Text: "Technologies"})
+					@Select(SelectProps{
+						ID:          "projectTechs",
+						Name:        "techs",
+						Placeholder: "Select technologies",
+						Options:     setSelected(project.Techs, techs), 
+						Multiple:    true,
+					})
+				}
 				@FormItem(FormItemProps{Class: "mb-4"}) {
 					@FormLabel(FormLabelProps{For: "projectImage", Text: "Image URL"})
 					@Input(InputProps{
 						ID:          "projectImage",
 						Name:        "image_url",
 						Placeholder: "Enter image URL",
-						Attributes:  templ.Attributes{"x-model": "project.image_url"},
+						Attributes:  templ.Attributes{"x-model": "project.imageUrls"},
 					})
 				}
 				@FormItem(FormItemProps{Class: "mb-4"}) {
@@ -146,7 +160,7 @@ templ ProjectModal(modalID string, techs []SelectOption, project ...model.Projec
 					Text: isEdit(isEditing),
 					Variant:    ButtonVariantDefault,
 					Type:       "submit",
-					Attributes: templ.Attributes{"form": "projectForm"},
+					Attributes: templ.Attributes{"form": "projectFormEdit"},
 				})
 			</div>
 		}

@@ -48,7 +48,7 @@ type Project struct {
 	ImageURL    string       `json:"imageUrl" gorm:"not null"`
 	URL         string       `json:"url"`
 	Repo        string       `json:"repo"`
-	Techs       []Technology `gorm:"many2many:project_technologies;"`
+	Techs       []Technology `json:"techs" gorm:"many2many:project_technologies;"`
 	gorm.Model
 }
 

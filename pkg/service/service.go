@@ -59,5 +59,5 @@ func (s *Base[T]) Delete(id uint) error {
 	}
 
 	// This uses the primary key 'id' in the WHERE condition.
-	return s.DB.Unscoped().Delete(&record, id).Error
+	return s.DB.Delete(&record, id).Error
 }

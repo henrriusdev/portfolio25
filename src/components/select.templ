@@ -43,7 +43,14 @@ templ MultiSelectScript() {
 	@multiSelectHandle.Once() {
 		<script nonce={ templ.GetNonce(ctx) }>
 			document.addEventListener("alpine:init", () => {
-				Alpine.data("multiSelectComponent", (options = [], selectedItems = []) => ({
+				Alpine.data("multiSelectComponent", (options = [], selectedItems = []) => {
+					for (let item of options) {
+						if (item.selected) {
+							selectedItems.push(item);
+						}
+					}
+					
+					return {
 					options: options,
 					selected: selectedItems,
 					open: false,
@@ -64,7 +71,7 @@ templ MultiSelectScript() {
 					isSelected(option) {
 						return this.selected.some(item => item.value === option.value);
 					}
-				}));
+				}});
 			});
 		</script>
 	}
@@ -90,25 +97,24 @@ templ Select(props SelectProps) {
 				</template>
 				<input type="text" readonly placeholder={ props.Placeholder } class="flex-1 outline-none bg-transparent"/>
 			</div>
-
 			<!-- Dropdown list with checkmarks -->
-			<div 
-				x-show="open" 
-				x-transition 
+			<div
+				x-show="open"
+				x-transition
 				class={ utils.TwMerge("absolute !z-[5000] top-full mt-1 w-full bg-gray-100 dark:bg-gray-800 border rounded shadow-lg max-h-60 overflow-auto", props.DropdownClass) }
 			>
 				<template x-for="option in options" :key="option.value">
-					<div 
-						x-on:click="toggleSelection(option)" 
+					<div
+						x-on:click="toggleSelection(option)"
 						class="p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-100 flex justify-between items-center"
 					>
 						<span x-text="option.label"></span>
 						<!-- Checkmark -->
-						<span x-show="isSelected(option)">@icons.Check(icons.IconProps{Size: "8", Class: "text-muted-foreground"})</span>
+						<span x-show="isSelected(option)">@icons.Check(icons.IconProps{Size: "8", Class: "text-muted-foreground"})
+</span>
 					</div>
 				</template>
 			</div>
-
 			<!-- ✅ REAL `<select multiple>` FOR FORM SUBMISSION -->
 			<select name={ props.Name + "[]" } multiple class="hidden">
 				<template x-for="item in selected" :key="item.value">
