@@ -14,11 +14,11 @@ func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		println(session.Values["authenticated"].(bool))
 		if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
 			http.Redirect(w, r, "/log-in", http.StatusFound)
 			return
 		}
+
 		next(w, r)
 	}
 }

@@ -93,7 +93,7 @@ func MultiSelectScript() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\r\n\t\t\tdocument.addEventListener(\"alpine:init\", () => {\r\n\t\t\t\tAlpine.data(\"multiSelectComponent\", (options = [], selectedItems = []) => ({\r\n\t\t\t\t\toptions: options,\r\n\t\t\t\t\tselected: selectedItems,\r\n\t\t\t\t\topen: false,\r\n\t\t\t\t\ttoggleDropdown() { \r\n\t\t\t\t\t\tthis.open = !this.open;\r\n\t\t\t\t\t\tconsole.log(\"Dropdown state:\", this.open);\r\n\t\t\t\t\t},\r\n\t\t\t\t\tselect(option) {\r\n\t\t\t\t\t\tlet index = this.selected.findIndex(item => item.value === option.value);\r\n\t\t\t\t\t\tif (index === -1) {\r\n\t\t\t\t\t\t\tthis.selected.push(option);\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tthis.selected.splice(index, 1); // Unselect if already selected\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t},\r\n\t\t\t\t\tremove(option) {\r\n\t\t\t\t\t\tthis.selected = this.selected.filter(item => item.value !== option.value);\r\n\t\t\t\t\t},\r\n\t\t\t\t\tisSelected(option) {\r\n\t\t\t\t\t\treturn this.selected.some(item => item.value === option.value);\r\n\t\t\t\t\t}\r\n\t\t\t\t}));\r\n\t\t\t});\r\n\t\t</script>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\r\n\t\t\tdocument.addEventListener(\"alpine:init\", () => {\r\n\t\t\t\tAlpine.data(\"multiSelectComponent\", (options = [], selectedItems = []) => ({\r\n\t\t\t\t\toptions: options,\r\n\t\t\t\t\tselected: selectedItems,\r\n\t\t\t\t\topen: false,\r\n\t\t\t\t\ttoggleDropdown() { \r\n\t\t\t\t\t\tthis.open = !this.open;\r\n\t\t\t\t\t},\r\n\t\t\t\t\ttoggleSelection(option) {\r\n\t\t\t\t\t\tlet index = this.selected.findIndex(item => item.value === option.value);\r\n\t\t\t\t\t\tif (index === -1) {\r\n\t\t\t\t\t\t\tthis.selected.push(option); // Select\r\n\t\t\t\t\t\t} else {\r\n\t\t\t\t\t\t\tthis.selected.splice(index, 1); // Unselect\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t},\r\n\t\t\t\t\tremove(option) {\r\n\t\t\t\t\t\tthis.selected = this.selected.filter(item => item.value !== option.value);\r\n\t\t\t\t\t},\r\n\t\t\t\t\tisSelected(option) {\r\n\t\t\t\t\t\treturn this.selected.some(item => item.value === option.value);\r\n\t\t\t\t\t}\r\n\t\t\t\t}));\r\n\t\t\t});\r\n\t\t</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -155,20 +155,20 @@ func Select(props SelectProps) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(`multiSelectComponent(` + parseTemplJsonString(props.Options) + `, [])`)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 79, Col: 83}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 78, Col: 83}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"><!-- Selected items rendered as tags --><div class=\"border rounded-md bg-background p-2 flex flex-wrap gap-2 cursor-pointer\" x-on:click=\"toggleDropdown()\"><template x-for=\"(item, index) in selected\" :key=\"item.value\"><span class=\"bg-blue-100 text-blue-700 px-2 py-1 rounded flex items-center\"><span x-text=\"item.label\"></span> <button type=\"button\" class=\"ml-1 text-xs\" x-on:click.stop=\"remove(item)\">x</button></span></template><input type=\"text\" readonly placeholder=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"><!-- Selected items as chips --><div class=\"border rounded-md bg-background p-2 flex flex-wrap gap-2 cursor-pointer\" x-on:click=\"toggleDropdown()\"><template x-for=\"(item, index) in selected\" :key=\"item.value\"><span class=\"bg-blue-100 text-blue-700 px-2 py-1 rounded flex items-center\"><span x-text=\"item.label\"></span> <button type=\"button\" class=\"ml-1 text-xs\" x-on:click.stop=\"remove(item)\">x</button></span></template><input type=\"text\" readonly placeholder=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(props.Placeholder)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 92, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 91, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -196,28 +196,28 @@ func Select(props SelectProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\"><template x-for=\"option in options\" :key=\"option.value\"><div x-on:click=\"select(option)\" class=\"p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-100 flex justify-between items-center\"><span x-text=\"option.label\"></span><!-- Checkmark --><span x-show=\"isSelected(option)\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\"><template x-for=\"option in options\" :key=\"option.value\"><div x-on:click=\"toggleSelection(option)\" class=\"p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-100 flex justify-between items-center\"><span x-text=\"option.label\"></span><!-- Checkmark --><span x-show=\"isSelected(option)\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = icons.Check(icons.IconProps{Size: "8"}).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = icons.Check(icons.IconProps{Size: "8", Class: "text-muted-foreground"}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</span></div></template></div><!-- Hidden inputs for each selected value --><template x-for=\"item in selected\" :key=\"item.value\"><input type=\"hidden\" name=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</span></div></template></div><!-- ✅ REAL `<select multiple>` FOR FORM SUBMISSION --><select name=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var11 string
-			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(props.Name)
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(props.Name + "[]")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 115, Col: 42}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 113, Col: 35}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" :value=\"item.value\"></template></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" multiple class=\"hidden\"><template x-for=\"item in selected\" :key=\"item.value\"><option :value=\"item.value\" selected x-text=\"item.label\"></option></template></select></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -264,7 +264,7 @@ func Select(props SelectProps) templ.Component {
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(props.ID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 121, Col: 20}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 122, Col: 20}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
@@ -277,7 +277,7 @@ func Select(props SelectProps) templ.Component {
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(props.ID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 122, Col: 17}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 123, Col: 17}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -290,7 +290,7 @@ func Select(props SelectProps) templ.Component {
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(props.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 123, Col: 21}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/select.templ`, Line: 124, Col: 21}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
@@ -312,13 +312,7 @@ func Select(props SelectProps) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			if props.Multiple {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, " multiple")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, " class=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, " class=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -331,7 +325,7 @@ func Select(props SelectProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -339,12 +333,12 @@ func Select(props SelectProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, ">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, ">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if props.Placeholder != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<option value=\"\" disabled selected hidden>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<option value=\"\" disabled selected hidden>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -357,13 +351,13 @@ func Select(props SelectProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</option> ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</option> ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 			for _, option := range props.Options {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<option value=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<option value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -376,12 +370,12 @@ func Select(props SelectProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if option.Selected {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, " selected")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, " selected")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -390,7 +384,7 @@ func Select(props SelectProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, ">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, ">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -403,12 +397,12 @@ func Select(props SelectProps) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</option>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</option>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</select><div class=\"absolute right-3 top-3 pointer-events-none peer-disabled:opacity-50\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</select><div class=\"absolute right-3 top-3 pointer-events-none peer-disabled:opacity-50\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -419,7 +413,7 @@ func Select(props SelectProps) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

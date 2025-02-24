@@ -49,14 +49,13 @@ templ MultiSelectScript() {
 					open: false,
 					toggleDropdown() { 
 						this.open = !this.open;
-						console.log("Dropdown state:", this.open);
 					},
-					select(option) {
+					toggleSelection(option) {
 						let index = this.selected.findIndex(item => item.value === option.value);
 						if (index === -1) {
-							this.selected.push(option);
+							this.selected.push(option); // Select
 						} else {
-							this.selected.splice(index, 1); // Unselect if already selected
+							this.selected.splice(index, 1); // Unselect
 						}
 					},
 					remove(option) {
@@ -78,7 +77,7 @@ templ Select(props SelectProps) {
 			class={ utils.TwMerge("relative w-full", props.Class) }
 			x-data={ `multiSelectComponent(` + parseTemplJsonString(props.Options) + `, [])` }
 		>
-			<!-- Selected items rendered as tags -->
+			<!-- Selected items as chips -->
 			<div
 				class="border rounded-md bg-background p-2 flex flex-wrap gap-2 cursor-pointer"
 				x-on:click="toggleDropdown()"
@@ -100,20 +99,22 @@ templ Select(props SelectProps) {
 			>
 				<template x-for="option in options" :key="option.value">
 					<div 
-						x-on:click="select(option)" 
+						x-on:click="toggleSelection(option)" 
 						class="p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-100 flex justify-between items-center"
 					>
 						<span x-text="option.label"></span>
 						<!-- Checkmark -->
-						<span x-show="isSelected(option)">@icons.Check(icons.IconProps{Size: "8"})</span>
+						<span x-show="isSelected(option)">@icons.Check(icons.IconProps{Size: "8", Class: "text-muted-foreground"})</span>
 					</div>
 				</template>
 			</div>
 
-			<!-- Hidden inputs for each selected value -->
-			<template x-for="item in selected" :key="item.value">
-				<input type="hidden" name={ props.Name } :value="item.value"/>
-			</template>
+			<!-- ✅ REAL `<select multiple>` FOR FORM SUBMISSION -->
+			<select name={ props.Name + "[]" } multiple class="hidden">
+				<template x-for="item in selected" :key="item.value">
+					<option :value="item.value" selected x-text="item.label"></option>
+				</template>
+			</select>
 		</div>
 	} else {
 		<div class={ utils.TwMerge("relative w-full", props.Class) }>
@@ -123,7 +124,6 @@ templ Select(props SelectProps) {
 				name={ props.Name }
 				disabled?={ props.Disabled }
 				required?={ props.Required }
-				multiple?={ props.Multiple }
 				class={ utils.TwMerge(
                     "peer h-10 w-full px-3 py-2",
                     "rounded-md border border-input bg-background text-sm",

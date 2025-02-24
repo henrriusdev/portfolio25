@@ -6,7 +6,7 @@ import (
 	"github.com/henrriusdev/portfolio/src/layout"
 )
 
-templ Projects(projects ...model.Project) {
+templ Projects(techs []components.SelectOption, projects ...model.Project) {
 	@layout.BaseInternal("Projects - HenrriusDev") {
 		<div class="container mx-auto px-4 py-8">
 			<div class="flex justify-between items-center mb-8">
@@ -42,7 +42,7 @@ templ Projects(projects ...model.Project) {
 				<h3 class="text-xl font-bold">Project Form</h3>
 			}
 			@components.ModalBody() {
-				<form id="projectForm">
+				<form id="projectForm" action="/dashboard/save-project" method="POST" class="space-y-4">
 					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
 						@components.FormLabel(components.FormLabelProps{
 							For:  "projectTitle",
@@ -63,6 +63,19 @@ templ Projects(projects ...model.Project) {
 							ID:          "projectDescription",
 							Name:        "description",
 							Placeholder: "Enter project description",
+						})
+					}
+					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
+						@components.FormLabel(components.FormLabelProps{
+							For:  "projectTechs",
+							Text: "Technologies",
+						})
+						@components.Select(components.SelectProps{
+							ID:         "projectTechs",
+							Name:       "techs",
+							Placeholder: "Select technologies",
+							Options:    techs,
+							Multiple:   true,
 						})
 					}
 					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
@@ -112,6 +125,9 @@ templ Projects(projects ...model.Project) {
 						Text:    "Save",
 						Variant: components.ButtonVariantDefault,
 						Type:    "submit",
+						Attributes: templ.Attributes{
+							"form": "projectForm",
+						},
 					})
 				</div>
 			}
