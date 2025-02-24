@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/go-fuego/fuego"
+	"github.com/go-fuego/fuego/option"
 	"github.com/henrriusdev/portfolio/api/middleware"
 	"github.com/henrriusdev/portfolio/pkg/common"
 	"github.com/henrriusdev/portfolio/pkg/model"
@@ -25,13 +26,41 @@ func (d *Dashboard) RegisterRoutes(f *fuego.Server) {
 	fuego.Use(f, func(next http.Handler) http.Handler {
 		return middleware.AuthMiddleware(http.HandlerFunc(next.ServeHTTP))
 	})
-	fuego.Get(f, "", d.Index)
-	fuego.Get(f, "/projects", d.Projects)
-	fuego.Get(f, "/technologies", d.Technologies)
-	fuego.Post(f, "/save-project", d.SaveProject)
-	fuego.Post(f, "/save-tech", d.SaveTech)
-	fuego.Delete(f, "/delete-project/{id}", d.DeleteProject)
-	fuego.Delete(f, "/delete-tech/{id}", d.DeleteTech)
+	fuego.Get(f, "", d.Index,
+		option.Description("Show dashboard"),
+		option.Summary("Dashboard"),
+		option.Tags("dashboard"),
+	)
+	fuego.Get(f, "/projects", d.Projects,
+		option.Description("Show projects"),
+		option.Summary("Projects"),
+		option.Tags("dashboard", "projects"),
+	)
+	fuego.Get(f, "/technologies", d.Technologies,
+		option.Description("Show technologies"),
+		option.Summary("Technologies"),
+		option.Tags("dashboard", "technologies"),
+	)
+	fuego.Post(f, "/save-project", d.SaveProject,
+		option.Description("Save project"),
+		option.Summary("Save project"),
+		option.Tags("dashboard", "projects"),
+	)
+	fuego.Post(f, "/save-tech", d.SaveTech,
+		option.Description("Save technology"),
+		option.Summary("Save technology"),
+		option.Tags("dashboard", "technologies"),
+	)
+	fuego.Delete(f, "/delete-project/{id}", d.DeleteProject,
+		option.Description("Delete project"),
+		option.Summary("Delete project"),
+		option.Tags("dashboard", "projects"),
+	)
+	fuego.Delete(f, "/delete-tech/{id}", d.DeleteTech,
+		option.Description("Delete technology"),
+		option.Summary("Delete technology"),
+		option.Tags("dashboard", "technologies"),
+	)
 }
 
 func (d *Dashboard) Index(c fuego.ContextNoBody) (fuego.Templ, error) {
@@ -49,10 +78,10 @@ func (d *Dashboard) Projects(c fuego.ContextNoBody) (fuego.Templ, error) {
 	return pages.Projects(techOptions, projects...), nil
 }
 
-func (d *Dashboard) SaveProject(c fuego.ContextWithBody[model.SaveProjectRequest]) (string, error) {
+func (d *Dashboard) SaveProject(c fuego.ContextWithBody[model.SaveProjectRequest]) (model.Project, error) {
 	req, err := c.Body()
 	if err != nil {
-		return "", fuego.SendJSON(c.Response(), c.Request(), map[string]interface{}{
+		return model.Project{}, fuego.SendJSON(c.Response(), c.Request(), map[string]interface{}{
 			"error":   "Validation failed",
 			"details": err.Error(),
 		})
@@ -62,11 +91,11 @@ func (d *Dashboard) SaveProject(c fuego.ContextWithBody[model.SaveProjectRequest
 	for _, idStr := range req.Technologies {
 		id, err := strconv.ParseUint(idStr, 10, 64)
 		if err != nil {
-			return "", err
+			return model.Project{}, err
 		}
 		tech, err := d.services.Technology.GetByID(uint(id))
 		if err != nil {
-			return "", err
+			return model.Project{}, err
 		}
 
 		techs = append(techs, *tech)
@@ -88,12 +117,12 @@ func (d *Dashboard) SaveProject(c fuego.ContextWithBody[model.SaveProjectRequest
 
 	if err := d.services.Project.Upsert(&project); err != nil {
 		log.Printf("Error saving project: %v", err)
-		return "", err
+		return model.Project{}, err
 	}
 
 	c.Redirect(http.StatusSeeOther, "/dashboard/projects")
 
-	return "Project saved successfully", nil
+	return model.Project{}, nil
 }
 
 func (d *Dashboard) Technologies(c fuego.ContextNoBody) (fuego.Templ, error) {
@@ -101,11 +130,11 @@ func (d *Dashboard) Technologies(c fuego.ContextNoBody) (fuego.Templ, error) {
 	return pages.Techs(techs...), nil
 }
 
-func (d *Dashboard) SaveTech(c fuego.ContextWithBody[model.SaveTechRequest]) (string, error) {
+func (d *Dashboard) SaveTech(c fuego.ContextWithBody[model.SaveTechRequest]) (model.Technology, error) {
 	// Parse the incoming SaveTechRequest from form data.
 	req, err := c.Body()
 	if err != nil {
-		return "", err
+		return model.Technology{}, err
 	}
 
 	// Get the SVG icon URL from simpleicons.org based on the tech name.
@@ -118,25 +147,25 @@ func (d *Dashboard) SaveTech(c fuego.ContextWithBody[model.SaveTechRequest]) (st
 	}
 
 	if err := d.services.Technology.Create(tech); err != nil {
-		return "", err
+		return model.Technology{}, err
 	}
 
 	c.Redirect(http.StatusSeeOther, "/dashboard/technologies")
 
 	// Return a success message or redirect as needed.
-	return "Technology saved successfully", nil
+	return tech, nil
 }
 
-func (d *Dashboard) DeleteTech(c fuego.ContextWithBody[model.DeleteRequest]) (string, error) {
+func (d *Dashboard) DeleteTech(c fuego.ContextWithBody[model.DeleteRequest]) (model.DeleteRequest, error) {
 	// Parse the incoming request to get the tech ID.
 	req, err := c.Body()
 	if err != nil {
-		return "", err
+		return model.DeleteRequest{}, err
 	}
 	idStr := c.PathParam("id")
 	id, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
-		return "", err
+		return model.DeleteRequest{}, err
 	}
 
 	if req.ID == 0 {
@@ -145,11 +174,11 @@ func (d *Dashboard) DeleteTech(c fuego.ContextWithBody[model.DeleteRequest]) (st
 
 	if err := d.services.Technology.Delete(req.ID); err != nil {
 		log.Println(err, "AAAAAAAAA")
-		return "", err
+		return model.DeleteRequest{}, err
 	}
 
 	// Return a success message or redirect as needed.
-	return "Technology deleted successfully", nil
+	return model.DeleteRequest{}, nil
 }
 
 func (d *Dashboard) DeleteProject(c fuego.ContextWithBody[model.DeleteRequest]) (string, error) {

@@ -29,8 +29,8 @@ type Experience struct {
 }
 
 type Technology struct {
-	Name string `gorm:"not null"`
-	Icon string `gorm:"not null"`
+	Name string `json:"name" gorm:"not null"`
+	Icon string `json:"icon" gorm:"not null"`
 	gorm.Model
 }
 
