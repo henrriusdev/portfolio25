@@ -56,7 +56,7 @@ func Modal(props ModalProps) templ.Component {
 		}
 		var templ_7745c5c3_Var3 = []any{
 			utils.TwMerge(
-				"relative bg-background rounded-lg border text-left overflow-hidden shadow-xl transform transition-all sm:my-8 w-full",
+				"relative bg-background rounded-lg border text-left overflow-hidden shadow-xl transform transition-all sm:my-8 w-full z-40",
 				props.Class),
 		}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var3...)

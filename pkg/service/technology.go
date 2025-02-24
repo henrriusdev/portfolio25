@@ -12,3 +12,7 @@ type Technology struct {
 func NewTechnology(db *gorm.DB) *Technology {
 	return &Technology{Base[model.Technology]{db}}
 }
+
+func (t *Technology) Create(tech model.Technology) error {
+	return t.DB.Create(&tech).Error
+}

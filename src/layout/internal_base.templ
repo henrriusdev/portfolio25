@@ -18,6 +18,8 @@ templ BaseInternal(title string) {
 			@helpers.ComponentScripts()
 			<!-- Theme switcher script -->
 			@ThemeSwitcherScript()
+			@components.TechCardScript()
+			@components.MultiSelectScript()
 		</head>
 		<body
 			x-data="themeHandler"

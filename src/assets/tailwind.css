@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @source "C:/Users/Henrry/go/pkg/mod/github.com/axzilla/templui@*/**/*.{go,templ}";
+@source "../**/*.{go,templ}";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

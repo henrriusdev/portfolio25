@@ -53,5 +53,11 @@ func (s *Base[T]) Update(record *T) error {
 
 // Eliminar un registro
 func (s *Base[T]) Delete(id uint) error {
-	return s.DB.Model(new(T)).Delete(new(T), id).Error
+	record, err := s.GetByID(id)
+	if err != nil {
+		return err
+	}
+
+	// This uses the primary key 'id' in the WHERE condition.
+	return s.DB.Unscoped().Delete(&record, id).Error
 }

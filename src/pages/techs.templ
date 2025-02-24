@@ -1,0 +1,74 @@
+package pages
+
+import "github.com/henrriusdev/portfolio/pkg/model"
+import "github.com/henrriusdev/portfolio/src/components"
+import "github.com/henrriusdev/portfolio/src/layout"
+
+templ Techs(techs ...model.Technology) {
+    @layout.BaseInternal("Projects - HenrriusDev") {
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 dark:text-white">
+                    Technologies
+                </h1>
+                <div class="flex gap-4">
+                    @components.ModalTrigger("tech-form-modal") {
+                        @components.Button(components.ButtonProps{
+                            Text:    "Create Technology",
+                            Variant: components.ButtonVariantDefault,
+                            Size:    components.ButtonSizeMd,
+                        })
+                    }
+                </div>
+            </div>
+            <div class="flex justify-evenly items-center flex-wrap gap-4">
+                if len(techs) == 0 {
+                    <p class="text-gray-600 dark:text-gray-400">
+                        No techs to show
+                    </p>
+                } else {
+                    for _, tech := range techs {
+                        @components.TechCard(tech)
+                    }
+                }
+            </div>
+        </div>
+        <!-- Modal for Create/Update Technology -->
+        @components.Modal(components.ModalProps{ID: "tech-form-modal", Class: "max-w-lg mx-auto"}) {
+            @components.ModalHeader() {
+                <h3 class="text-xl font-bold">Technology Form</h3>
+            }
+            @components.ModalBody() {
+                <form id="techForm" action="/dashboard/save-tech" method="POST">
+                    @components.FormItem(components.FormItemProps{Class: "mb-4"}) {
+                        @components.FormLabel(components.FormLabelProps{
+                            For:  "name",
+                            Text: "Tech name",
+                        })
+                        @components.Input(components.InputProps{
+                            ID:          "name",
+                            Name:        "name",
+                            Placeholder: "Go",
+                        })
+                    }
+                </form>
+            }
+            @components.ModalFooter() {
+                <div class="flex gap-2">
+                    @components.ModalClose("tech-form-modal") {
+                        @components.Button(components.ButtonProps{
+                            Text:    "Cancel",
+                            Variant: components.ButtonVariantDefault,
+                        })
+                    }
+                    @components.Button(components.ButtonProps{
+                        Text:       "Save",
+                        Variant:    components.ButtonVariantDefault,
+                        Type:       "submit",
+                        Attributes: templ.Attributes{ "form": "techForm" },
+                    })
+                </div>
+            }
+        }
+    }
+}

@@ -1,0 +1,54 @@
+package components
+
+import (
+	"fmt"
+	"github.com/henrriusdev/portfolio/pkg/model"
+)
+
+func getStringId(id uint) string {
+	return fmt.Sprintf("%d", id)
+}
+
+templ TechCardScript() {
+    <script nonce={ templ.GetNonce(ctx) }>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('techActions', {
+                deleteTech(id) {
+                    fetch(`/dashboard/delete-tech/${id}`, { method: 'DELETE' })
+                        .then(() => window.location.reload());
+                }
+            });
+        });
+    </script>
+}
+
+templ TechCard(tech model.Technology) {
+    @Card(CardProps{
+        Class:      "bg-white dark:bg-gray-800 rounded-md overflow-hidden w-full max-w-[150px]",
+        Attributes: templ.Attributes{"x-data": "{}"},
+    }) {
+        @CardImage(CardImageProps{
+            Src:         tech.Icon,
+            Alt:         tech.Name,
+            Position:    CardImageTop,
+            Class:       "w-full h-full p-1 pt-3 mx-auto",
+        })
+        @CardHeader() {
+            @CardTitle() {
+                { tech.Name }
+            }
+        }
+        @CardFooter() {
+            @Button(ButtonProps{
+                Text:    "Delete",
+                Variant: ButtonVariantDestructive,
+                Size:    ButtonSizeSm,
+                Class:   "ml-auto mt-4",
+                Attributes: templ.Attributes{
+                    // Call the deleteTech method from the Alpine store
+                    "x-on:click": "$store.techActions.deleteTech('" + getStringId(tech.ID) + "')",
+                },
+            })
+        }
+    }
+}

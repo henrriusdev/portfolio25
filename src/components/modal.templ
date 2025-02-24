@@ -30,7 +30,7 @@ templ Modal(props ModalProps) {
 		<div
 			class={
 				utils.TwMerge(
-					"relative bg-background rounded-lg border text-left overflow-hidden shadow-xl transform transition-all sm:my-8 w-full",
+					"relative bg-background rounded-lg border text-left overflow-hidden shadow-xl transform transition-all sm:my-8 w-full z-40",
 					props.Class),
 			}
 			@click.away="handleClickAway"

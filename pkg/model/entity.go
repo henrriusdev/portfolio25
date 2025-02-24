@@ -1,10 +1,16 @@
 package model
 
 import (
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
 )
+
+type Base interface {
+	GetLabel() string
+	GetValue() string
+}
 
 type User struct {
 	Username string     `gorm:"unique;not null"`
@@ -28,6 +34,14 @@ type Technology struct {
 	gorm.Model
 }
 
+func (t Technology) GetLabel() string {
+	return t.Name
+}
+
+func (t Technology) GetValue() string {
+	return fmt.Sprintf("%d", t.ID)
+}
+
 type Project struct {
 	Title       string `gorm:"not null"`
 	Description string `gorm:"not null"`
@@ -36,6 +50,14 @@ type Project struct {
 	Repo        string
 	Techs       []Technology `gorm:"many2many:project_technologies;"`
 	gorm.Model
+}
+
+func (p Project) GetLabel() string {
+	return p.Title
+}
+
+func (p Project) GetValue() string {
+	return fmt.Sprintf("%d", p.ID)
 }
 
 type Contact struct {
