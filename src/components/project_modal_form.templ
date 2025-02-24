@@ -1,0 +1,154 @@
+package components
+
+import (
+	"github.com/henrriusdev/portfolio/pkg/model"
+)
+
+// ✅ Ensures script loads only once
+var projectFormHandle = templ.NewOnceHandle()
+
+func isEdit(isEditing bool) string {
+  if isEditing {
+    return "Update"
+  }
+  return "Create"
+}
+
+templ ProjectFormScript() {
+	@projectFormHandle.Once() {
+		<script nonce={ templ.GetNonce(ctx) }>
+			document.addEventListener("alpine:init", () => {
+				Alpine.data("projectFormData", (initialProject = null) => ({
+					project: initialProject || {
+						id: "",
+						title: "",
+						description: "",
+						image_url: "",
+						url: "",
+						repo: "",
+						techs: []
+					},
+					formAction() {
+						return this.project.id ? "/dashboard/update-project" : "/dashboard/save-project";
+					},
+					setProject(data) {
+						this.project = data;
+					}
+				}));
+			});
+		</script>
+	}
+}
+
+templ ProjectModal(modalID string, techs []SelectOption, project ...model.Project) {
+	{{
+		isEditing := len(project) > 0
+
+		// ✅ Prepare project data (pass to Alpine.js)
+		var projectData model.Project
+		if isEditing {
+			projectData = project[0]
+		} else {
+			projectData = model.Project{}
+		}
+    projectDataJSON := parseTemplJsonString(projectData)
+	}}
+
+	<!-- ✅ Load Project Form Script -->
+	@ProjectFormScript()
+
+	<!-- ✅ Modal Component -->
+	@Modal(ModalProps{ID: modalID, Class: "max-w-lg mx-auto"}) {
+		@ModalHeader() {
+			<h3 class="text-xl font-bold">
+				if isEditing {
+          "Edit Project"
+        } else {
+          "Create Project"
+        }
+			</h3>
+		}
+		@ModalBody() {
+			<!-- ✅ Pass project data safely using templ.JSFuncCall -->
+			<form
+				id="projectForm"
+				x-data={ templ.SafeScript(`projectFormData(` + string(projectDataJSON) + `)`) }
+				x-bind:action="formAction()"
+				method="POST"
+				class="space-y-4"
+			>
+				<input type="hidden" name="id" x-model="project.id">
+
+				@FormItem(FormItemProps{Class: "mb-4"}) {
+					@FormLabel(FormLabelProps{For: "projectTitle", Text: "Title"})
+					@Input(InputProps{
+						ID:          "projectTitle",
+						Name:        "title",
+						Placeholder: "Enter project title",
+						Attributes:  templ.Attributes{"x-model": "project.title"},
+					})
+				}
+				@FormItem(FormItemProps{Class: "mb-4"}) {
+					@FormLabel(FormLabelProps{For: "projectDescription", Text: "Description"})
+					@Textarea(TextareaProps{
+						ID:          "projectDescription",
+						Name:        "description",
+						Placeholder: "Enter project description",
+						Attributes:  templ.Attributes{"x-model": "project.description"},
+					})
+				}
+        @FormItem(FormItemProps{Class: "mb-4"}) {
+          @FormLabel(FormLabelProps{For: "projectTechs", Text: "Technologies"})
+          @Select(SelectProps{
+            ID:         "projectTechs",
+            Name:       "techs",
+            Placeholder: "Select technologies",
+            Options:    techs,
+            Multiple:   true,
+            Attributes: templ.Attributes{"x-model": "project.techs"},
+          })
+        }
+				@FormItem(FormItemProps{Class: "mb-4"}) {
+					@FormLabel(FormLabelProps{For: "projectImage", Text: "Image URL"})
+					@Input(InputProps{
+						ID:          "projectImage",
+						Name:        "image_url",
+						Placeholder: "Enter image URL",
+						Attributes:  templ.Attributes{"x-model": "project.image_url"},
+					})
+				}
+				@FormItem(FormItemProps{Class: "mb-4"}) {
+					@FormLabel(FormLabelProps{For: "projectLive", Text: "Live URL"})
+					@Input(InputProps{
+						ID:          "projectLive",
+						Name:        "url",
+						Placeholder: "Enter live URL",
+						Attributes:  templ.Attributes{"x-model": "project.url"},
+					})
+				}
+				@FormItem(FormItemProps{Class: "mb-4"}) {
+					@FormLabel(FormLabelProps{For: "projectRepo", Text: "Repo URL"})
+					@Input(InputProps{
+						ID:          "projectRepo",
+						Name:        "repo",
+						Placeholder: "Enter repository URL",
+						Attributes:  templ.Attributes{"x-model": "project.repo"},
+					})
+				}
+			</form>
+		}
+		@ModalFooter() {
+			<div class="flex gap-2">
+				@ModalClose(modalID) {
+					@Button(ButtonProps{Text: "Cancel", Variant: ButtonVariantDefault})
+				}
+				@Button(ButtonProps{
+					Text: isEdit(isEditing),
+					Variant:    ButtonVariantDefault,
+					Type:       "submit",
+					Attributes: templ.Attributes{"form": "projectForm"},
+				})
+			</div>
+		}
+	}
+}

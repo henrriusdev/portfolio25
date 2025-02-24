@@ -1,69 +1,124 @@
 package components
 
 import "github.com/henrriusdev/portfolio/pkg/model"
+import "github.com/axzilla/templui/pkg/icons"
+import "github.com/iota-uz/icons/phosphor"
+import "encoding/json"
+import "strconv"
 
-templ ProjectCard(project model.Project, internal bool) {
-	@Card(CardProps{Class: "bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"}) {
-		@CardImage(CardImageProps{
-			Src:         project.ImageURL,
-			Alt:         project.Title,
-			Position:    CardImageTop,
-			AspectRatio: "16/9",
-		})
-		@CardContent() {
-			@CardHeader() {
-				@CardTitle() {
-					{ project.Title }
+var projectCardHandle = templ.NewOnceHandle()
+
+templ ProjectCardScript() {
+	@projectCardHandle.Once() {
+		<script nonce={ templ.GetNonce(ctx) }>
+			document.addEventListener("alpine:init", () => {
+				Alpine.data("projectEditor", () => ({
+					modalOpen: false,
+					editProject: { id: '', title: '', description: '', image_url: '', url: '', repo: '', techs: [] },
+
+					openEditModal(project) {
+						this.editProject = { 
+							id: project.id,
+							title: project.title,
+							description: project.description,
+							image_url: project.image_url,
+							url: project.url,
+							repo: project.repo,
+							techs: project.techs || []
+						};
+						this.modalOpen = true;
+					},
+
+					closeModal() {
+						this.modalOpen = false;
+					}
+				}));
+			});
+		</script>
+	}
+}
+
+func getAsJSON(techs []model.Technology) string {
+	techsJSON, _ := json.Marshal(techs)
+	return string(techsJSON)
+}
+
+func toString(value uint) string {
+	return strconv.FormatUint(uint64(value), 10)
+}
+
+templ ProjectCard(project model.Project, internal bool, techs ...SelectOption) {
+	@ProjectCardScript() <!-- ✅ Ensures script is loaded -->
+	
+	<div x-data="projectEditor">
+		@Card(CardProps{Class: "bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden w-full max-w-[600px]"}) {
+			@CardImage(CardImageProps{
+				Src:         project.ImageURL,
+				Alt:         project.Title,
+				Position:    CardImageTop,
+				AspectRatio: "16/9",
+				Width: "full",
+				Class: "mx-auto p-2",
+			})
+			@CardContent() {
+				@CardHeader() {
+					@CardTitle() {
+						<span class="text-3xl font-bold text-gray-900 dark:text-white">{ project.Title }</span>
+					}
+					@CardDescription() {
+						{ project.Description }
+					}
 				}
-				@CardDescription() {
-					{ project.Description }
-				}
-			}
-			<div class="flex flex-wrap gap-2 mb-4">
-				for _, tech := range project.Techs {
-					<span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-sm">
-						{ tech.Name }
-					</span>
-				}
-			</div>
-		}
-		@CardFooter() {
-			<div class="flex gap-4">
-				if project.URL != "" {
-					<a
-						href={ templ.SafeURL(project.URL) }
-						class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-						target="_blank"
-					>
-						Live Demo →
-					</a>
-				}
-				if project.Repo != "" {
-					<a
-						href={ templ.SafeURL(project.Repo) }
-						class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
-						target="_blank"
-					>
-						GitHub →
-					</a>
-				}
-			</div>
-			if internal {
-				<div class="flex gap-2 mt-2">
-					<button
-						class="px-3 py-1 bg-blue-500 text-white rounded"
-						onclick="editProject({ project.ID })"
-					>
-						Edit
-					</button>
-					<button
-						class="px-3 py-1 bg-red-500 text-white rounded"
-						onclick="removeProject({ project.ID })"
-					>
-						Remove
-					</button>
+				<!-- ✅ Tech Badges -->
+				<div class="flex flex-wrap gap-2 mt-2 mb-4">
+					for _, tech := range project.Techs {
+						<span class="px-3 py-1 bg-blue-100 dark:bg-blue-700 text-blue-800 dark:text-white rounded-full text-sm font-medium">
+							{ tech.Name }
+						</span>
+					}
 				</div>
 			}
+			@CardFooter() {
+				<div class="flex gap-4 justify-start w-full">
+					if project.URL != "" {
+						<a
+							href={ templ.SafeURL(project.URL) }
+							class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium flex items-center gap-1"
+							target="_blank"
+						>
+							@icons.ExternalLink(icons.IconProps{Size: "14"}) Live Demo
+						</a>
+					}
+					if project.Repo != "" {
+						<a
+							href={ templ.SafeURL(project.Repo) }
+							class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-300 font-medium flex items-center gap-1"
+							target="_blank"
+						>
+							@phosphor.GithubLogo(phosphor.Props{Size: "20", Class: "text-muted-foreground"}) GitHub
+						</a>
+					}
+				</div>
+				<!-- ✅ Internal Admin Buttons -->
+				if internal {
+					<div class="flex w-full justify-end items-center gap-2 mt-2">
+						@ModalTrigger("edit-project-modal-"+toString(project.ID)) {
+							<button 
+								class="px-3 py-1 bg-gray-700 text-white rounded-md text-sm">
+								Edit
+							</button>
+						}
+						@Button(ButtonProps{
+							Text:    "Remove",
+							Variant: ButtonVariantDestructive,
+							Size:    ButtonSizeSm,
+						})
+					</div>
+				}
+			}
 		}
-	}
+
+		<!-- ✅ Inject the Project Modal with techs -->
+		@ProjectModal("edit-project-modal-"+toString(project.ID), techs, project)
+	</div>
 }

@@ -92,7 +92,7 @@ func Projects(techs []components.SelectOption, projects ...model.Project) templ.
 				}
 			} else {
 				for _, project := range projects {
-					templ_7745c5c3_Err = components.ProjectCard(project, true).Render(ctx, templ_7745c5c3_Buffer)
+					templ_7745c5c3_Err = components.ProjectCard(project, true, techs...).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}

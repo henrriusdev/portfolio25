@@ -31,7 +31,7 @@ templ Projects(techs []components.SelectOption, projects ...model.Project) {
 					</p>
 				} else {
 					for _, project := range projects {
-						@components.ProjectCard(project, true)
+						@components.ProjectCard(project, true, techs...)
 					}
 				}
 			</div>

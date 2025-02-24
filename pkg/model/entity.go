@@ -43,11 +43,11 @@ func (t Technology) GetValue() string {
 }
 
 type Project struct {
-	Title       string `gorm:"not null"`
-	Description string `gorm:"not null"`
-	ImageURL    string `gorm:"not null"`
-	URL         string
-	Repo        string
+	Title       string       `json:"title" gorm:"not null"`
+	Description string       `json:"description" gorm:"not null"`
+	ImageURL    string       `json:"imageUrl" gorm:"not null"`
+	URL         string       `json:"url"`
+	Repo        string       `json:"repo"`
 	Techs       []Technology `gorm:"many2many:project_technologies;"`
 	gorm.Model
 }
