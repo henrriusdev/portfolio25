@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/go-fuego/fuego"
 	"github.com/go-fuego/fuego/option"
@@ -41,6 +43,16 @@ func (d *Dashboard) RegisterRoutes(f *fuego.Server) {
 		option.Summary("Technologies"),
 		option.Tags("dashboard", "technologies"),
 	)
+	fuego.Get(f, "/experience", d.Experience,
+		option.Description("Show experience"),
+		option.Summary("Experience"),
+		option.Tags("dashboard", "experience"),
+	)
+	fuego.Get(f, "/links", d.Links,
+		option.Description("Show links"),
+		option.Summary("Links"),
+		option.Tags("dashboard", "links"),
+	)
 	fuego.Post(f, "/save-project", d.SaveProject,
 		option.Description("Save project"),
 		option.Summary("Save project"),
@@ -50,6 +62,11 @@ func (d *Dashboard) RegisterRoutes(f *fuego.Server) {
 		option.Description("Save technology"),
 		option.Summary("Save technology"),
 		option.Tags("dashboard", "technologies"),
+	)
+	fuego.Post(f, "/save-work", d.SaveWork,
+		option.Description("Save work experience"),
+		option.Summary("Save work experience"),
+		option.Tags("dashboard", "experience"),
 	)
 	fuego.Delete(f, "/delete-project/{id}", d.DeleteProject,
 		option.Description("Delete project"),
@@ -123,6 +140,63 @@ func (d *Dashboard) SaveProject(c fuego.ContextWithBody[model.SaveProjectRequest
 	c.Redirect(http.StatusSeeOther, "/dashboard/projects")
 
 	return model.Project{}, nil
+}
+
+func (d *Dashboard) SaveWork(c fuego.ContextWithBody[model.SaveWorkRequest]) (model.Experience, error) {
+	req, err := c.Body()
+	if err != nil {
+		return model.Experience{}, fuego.SendJSON(c.Response(), c.Request(), map[string]interface{}{
+			"error":   "Validation failed",
+			"details": err.Error(),
+		})
+	}
+
+	fmt.Println(req.ID)
+
+	startDate, err := time.Parse("2006-01-02", req.StartDate)
+	if err != nil {
+		return model.Experience{}, err
+	}
+
+	var endDate *time.Time
+	if req.EndDate != "" {
+		parsedEndDate, err := time.Parse("2006-01-02", req.EndDate)
+		if err != nil {
+			return model.Experience{}, err
+		}
+		endDate = &parsedEndDate
+	}
+
+	// Create a new Experience entity.
+	experience := model.Experience{
+		Role:        req.Role,
+		Company:     req.Company,
+		Description: req.Description,
+		StartDate:   startDate,
+		EndDate:     endDate,
+	}
+
+	if req.ID != 0 {
+		experience.ID = req.ID
+	}
+
+	if err := d.services.Experience.Upsert(&experience); err != nil {
+		log.Printf("Error saving experience: %v", err)
+		return model.Experience{}, err
+	}
+
+	c.Redirect(http.StatusSeeOther, "/dashboard/experience")
+
+	return model.Experience{}, nil
+}
+
+func (d *Dashboard) Experience(c fuego.ContextNoBody) (fuego.Templ, error) {
+	experiences, _ := d.services.Experience.GetAll()
+	return pages.Experience(experiences...), nil
+}
+
+func (d *Dashboard) Links(c fuego.ContextNoBody) (fuego.Templ, error) {
+	return pages.Links(), nil
 }
 
 func (d *Dashboard) Technologies(c fuego.ContextNoBody) (fuego.Templ, error) {

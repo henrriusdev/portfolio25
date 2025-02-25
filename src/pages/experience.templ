@@ -1,0 +1,33 @@
+package pages
+
+import (
+	"github.com/henrriusdev/portfolio/pkg/model"
+	"github.com/henrriusdev/portfolio/src/components"
+	"github.com/henrriusdev/portfolio/src/layout"
+)
+
+templ Experience(experiences ...model.Experience) {
+	@layout.BaseInternal("Experience") {
+		<section class="container mx-auto px-4 py-8">
+			<h2 class="text-5xl font-bold text-center mb-8">Work Experience</h2>
+			<div class="flex justify-end mb-8">
+				@components.ModalTrigger("experience-create-modal") {
+					@components.Button(components.ButtonProps{
+						Text:    "Create Experience",
+						Variant: components.ButtonVariantDefault,
+						Size:    components.ButtonSizeMd,
+					})
+				}
+			</div>
+			if len(experiences) == 0 {
+				<p class="text-gray-600 dark:text-gray-400">
+					No experiences to show
+				</p>
+			} else {
+				@components.ExperienceTimeline(experiences, true)
+			}
+		</section>
+		<!-- Modal for Create/Update Experience -->
+		@components.ExperienceModal("experience-create-modal", model.Experience{})
+	}
+}

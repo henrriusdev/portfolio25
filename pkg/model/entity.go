@@ -20,11 +20,11 @@ type User struct {
 }
 
 type Experience struct {
-	Company     string    `gorm:"not null"`
-	Role        string    `gorm:"not null"`
-	StartDate   time.Time `gorm:"not null"`
-	EndDate     *time.Time
-	Description string
+	Company     string     `gorm:"not null" json:"company,omitempty"`
+	Role        string     `gorm:"not null" json:"role,omitempty"`
+	StartDate   time.Time  `gorm:"not null" json:"start_date,omitempty"`
+	EndDate     *time.Time `json:"end_date,omitempty"`
+	Description string     `json:"description,omitempty"`
 	gorm.Model
 }
 

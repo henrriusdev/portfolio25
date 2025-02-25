@@ -7,7 +7,7 @@ import (
 )
 
 func portfolioRoutes(f *fuego.Server, services service.Service) {
-	portfolio := handlers.NewPortfolio(services.User)
+	portfolio := handlers.NewPortfolio(services.User, services.Project, services.Experience, services.Technology)
 	portfolio.RegisterRoutes(f)
 }
 

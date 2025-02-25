@@ -1,6 +1,9 @@
 package service
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
+)
 
 type Service struct {
 	Contact    *Contact
@@ -60,4 +63,9 @@ func (s *Base[T]) Delete(id uint) error {
 
 	// This uses the primary key 'id' in the WHERE condition.
 	return s.DB.Delete(&record, id).Error
+}
+
+// Upsert: Insertar o actualizar un registro
+func (s *Base[T]) Upsert(record *T) error {
+	return s.DB.Clauses(clause.OnConflict{UpdateAll: true}).Create(record).Error
 }

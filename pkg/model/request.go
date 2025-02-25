@@ -1,5 +1,11 @@
 package model
 
+import (
+	"context"
+
+	"github.com/go-fuego/fuego"
+)
+
 type LoginRequest struct {
 	Username string `form:"username" json:"username"`
 	Password string `form:"password" json:"password"`
@@ -22,3 +28,28 @@ type SaveProjectRequest struct {
 	LiveURL      string   `schema:"url" json:"url,omitempty"`
 	RepoURL      string   `schema:"repo" json:"repo,omitempty"`
 }
+
+type SaveWorkRequest struct {
+	ID          uint   `schema:"id,omitempty" json:"id,omitempty"`
+	Role        string `schema:"role" json:"role,omitempty"`
+	Company     string `schema:"company" json:"company,omitempty"`
+	Description string `schema:"description" json:"description,omitempty"`
+	StartDate   string `schema:"start_date" json:"start_date,omitempty"`
+	EndDate     string `schema:"end_date" json:"end_date,omitempty"`
+	IsCurrent   bool   `schema:"is_current" json:"is_current,omitempty"`
+}
+
+func (r *SaveWorkRequest) InTransform(ctx context.Context) error {
+	// check if startdate has extra text T00:00:00Z and remove it
+	if len(r.StartDate) > 10 {
+		r.StartDate = r.StartDate[:10]
+	}
+
+	if len(r.EndDate) > 10 {
+		r.EndDate = r.EndDate[:10]
+	}
+
+	return nil
+}
+
+var _ fuego.InTransformer = (*SaveWorkRequest)(nil)

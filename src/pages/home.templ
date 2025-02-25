@@ -8,7 +8,7 @@ import "time"
 var seraStart = time.Date(2024, 8, 5, 0, 0, 0, 0, time.UTC)
 var linkticStart = time.Date(2022, 12, 5, 0, 0, 0, 0, time.UTC)
 
-templ HomePage() {
+templ HomePage(projects []model.Project, experiences []model.Experience, technologies []model.Technology) {
 	@layout.Base("Portfolio") {
 		<main>
 			<!-- Hero Section -->
@@ -18,7 +18,7 @@ templ HomePage() {
 						<!-- Text Content -->
 						<div class="w-full lg:w-1/2 z-10">
 							<h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900 dark:text-white">
-								Hello, I'm Henrry
+								Hello, I am Henrry
 							</h1>
 							<p class="text-lg md:text-xl mb-8 text-gray-700 dark:text-gray-300 max-w-lg">
 								Go Backend Developer with more about 2 years professional experience. Also with knowledge about TypeScript, Java and Python and frontend frameworks.
@@ -55,60 +55,27 @@ templ HomePage() {
 				</div>
 			</section>
 			<!-- Experience Section -->
-			@components.ExperienceTimeline([]model.Experience{
-				{
-					Role:        "Senior Developer",
-					Company:     "Tech Corp",
-					Description: "Led development of key features...",
-					StartDate:   linkticStart,
-					EndDate:     &seraStart,
-				},
-				{
-					Role:        "Full Stack Developer",
-					Company:     "Start Up",
-					Description: "Developed full stack applications...",
-					StartDate:   seraStart,
-					EndDate:     nil,
-				},
-			})
+			<section class="container mx-auto px-4 py-8">
+				<h2 class="text-5xl font-bold text-center mb-8">Work Experience</h2>
+				@components.ExperienceTimeline(experiences, false)
+			</section>
 			<!-- Projects Section -->
 			<section class="py-12 bg-gray-50 dark:bg-gray-900">
 				<div class="container mx-auto px-4">
 					<h2 class="text-3xl font-bold mb-8 text-center">Projects</h2>
 					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-						@components.ProjectCard(model.Project{
-							Title:       "Project 1",
-							Description: "A brief description of the project...",
-							ImageURL:    "/assets/project1.png",
-							URL:         "https://project1.com",
-							Repo:        "https://github.com/username/project1",
-							Techs: []model.Technology{
-								{Name: "React"},
-								{Name: "Node.js"},
-								{Name: "MongoDB"},
-							},
-						},false)
-						@components.ProjectCard(model.Project{
-							Title:       "Project 2",
-							Description: "Another amazing project...",
-							ImageURL:    "/assets/project2.png",
-							URL:         "https://project2.com",
-							Repo:        "https://github.com/username/project2",
-							Techs: []model.Technology{
-								{Name: "Vue.js"},
-								{Name: "Firebase"},
-								{Name: "Tailwind"},
-							},
-						},false)
+						for _, project := range projects {
+							@components.ProjectCard(project, false)
+						}
 					</div>
 				</div>
 			</section>
 			<!-- Blog Section -->
-			<section class="py-12">
+			<!-- <sectionon class="py-12">
 				<div class="container mx-auto px-4">
 					<h2 class="text-3xl font-bold mb-8 text-center">Latest from the Blog</h2>
 					<div class="max-w-2xl mx-auto">
-						/*@BlogPreview(BlogPost{
+						@BlogPreview(BlogPost{
                         Title: "Understanding Modern Web Development",
                         Preview: "In this post, we explore the latest trends...",
                         Date: "Mar 15, 2024",
@@ -116,7 +83,25 @@ templ HomePage() {
                         ImageURL: "/assets/blog1.png",
                         Author: "Your Name",
                         AuthorImg: "/assets/author.png",
-                    }) */
+                    })
+					</div>
+				</div>
+			</sectionon> -->
+			<!-- Technologies Section -->
+			<section class="py-12">
+				<div class="container mx-auto px-4">
+					<h2 class="text-3xl font-bold mb-8 text-center">Technologies</h2>
+					<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+						for _, tech := range technologies {
+							<div class="flex flex-col items-center">
+								<img
+									src={ tech.Icon }
+									alt={ tech.Name }
+									class="w-16 h-16 object-contain"
+								/>
+								<p class="text-lg font-semibold mt-4">{ tech.Name }</p>
+							</div>
+						}
 					</div>
 				</div>
 			</section>

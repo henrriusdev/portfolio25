@@ -13,10 +13,13 @@ import (
 
 type Portfolio struct {
 	service *service.User
+	project *service.Project
+	exp     *service.Experience
+	tech    *service.Technology
 }
 
-func NewPortfolio(user *service.User) *Portfolio {
-	return &Portfolio{user}
+func NewPortfolio(user *service.User, project *service.Project, exp *service.Experience, tech *service.Technology) *Portfolio {
+	return &Portfolio{user, project, exp, tech}
 }
 
 func (p *Portfolio) RegisterRoutes(f *fuego.Server) {
@@ -26,7 +29,10 @@ func (p *Portfolio) RegisterRoutes(f *fuego.Server) {
 }
 
 func (p *Portfolio) Index(c fuego.ContextNoBody) (fuego.Templ, error) {
-	return pages.HomePage(), nil
+	projects, _ := p.project.GetAll()
+	experience, _ := p.exp.GetAll()
+	technologies, _ := p.tech.GetAll()
+	return pages.HomePage(projects, experience, technologies), nil
 }
 
 func (p *Portfolio) Login(c fuego.ContextNoBody) (fuego.Templ, error) {

@@ -1,7 +1,11 @@
 package components
 
-import "github.com/henrriusdev/portfolio/pkg/model"
-import "time"
+import (
+	"github.com/axzilla/templui/pkg/icons"
+	"github.com/henrriusdev/portfolio/pkg/model"
+	"time"
+	"strconv"
+)
 
 func getEndDate(date *time.Time) string {
 	endDate := "Current"
@@ -12,23 +16,38 @@ func getEndDate(date *time.Time) string {
 	return endDate
 }
 
-templ ExperienceTimeline(experiences []model.Experience) {
-	<section class="py-12">
-		<div class="container mx-auto px-4">
-			<h2 class="text-4xl font-bold mb-3 text-center">Experience</h2>
-			<p class="text-xl font-semilight mb-5 text-center">Here you can see all of my working experience.</p>
-			<div class="space-y-12">
-				for i, exp := range experiences {
-					<div class={ "flex flex-col md:flex-row items-center gap-8", templ.KV("md:flex-row-reverse", i % 2 == 0) }>
-						<div class={ "w-full md:w-1/2", templ.KV("md:text-right", i % 2 == 0) }>
-							<h3 class="text-2xl font-semibold">{ exp.Role }</h3>
-							<p class="text-xl text-gray-600 dark:text-gray-400">{ exp.Company }</p>
-							<p class="text-gray-500 dark:text-gray-500 mb-4">{ exp.StartDate.Format(time.DateOnly) } - { getEndDate(exp.EndDate) }</p>
-							<p class="text-gray-700 dark:text-gray-300">{ exp.Description }</p>
-						</div>
-					</div>
-				}
-			</div>
-		</div>
-	</section>
+templ ExperienceItem(experience model.Experience, internal bool) {
+	<li class="mb-10 ml-4">
+		<div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+		<time class="text-base mb-2 font-normal leading-none text-gray-400 dark:text-gray-500">
+			{ experience.StartDate.Format(time.DateOnly) } - { getEndDate(experience.EndDate) }
+		</time>
+		<h3 class="text-2xl font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-2">
+			@icons.BriefcaseBusiness(icons.IconProps{Size: "24", Class: "text-muted-foreground"})
+			{ experience.Role }
+		</h3>
+		<p class="mb-2 font-normal text-gray-500 dark:text-gray-400 flex items-center gap-2 text-xl">
+			@icons.Building2(icons.IconProps{Size: "24", Class: "text-muted-foreground"})
+			{ experience.Company }
+		</p>
+		<p class="mb-4 text-lg font-normal text-gray-500 dark:text-gray-400 w-[60ch]">{ experience.Description }</p>
+		if internal {
+			@ModalTrigger("experience-form-modal-" + strconv.Itoa(int(experience.ID))) {
+				@Button(ButtonProps{
+					Text:    "Edit",
+					Variant: ButtonVariantDefault,
+					Size:    ButtonSizeSm,
+				})
+			}
+			@ExperienceModal("experience-form-modal-" + strconv.Itoa(int(experience.ID)), experience)
+		}
+	</li>
+}
+
+templ ExperienceTimeline(exps []model.Experience, internal bool) {
+	<ol class="relative border-l-1 border-gray-200 dark:border-gray-700">
+		for _, exp := range exps {
+			@ExperienceItem(exp, internal)
+		}
+	</ol>
 }
