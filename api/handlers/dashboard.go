@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -150,8 +149,6 @@ func (d *Dashboard) SaveWork(c fuego.ContextWithBody[model.SaveWorkRequest]) (mo
 			"details": err.Error(),
 		})
 	}
-
-	fmt.Println(req.ID)
 
 	startDate, err := time.Parse("2006-01-02", req.StartDate)
 	if err != nil {

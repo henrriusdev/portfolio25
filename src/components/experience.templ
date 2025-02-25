@@ -30,7 +30,7 @@ templ ExperienceItem(experience model.Experience, internal bool) {
 			@icons.Building2(icons.IconProps{Size: "24", Class: "text-muted-foreground"})
 			{ experience.Company }
 		</p>
-		<p class="mb-4 text-lg font-normal text-gray-500 dark:text-gray-400 w-[60ch]">{ experience.Description }</p>
+		<p class="mb-4 text-lg font-normal text-gray-500 dark:text-gray-400 w-[70ch]">{ experience.Description }</p>
 		if internal {
 			@ModalTrigger("experience-form-modal-" + strconv.Itoa(int(experience.ID))) {
 				@Button(ButtonProps{

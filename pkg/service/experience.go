@@ -12,3 +12,10 @@ type Experience struct {
 func NewExperience(db *gorm.DB) *Experience {
 	return &Experience{Base[model.Experience]{db}}
 }
+
+// GetAll returns all experiences
+func (e *Experience) GetAll() ([]model.Experience, error) {
+	var experiences []model.Experience
+	err := e.DB.Order("start_date desc").Find(&experiences).Error
+	return experiences, err
+}

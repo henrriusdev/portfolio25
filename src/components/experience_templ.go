@@ -105,7 +105,7 @@ func ExperienceItem(experience model.Experience, internal bool) templ.Component 
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p><p class=\"mb-4 text-lg font-normal text-gray-500 dark:text-gray-400 w-[60ch]\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p><p class=\"mb-4 text-lg font-normal text-gray-500 dark:text-gray-400 w-[70ch]\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
