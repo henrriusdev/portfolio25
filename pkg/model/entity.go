@@ -61,9 +61,9 @@ func (p Project) GetValue() string {
 }
 
 type Contact struct {
-	Platform string `gorm:"not null"`
-	Icon     string `gorm:"not null"`
-	URL      string `gorm:"not null"`
+	Platform string `gorm:"not null" json:"platform,omitempty"`
+	Icon     string `gorm:"not null" json:"icon,omitempty"`
+	URL      string `gorm:"not null" json:"url,omitempty"`
 	gorm.Model
 }
 

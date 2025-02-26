@@ -67,6 +67,11 @@ func (d *Dashboard) RegisterRoutes(f *fuego.Server) {
 		option.Summary("Save work experience"),
 		option.Tags("dashboard", "experience"),
 	)
+	fuego.Post(f, "/save-link", d.SaveLink,
+		option.Description("Save link"),
+		option.Summary("Save link"),
+		option.Tags("dashboard", "links"),
+	)
 	fuego.Delete(f, "/delete-project/{id}", d.DeleteProject,
 		option.Description("Delete project"),
 		option.Summary("Delete project"),
@@ -187,13 +192,40 @@ func (d *Dashboard) SaveWork(c fuego.ContextWithBody[model.SaveWorkRequest]) (mo
 	return model.Experience{}, nil
 }
 
+func (d *Dashboard) SaveLink(c fuego.ContextWithBody[model.SaveLinkRequest]) (model.Contact, error) {
+	req, err := c.Body()
+	if err != nil {
+		return model.Contact{}, err
+	}
+
+	link := model.Contact{
+		Platform: req.Platform,
+		Icon:     common.GetSimpleIconURL(req.Platform),
+		URL:      req.URL,
+	}
+
+	if req.ID != 0 {
+		link.ID = req.ID
+	}
+
+	// Assuming your service layer has a method to upsert a Contact link.
+	if err := d.services.Contact.Upsert(&link); err != nil {
+		log.Printf("Error saving contact link: %v", err)
+		return model.Contact{}, err
+	}
+
+	c.Redirect(http.StatusSeeOther, "/dashboard/links")
+	return model.Contact{}, nil
+}
+
 func (d *Dashboard) Experience(c fuego.ContextNoBody) (fuego.Templ, error) {
 	experiences, _ := d.services.Experience.GetAll()
 	return pages.Experience(experiences...), nil
 }
 
 func (d *Dashboard) Links(c fuego.ContextNoBody) (fuego.Templ, error) {
-	return pages.Links(), nil
+	links, _ := d.services.Contact.GetAll()
+	return pages.Links(links...), nil
 }
 
 func (d *Dashboard) Technologies(c fuego.ContextNoBody) (fuego.Templ, error) {

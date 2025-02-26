@@ -1,12 +1,64 @@
 package pages
 
-import "github.com/henrriusdev/portfolio/src/layout"
+import (
+	"strconv"
 
-templ Links(){
-    @layout.BaseInternal("Links") {
-        <div class="container">
-            <h1>Links</h1>
-            <p>Hello! I'm link</p>
-        </div>
-    }
+	"github.com/henrriusdev/portfolio/pkg/model"
+	"github.com/henrriusdev/portfolio/src/components"
+	"github.com/henrriusdev/portfolio/src/layout"
+)
+
+templ Links(links ...model.Contact) {
+	@layout.BaseInternal("Experience") {
+		<section class="container mx-auto px-4 py-8">
+			<h2 class="text-5xl font-bold text-center mb-8">Contact links</h2>
+			<div class="flex justify-end mb-8">
+				@components.ModalTrigger("contact-create-modal") {
+					@components.Button(components.ButtonProps{
+						Text:    "Create Link",
+						Variant: components.ButtonVariantDefault,
+						Size:    components.ButtonSizeMd,
+					})
+				}
+			</div>
+			if len(links) == 0 {
+				<p class="text-gray-600 dark:text-gray-400">
+					No links to show
+				</p>
+			} else {
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+					for _, link := range links {
+						@components.Card(components.CardProps{Class: "p-4"}) {
+							<div class="flex flex-col items-center">
+								<img src={ link.Icon } alt={ link.Platform } class="w-12 h-12 mb-2"/>
+								<h3 class="text-lg font-semibold">
+									<a href={ templ.SafeURL(link.URL) } class="text-blue-500 underline" target="_blank">{ link.Platform }</a>
+								</h3>
+							</div>
+							<div class="flex justify-between mt-4">
+								@components.ModalTrigger("contact-edit-modal-" + strconv.Itoa(int(link.ID))) {
+									@components.Button(components.ButtonProps{
+										Text:    "Edit",
+										Variant: components.ButtonVariantDefault,
+										Size:    components.ButtonSizeSm,
+									})
+								}
+								<form action="/dashboard/delete-link" method="POST">
+									<input type="hidden" name="ID" value={ strconv.Itoa(int(link.ID)) }/>
+									@components.Button(components.ButtonProps{
+										Text:    "Delete",
+										Variant: components.ButtonVariantDestructive,
+										Size:    components.ButtonSizeSm,
+										Type:    "submit",
+									})
+								</form>
+							</div>
+						}
+						@components.ContactModal("contact-edit-modal-"+strconv.Itoa(int(link.ID)), link)
+					}
+				</div>
+			}
+		</section>
+		@components.ContactModal("contact-create-modal", model.Contact{})
+	}
 }

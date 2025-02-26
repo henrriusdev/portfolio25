@@ -39,6 +39,12 @@ type SaveWorkRequest struct {
 	IsCurrent   bool   `schema:"is_current" json:"is_current,omitempty"`
 }
 
+type SaveLinkRequest struct {
+	ID       uint   `schema:"id,omitempty" json:"id,omitempty"`
+	Platform string `schema:"platform" json:"platform"`
+	URL      string `schema:"url" json:"url"`
+}
+
 func (r *SaveWorkRequest) InTransform(ctx context.Context) error {
 	// check if startdate has extra text T00:00:00Z and remove it
 	if len(r.StartDate) > 10 {
