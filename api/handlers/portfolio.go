@@ -15,11 +15,12 @@ type Portfolio struct {
 	service *service.User
 	project *service.Project
 	exp     *service.Experience
+	contact *service.Contact
 	tech    *service.Technology
 }
 
-func NewPortfolio(user *service.User, project *service.Project, exp *service.Experience, tech *service.Technology) *Portfolio {
-	return &Portfolio{user, project, exp, tech}
+func NewPortfolio(user *service.User, project *service.Project, exp *service.Experience, tech *service.Technology, contact *service.Contact) *Portfolio {
+	return &Portfolio{user, project, exp, contact, tech}
 }
 
 func (p *Portfolio) RegisterRoutes(f *fuego.Server) {
@@ -32,7 +33,8 @@ func (p *Portfolio) Index(c fuego.ContextNoBody) (fuego.Templ, error) {
 	projects, _ := p.project.GetAll()
 	experience, _ := p.exp.GetAll()
 	technologies, _ := p.tech.GetAll()
-	return pages.HomePage(projects, experience, technologies), nil
+	links, _ := p.contact.GetAll()
+	return pages.HomePage(projects, experience, technologies, links), nil
 }
 
 func (p *Portfolio) Login(c fuego.ContextNoBody) (fuego.Templ, error) {

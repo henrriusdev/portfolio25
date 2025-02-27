@@ -16,7 +16,7 @@ import "time"
 var seraStart = time.Date(2024, 8, 5, 0, 0, 0, 0, time.UTC)
 var linkticStart = time.Date(2022, 12, 5, 0, 0, 0, 0, time.UTC)
 
-func HomePage(projects []model.Project, experiences []model.Experience, technologies []model.Technology) templ.Component {
+func HomePage(projects []model.Project, experiences []model.Experience, technologies []model.Technology, links []model.Contact) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -120,7 +120,7 @@ func HomePage(projects []model.Project, experiences []model.Experience, technolo
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.Footer().Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = components.Footer(links...).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

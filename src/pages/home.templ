@@ -8,7 +8,7 @@ import "time"
 var seraStart = time.Date(2024, 8, 5, 0, 0, 0, 0, time.UTC)
 var linkticStart = time.Date(2022, 12, 5, 0, 0, 0, 0, time.UTC)
 
-templ HomePage(projects []model.Project, experiences []model.Experience, technologies []model.Technology) {
+templ HomePage(projects []model.Project, experiences []model.Experience, technologies []model.Technology, links []model.Contact) {
 	@layout.Base("Portfolio") {
 		<main>
 			<!-- Hero Section -->
@@ -106,6 +106,6 @@ templ HomePage(projects []model.Project, experiences []model.Experience, technol
 				</div>
 			</section>
 		</main>
-		@components.Footer()
+		@components.Footer(links...)
 	}
 }
