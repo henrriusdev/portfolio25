@@ -20,11 +20,11 @@ templ Projects(techs []selectbox.Option, projects ...model.Project) {
 					Projects
 				</h1>
 				<div class="flex gap-4">
-					@modal.Trigger(modal.TriggerProps{ID: "project-form-modal"}) {
+					@modal.Trigger(modal.TriggerProps{ModalID: "project-form-modal"}) {
 						@button.Button(button.Props{
 							Variant: button.VariantDefault,
 						}) {
-							"Create Project"
+							Create Project
 						}
 					}
 				</div>
@@ -51,7 +51,7 @@ templ Projects(techs []selectbox.Option, projects ...model.Project) {
 						@form.Label(form.LabelProps{
 							For: "projectTitle",
 						}){
-							"Title"
+							Title
 						}
 						@input.Input(input.Props{
 							ID:          "projectTitle",
@@ -63,7 +63,7 @@ templ Projects(techs []selectbox.Option, projects ...model.Project) {
 						@form.Label(form.LabelProps{
 							For: "projectDescription",
 						}) {
-							"Description"
+							Description
 						}
 						@textarea.Textarea(textarea.Props{
 							ID:          "projectDescription",
@@ -75,35 +75,27 @@ templ Projects(techs []selectbox.Option, projects ...model.Project) {
 						@form.Label(form.LabelProps{
 							For: "projectTechs",
 						}) {
-							"Technologies"
+							Technologies
 						}
-						@selectbox.SelectBox() {
-							@selectbox.Trigger() {
-								@selectbox.Value(selectbox.ValueProps{
-									Placeholder: "Select technologies",
-								})
+						<div class="flex flex-wrap gap-2">
+							for _, tech := range techs {
+								<label class="flex items-center gap-1 text-sm">
+									<input
+										type="checkbox"
+										name="techs"
+										value={ tech.Value }
+										class="accent-primary"
+									/>
+									{ tech.Label }
+								</label>
 							}
-							@selectbox.Content() {
-								@selectbox.Group() {
-									@selectbox.Label() {
-										Technologies
-									}
-									for _, tech := range techs {
-										@selectbox.Item(selectbox.ItemProps{
-											Value: tech.Value,
-										}) {
-											{ tech.Label }
-										}
-									}
-								}
-							}
-						}
+						</div>
 					}
 					@form.Item(form.ItemProps{Class: "mb-4"}) {
 						@form.Label(form.LabelProps{
 							For: "projectImage",
 						}) {
-							"Image URL"
+							Image URL
 						}
 						@input.Input(input.Props{
 							ID:          "projectImage",
@@ -115,7 +107,7 @@ templ Projects(techs []selectbox.Option, projects ...model.Project) {
 						@form.Label(form.LabelProps{
 							For: "projectLive",
 						}) {
-							"Live URL"
+							Live URL
 						}
 						@input.Input(input.Props{
 							ID:          "projectLive",
@@ -127,7 +119,7 @@ templ Projects(techs []selectbox.Option, projects ...model.Project) {
 						@form.Label(form.LabelProps{
 							For: "projectRepo",
 						}) {
-							"Repo URL"
+							Repo URL
 						}
 						@input.Input(input.Props{
 							ID:          "projectRepo",
@@ -143,7 +135,7 @@ templ Projects(techs []selectbox.Option, projects ...model.Project) {
 						@button.Button(button.Props{
 							Variant: button.VariantDefault,
 						}) {
-							"Cancel"
+							Cancel
 						}
 					}
 					@button.Button(button.Props{
@@ -153,7 +145,7 @@ templ Projects(techs []selectbox.Option, projects ...model.Project) {
 								"form": "projectForm",
 						},
 					}) {
-						"Save"
+						Save
 					}
 				</div>
 			}

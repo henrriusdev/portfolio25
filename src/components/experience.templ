@@ -34,7 +34,7 @@ templ ExperienceItem(experience model.Experience, internal bool) {
 		</p>
 		<p class="mb-4 text-lg font-normal text-gray-500 dark:text-gray-400 w-[70ch]">{ experience.Description }</p>
 		if internal {
-			@modal.Trigger(modal.TriggerProps{ID: "experience-form-modal-" + strconv.Itoa(int(experience.ID))}) {
+			@modal.Trigger(modal.TriggerProps{ModalID: "experience-form-modal-" + strconv.Itoa(int(experience.ID))}) {
 				@button.Button(button.Props{Variant: button.VariantDefault}) {
 					"Edit"
 				}

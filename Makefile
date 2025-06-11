@@ -42,7 +42,7 @@ templ:
 
 .PHONY: start
 start: build-css templ
-	go run cmd/app/main.go
+	air
 
 .PHONY: tailwindcss
 tailwindcss:

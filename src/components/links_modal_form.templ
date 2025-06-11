@@ -55,9 +55,9 @@ templ ContactModal(modalID string, contact model.Contact) {
         @modal.Header() {
             <h3 class="text-xl font-bold">
                 if isEditing {
-                    "Edit Link"
+                    Edit Link
                 } else {
-                    "Create Link"
+                    Create Link
                 }
             </h3>
         }
@@ -72,7 +72,7 @@ templ ContactModal(modalID string, contact model.Contact) {
                 <input type="hidden" name="ID" x-model="contact.ID"/>
                 @form.Item(form.ItemProps{Class: "mb-4"}) {
                     @form.Label(form.LabelProps{For: "contactPlatform"}) {
-                        "Platform"
+                        Platform
                     }
                     @input.Input(input.Props{
                         ID:          "contactPlatform",
@@ -83,7 +83,7 @@ templ ContactModal(modalID string, contact model.Contact) {
                 }
                 @form.Item(form.ItemProps{Class: "mb-4"}) {
                     @form.Label(form.LabelProps{For: "contactUrl"}) {
-                        "Url"
+                        Url
                     }
                     @input.Input(input.Props{
                         ID:          "contactUrl",
@@ -98,7 +98,7 @@ templ ContactModal(modalID string, contact model.Contact) {
             <div class="flex gap-2">
                 @modal.Close(modal.CloseProps{ID: modalID}) {
                     @button.Button(button.Props{Variant: button.VariantDefault}) {
-                        "Cancel"
+                        Cancel
                     }
                 }
                 @button.Button(button.Props{
@@ -107,9 +107,9 @@ templ ContactModal(modalID string, contact model.Contact) {
                     Attributes: templ.Attributes{"form": formID},
                 }) {
                     if isEditing {
-                        "Edit"
+                        Edit
                     } else {
-                        "Create"
+                        Create
                     }
                 }
             </div>

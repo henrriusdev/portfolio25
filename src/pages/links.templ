@@ -16,7 +16,7 @@ templ Links(links ...model.Contact) {
 		<section class="container mx-auto px-4 py-8">
 			<h2 class="text-5xl font-bold text-center mb-8">Contact links</h2>
 			<div class="flex justify-end mb-8">
-				@modal.Trigger(modal.TriggerProps{ID: "contact-create-modal"}) {
+				@modal.Trigger(modal.TriggerProps{ModalID: "contact-create-modal"}) {
 					@button.Button(button.Props{Variant: button.VariantDefault}) {
 						"Create Link"
 					}
@@ -37,7 +37,7 @@ templ Links(links ...model.Contact) {
 								</h3>
 							</div>
 							<div class="flex justify-between mt-4">
-								@modal.Trigger(modal.TriggerProps{ID: "contact-edit-modal-" + strconv.Itoa(int(link.ID))}) {
+								@modal.Trigger(modal.TriggerProps{ModalID: "contact-edit-modal-" + strconv.Itoa(int(link.ID))}) {
 									@button.Button(button.Props{
 										Variant: button.VariantDefault,
 									}) {

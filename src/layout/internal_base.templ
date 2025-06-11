@@ -1,6 +1,14 @@
 package layout
 
 import "github.com/henrriusdev/portfolio/src/components"
+import "github.com/henrriusdev/portfolio/src/components/modal"
+import "github.com/henrriusdev/portfolio/src/components/popover"
+import "github.com/henrriusdev/portfolio/src/components/selectbox"
+import "github.com/henrriusdev/portfolio/src/components/datepicker"
+import "github.com/henrriusdev/portfolio/src/components/calendar"
+import "github.com/henrriusdev/portfolio/src/components/input"
+import "github.com/henrriusdev/portfolio/src/components/textarea"
+import "github.com/henrriusdev/portfolio/src/components/label"
 
 templ BaseInternal(title string) {
 	<!DOCTYPE html>
@@ -20,6 +28,14 @@ templ BaseInternal(title string) {
 			@components.ProjectCardScript()
 			@components.ExperienceFormScript()
 			@components.ContactFormScript()
+			@modal.Script()
+			@popover.Script()
+			@selectbox.Script()
+			@datepicker.Script()
+			@calendar.Script()
+			@input.Script()
+			@textarea.Script()
+			@label.Script()
 		</head>
 		<body
 			x-data="themeHandler"

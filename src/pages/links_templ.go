@@ -92,7 +92,7 @@ func Links(links ...model.Contact) templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = modal.Trigger(modal.TriggerProps{ID: "contact-create-modal"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = modal.Trigger(modal.TriggerProps{ModalID: "contact-create-modal"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -217,7 +217,7 @@ func Links(links ...model.Contact) templ.Component {
 							}
 							return nil
 						})
-						templ_7745c5c3_Err = modal.Trigger(modal.TriggerProps{ID: "contact-edit-modal-" + strconv.Itoa(int(link.ID))}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
+						templ_7745c5c3_Err = modal.Trigger(modal.TriggerProps{ModalID: "contact-edit-modal-" + strconv.Itoa(int(link.ID))}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}

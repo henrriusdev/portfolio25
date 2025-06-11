@@ -161,7 +161,7 @@ func ExperienceItem(experience model.Experience, internal bool) templ.Component 
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = modal.Trigger(modal.TriggerProps{ID: "experience-form-modal-" + strconv.Itoa(int(experience.ID))}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = modal.Trigger(modal.TriggerProps{ModalID: "experience-form-modal-" + strconv.Itoa(int(experience.ID))}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

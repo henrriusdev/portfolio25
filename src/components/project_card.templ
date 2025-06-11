@@ -11,6 +11,7 @@ import (
 	"github.com/henrriusdev/portfolio/src/components/modal"
 	"github.com/henrriusdev/portfolio/src/components/selectbox"
 	"github.com/iota-uz/icons/phosphor"
+	"github.com/henrriusdev/portfolio/src/components/aspectratio"
 )
 
 var projectCardHandle = templ.NewOnceHandle()
@@ -46,18 +47,16 @@ templ ProjectCard(project model.Project, internal bool, techs ...selectbox.Optio
 				Src:         project.ImageURL,
 				Alt:         project.Title,
 				Position:    card.MediaPositionTop,
-				AspectRatio: "16/9",
+				AspectRatio: aspectratio.RatioVideo,
 				Width:       "full",
 				Class:       "mx-auto p-2",
 			})
 			@card.Content() {
-				@card.Header() {
-					@card.Title() {
-						<span class="text-3xl font-bold text-gray-900 dark:text-white">{ project.Title }</span>
-					}
-					@card.Description() {
-						{ project.Description }
-					}
+				@card.Title() {
+					<span class="text-3xl font-bold text-gray-900 dark:text-white">{ project.Title }</span>
+				}
+				@card.Description() {
+					{ project.Description }
 				}
 				<!-- ✅ Tech Badges -->
 				<div class="flex flex-wrap gap-2 mt-2 mb-4">
@@ -95,9 +94,9 @@ templ ProjectCard(project model.Project, internal bool, techs ...selectbox.Optio
 					<!-- ✅ Internal Admin Buttons -->
 					if internal {
 						<div class="flex w-full justify-end items-center gap-2 mt-2">
-							@modal.Trigger(modal.TriggerProps{ID: "edit-project-modal-" + toString(project.ID)}) {
+							@modal.Trigger(modal.TriggerProps{ModalID: "edit-project-modal-" + toString(project.ID)}) {
 								@button.Button(button.Props{Variant: button.VariantDefault}) {
-									"Edit"
+									Edit
 								}
 							}
 							@button.Button(button.Props{
@@ -106,7 +105,7 @@ templ ProjectCard(project model.Project, internal bool, techs ...selectbox.Optio
 									"x-on:click": "deleteProject('" + toString(project.ID) + "')",
 								},
 							}) {
-								"Remove"
+								Remove
 							}
 						</div>
 					}

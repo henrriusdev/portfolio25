@@ -32,7 +32,7 @@ func Footer(links ...model.Contact) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<footer class=\"w-full flex flex-col justify-center items-start bg-primary text-primary-foreground p-5 pt-8D\"><h2 class=\"text-3xl text-center w-full\">Contact me</h2><div class=\"flex justify-center gap-4 mt-4 items-center w-full flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<footer class=\"w-full flex flex-col justify-center items-start p-5 pt-8D\"><h2 class=\"text-3xl font-bold mb-8 text-center\">Technologies</h2><div class=\"flex justify-center gap-4 mt-4 items-center w-full flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

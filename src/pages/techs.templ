@@ -18,7 +18,7 @@ templ Techs(techs ...model.Technology) {
                     Technologies
                 </h1>
                 <div class="flex gap-4">
-                    @modal.Trigger(modal.TriggerProps{ID: "tech-form-modal"}) {
+                    @modal.Trigger(modal.TriggerProps{ModalID: "tech-form-modal"}) {
                         @button.Button(button.Props{Variant: button.VariantDefault}) {
                             "Create Technology"
                         }

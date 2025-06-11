@@ -85,9 +85,9 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 		@modal.Header() {
 			<h3 class="text-xl font-bold">
 				if isEditing {
-          "Edit Project"
+          Edit Project
         } else {
-          "Create Project"
+          Create Project
         }
 			</h3>
 		}
@@ -103,7 +103,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "projectTitle"}) {
-						"Title"
+						Title
 					}
 					@input.Input(input.Props{
 						ID:          "projectTitle",
@@ -114,7 +114,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "projectDescription"}) {
-						"Description"
+						Description
 					}
 					@textarea.Textarea(textarea.Props{
 						ID:          "projectDescription",
@@ -125,7 +125,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "projectTechs"}) {
-						"Technologies"
+						Technologies
 					}
 					@selectbox.Select(selectbox.SelectProps{
 						ID:          "projectTechs",
@@ -137,7 +137,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "projectImage"}) {
-						"Image URL"
+						Image URL
 					}
 					@input.Input(input.Props{
 						ID:          "projectImage",
@@ -148,7 +148,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "projectLive"}) {
-						"Live URL"
+						Live URL
 					}
 					@input.Input(input.Props{
 						ID:          "projectLive",
@@ -159,7 +159,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "projectRepo"}) {
-						"Repo URL"
+						Repo URL
 					}
 					@input.Input(input.Props{
 						ID:          "projectRepo",
@@ -174,7 +174,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 			<div class="flex gap-2">
 				@modal.Close(modal.CloseProps{ID: modalID}) {
 					@button.Button(button.Props{Variant: button.VariantDefault}) {
-						"Cancel"
+						Cancel
 					}
 				}
 				@button.Button(button.Props{
@@ -183,9 +183,9 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 					Attributes: templ.Attributes{"form": "projectFormEdit"},
 				}) {
 					if isEditing {
-						"Edit"
+						Edit
 					} else {
-						"Create"
+						Create
 					}
 				}
 			</div>

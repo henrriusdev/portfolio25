@@ -76,9 +76,9 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 		@modal.Header() {
 			<h3 class="text-xl font-bold">
 				if isEditing {
-					"Edit Experience"
+					Edit Experience
 				} else {
-					"Create Experience"
+					Create Experience
 				}
 			</h3>
 		}
@@ -93,7 +93,7 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 				<input type="hidden" name="id" x-model="experience.ID"/>
         @form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "experienceStartDate"}) {
-						"Start Date"
+						Start Date
 					}
 					@datepicker.DatePicker(datepicker.Props{
 						ID:         "experienceStartDate",
@@ -104,7 +104,7 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "experienceEndDate"}) {
-						"End Date"
+						End Date
 					}
 					@datepicker.DatePicker(datepicker.Props{
 						ID:         "experienceEndDate",
@@ -123,13 +123,13 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 							Attributes: templ.Attributes{"x-model": "experience.is_current", "@change": "toggleEndDate"},
 						})
 						@form.Label(form.LabelProps{For: "c1"}) {
-							"I currently work here"
+							I currently work here
 						}
 					}
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "experienceRole"}) {
-						"Role"
+						Role
 					}
 					@input.Input(input.Props{
 						ID:          "experienceRole",
@@ -140,7 +140,7 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "experienceCompany"}) {
-						"Company"
+						Company
 					}
 					@input.Input(input.Props{
 						ID:          "experienceCompany",
@@ -151,7 +151,7 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "experienceDescription"}) {
-						"Description"
+						Description
 					}
 					@textarea.Textarea(textarea.Props{
 						ID:          "experienceDescription",
@@ -166,7 +166,7 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 			<div class="flex gap-2">
 				@modal.Close(modal.CloseProps{ID: modalID}) {
 					@button.Button(button.Props{Variant: button.VariantDefault}) {
-						"Cancel"
+						Cancel
 					}
 				}
 				@button.Button(button.Props{
@@ -175,9 +175,9 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 					Attributes: templ.Attributes{"form": formID},
 				}) {
 					if isEditing {
-						"Edit"
+						Edit
 					} else {
-						"Create"
+						Create
 					}
 				}
 			</div>
