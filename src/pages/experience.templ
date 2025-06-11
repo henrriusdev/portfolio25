@@ -4,6 +4,8 @@ import (
 	"github.com/henrriusdev/portfolio/pkg/model"
 	"github.com/henrriusdev/portfolio/src/components"
 	"github.com/henrriusdev/portfolio/src/layout"
+	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/components/button"
 )
 
 templ Experience(experiences ...model.Experience) {
@@ -11,12 +13,12 @@ templ Experience(experiences ...model.Experience) {
 		<section class="container mx-auto px-4 py-8">
 			<h2 class="text-5xl font-bold text-center mb-8">Work Experience</h2>
 			<div class="flex justify-end mb-8">
-				@components.ModalTrigger("experience-create-modal") {
-					@components.Button(components.ButtonProps{
-						Text:    "Create Experience",
-						Variant: components.ButtonVariantDefault,
-						Size:    components.ButtonSizeMd,
-					})
+				@modal.Trigger(modal.TriggerProps{ID: "experience-create-modal"}) {
+					@button.Button(button.Props{
+						Variant: button.VariantDefault,
+					}) {
+						"Create Experience"
+					}
 				}
 			</div>
 			if len(experiences) == 0 {

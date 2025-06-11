@@ -1,0 +1,47 @@
+package selectbox
+
+type SelectProps struct {
+	ID          string
+	Name        string
+	Placeholder string
+	Options     []Option
+	Multiple    bool
+	Required    bool
+	Disabled    bool
+	HasError    bool
+	Class       string
+	Attributes  templ.Attributes
+}
+
+// Select creates a complete select component with all necessary parts
+templ Select(props SelectProps) {
+	@SelectBox(Props{
+		ID: props.ID,
+		Class: props.Class,
+		Attributes: props.Attributes,
+	}) {
+		@Trigger(TriggerProps{
+			Name: props.Name,
+			Required: props.Required,
+			Disabled: props.Disabled,
+			HasError: props.HasError,
+		}) {
+			@Value(ValueProps{
+				Placeholder: props.Placeholder,
+			})
+		}
+		@Content() {
+			@Group() {
+				for _, option := range props.Options {
+					@Item(ItemProps{
+						Value: option.Value,
+						Selected: option.Selected,
+						Disabled: props.Disabled,
+					}) {
+						{ option.Label }
+					}
+				}
+			}
+		}
+	}
+}

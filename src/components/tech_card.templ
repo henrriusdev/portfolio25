@@ -3,6 +3,8 @@ package components
 import (
 	"fmt"
 	"github.com/henrriusdev/portfolio/pkg/model"
+    "github.com/henrriusdev/portfolio/src/components/card"
+    "github.com/henrriusdev/portfolio/src/components/button"
 )
 
 func getStringId(id uint) string {
@@ -23,32 +25,32 @@ templ TechCardScript() {
 }
 
 templ TechCard(tech model.Technology) {
-    @Card(CardProps{
+    @card.Card(card.Props{
         Class:      "bg-white dark:bg-gray-800 rounded-md overflow-hidden w-full max-w-[150px]",
         Attributes: templ.Attributes{"x-data": "{}"},
     }) {
-        @CardImage(CardImageProps{
+        @card.Media(card.MediaProps{
             Src:         tech.Icon,
             Alt:         tech.Name,
-            Position:    CardImageTop,
+            Position:    card.MediaPositionTop,
             Class:       "w-full h-full p-1 pt-3 mx-auto",
         })
-        @CardHeader() {
-            @CardTitle() {
+        @card.Header() {
+            @card.Title() {
                 { tech.Name }
             }
         }
-        @CardFooter() {
-            @Button(ButtonProps{
-                Text:    "Delete",
-                Variant: ButtonVariantDestructive,
-                Size:    ButtonSizeSm,
+        @card.Footer() {
+            @button.Button(button.Props{
+                Variant: button.VariantDestructive,
                 Class:   "ml-auto mt-4",
                 Attributes: templ.Attributes{
                     // Call the deleteTech method from the Alpine store
                     "x-on:click": "$store.techActions.deleteTech('" + getStringId(tech.ID) + "')",
                 },
-            })
+            }){
+                "Delete"
+            }
         }
     }
 }

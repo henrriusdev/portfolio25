@@ -1,7 +1,9 @@
 package pages
 
 import (
-	"github.com/axzilla/templui/pkg/components"
+	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/components/label"
 	"github.com/henrriusdev/portfolio/src/layout"
 )
 
@@ -17,44 +19,46 @@ templ Login() {
 				<form class="mt-8 space-y-6" action="/log-in" method="POST">
 					<div class="rounded-md shadow-sm -space-y-px">
 						<div class="w-full max-w-md mb-4">
-							@components.FormItem(components.FormItemProps{}) {
-								@components.FormLabel(components.FormLabelProps{
-									Text: "Username",
-									For:  "username-form",
-								})
-								@components.Input(components.InputProps{
+							<div class="mb-4">
+								@label.Label(label.Props{For: "username-form"}) {
+									Username
+								}
+								@input.Input(input.Props{
 									ID:          "username-form",
 									Type:        "text",
 									Name:        "username",
 									Placeholder: "example",
-									HasError:    false,
 								})
-								@components.FormDescription(components.FormDescriptionProps{}) {
+								<p class="text-sm text-gray-500 dark:text-gray-400">
 									Enter your username for log in to the system.
-								}
-							}
+								</p>
+							</div>
 						</div>
 						<div class="w-full max-w-md">
-							@components.FormItem(components.FormItemProps{}) {
-								@components.FormLabel(components.FormLabelProps{
-									Text: "Password",
-									For:  "password-form",
-								})
-								@components.Input(components.InputProps{
+							<div class="mb-4">
+								@label.Label(label.Props{For: "password-form"}) {
+									Password
+								}
+								@input.Input(input.Props{
 									ID:          "password-form",
 									Type:        "password",
 									Name:        "password",
 									Placeholder: "example",
-									HasError:    false,
 								})
-								@components.FormDescription(components.FormDescriptionProps{}) {
-									Enter your username for log in to the system.
-								}
-							}
+								<p class="text-sm text-gray-500 dark:text-gray-400">
+									Enter your password for log in to the system.
+								</p>
+							</div>
 						</div>
 					</div>
 					<div>
-						@components.Button(components.ButtonProps{Text: "Log in", Variant: components.ButtonVariantDefault, FullWidth: true, Type: "submit"})
+						@button.Button(button.Props{
+							Variant:   button.VariantDefault,
+							FullWidth: true,
+							Type:      "submit",
+						}) {
+							"Log in"
+						}
 					</div>
 				</form>
 			</div>

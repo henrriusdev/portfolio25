@@ -4,6 +4,14 @@ import (
 	"github.com/henrriusdev/portfolio/pkg/model"
 	"time"
   "strconv"
+	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/components/form"
+	"github.com/henrriusdev/portfolio/src/components/datepicker"
+	"github.com/henrriusdev/portfolio/src/components/checkbox"
+	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/components/textarea"
+	"github.com/henrriusdev/portfolio/src/utils"
 )
 
 func getEndDateValue(endDate *time.Time) time.Time {
@@ -61,11 +69,11 @@ templ ExperienceModal(modalID string, experience model.Experience) {
       
 
 		// Prepare JSON Data
-		experienceDataJSON := parseTemplJsonString(experience)
+		experienceDataJSON := utils.ParseTemplJsonString(experience)
 	}}
 	<!-- Modal Component -->
-	@Modal(ModalProps{ID: modalID, Class: "max-w-lg mx-auto"}) {
-		@ModalHeader() {
+	@modal.Modal(modal.Props{ID: modalID, Class: "max-w-lg mx-auto"}) {
+		@modal.Header() {
 			<h3 class="text-xl font-bold">
 				if isEditing {
 					"Edit Experience"
@@ -74,7 +82,7 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 				}
 			</h3>
 		}
-		@ModalBody() {
+		@modal.Body() {
 			<form
 				id={formID}
 				x-data={ `experienceFormData(` + experienceDataJSON + `)` }
@@ -83,62 +91,69 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 				class="space-y-4"
 			>
 				<input type="hidden" name="id" x-model="experience.ID"/>
-        @FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormLabel(FormLabelProps{For: "experienceStartDate", Text: "Start Date"})
-					@Datepicker(DatepickerProps{
+        @form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.Label(form.LabelProps{For: "experienceStartDate"}) {
+						"Start Date"
+					}
+					@datepicker.DatePicker(datepicker.Props{
 						ID:         "experienceStartDate",
 						Name:       "start_date",
 						Value:      experience.StartDate,
-						Config:     DatePickerISO,
 						Attributes: templ.Attributes{"x-model": "experience.start_date"},
 					})
 				}
-				@FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormLabel(FormLabelProps{For: "experienceEndDate", Text: "End Date"})
-					@Datepicker(DatepickerProps{
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.Label(form.LabelProps{For: "experienceEndDate"}) {
+						"End Date"
+					}
+					@datepicker.DatePicker(datepicker.Props{
 						ID:         "experienceEndDate",
 						Name:       "end_date",
 						Value:      getEndDateValue(experience.EndDate),
-						Config:     DatePickerISO,
 						Attributes: templ.Attributes{"x-model": "experience.end_date", ":disabled": "experience.is_current"},
 					})
 				}
-				@FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormItemFlex(FormItemProps{}) {
-						@Checkbox(CheckboxProps{
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.ItemFlex(form.ItemProps{}) {
+						@checkbox.Checkbox(checkbox.Props{
 							ID:      "c1",
 							Name:    "is_current",
 							Value:   "false",
 							Checked: false,
 							Attributes: templ.Attributes{"x-model": "experience.is_current", "@change": "toggleEndDate"},
 						})
-						@FormLabel(FormLabelProps{
-							For:  "c1",
-							Text: "I currently work here",
-						})
+						@form.Label(form.LabelProps{For: "c1"}) {
+							"I currently work here"
+						}
 					}
 				}
-				@FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormLabel(FormLabelProps{For: "experienceRole", Text: "Role"})
-					@Input(InputProps{
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.Label(form.LabelProps{For: "experienceRole"}) {
+						"Role"
+					}
+					@input.Input(input.Props{
 						ID:          "experienceRole",
 						Name:        "role",
 						Placeholder: "Enter role",
 						Attributes:  templ.Attributes{"x-model": "experience.role"},
 					})
 				}
-				@FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormLabel(FormLabelProps{For: "experienceCompany", Text: "Company"})
-					@Input(InputProps{
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.Label(form.LabelProps{For: "experienceCompany"}) {
+						"Company"
+					}
+					@input.Input(input.Props{
 						ID:          "experienceCompany",
 						Name:        "company",
 						Placeholder: "Enter company name",
 						Attributes:  templ.Attributes{"x-model": "experience.company"},
 					})
 				}
-				@FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormLabel(FormLabelProps{For: "experienceDescription", Text: "Description"})
-					@Textarea(TextareaProps{
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.Label(form.LabelProps{For: "experienceDescription"}) {
+						"Description"
+					}
+					@textarea.Textarea(textarea.Props{
 						ID:          "experienceDescription",
 						Name:        "description",
 						Placeholder: "Enter description",
@@ -147,17 +162,24 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 				}
 			</form>
 		}
-		@ModalFooter() {
+		@modal.Footer() {
 			<div class="flex gap-2">
-				@ModalClose(modalID) {
-					@Button(ButtonProps{Text: "Cancel", Variant: ButtonVariantDefault})
+				@modal.Close(modal.CloseProps{ID: modalID}) {
+					@button.Button(button.Props{Variant: button.VariantDefault}) {
+						"Cancel"
+					}
 				}
-				@Button(ButtonProps{
-					Text:       isEdit(isEditing),
-					Variant:    ButtonVariantDefault,
+				@button.Button(button.Props{
+					Variant:    button.VariantDefault,
 					Type:       "submit",
 					Attributes: templ.Attributes{"form": formID},
-				})
+				}) {
+					if isEditing {
+						"Edit"
+					} else {
+						"Create"
+					}
+				}
 			</div>
 		}
 	}

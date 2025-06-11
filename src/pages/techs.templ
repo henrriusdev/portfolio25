@@ -1,8 +1,14 @@
 package pages
 
-import "github.com/henrriusdev/portfolio/pkg/model"
-import "github.com/henrriusdev/portfolio/src/components"
-import "github.com/henrriusdev/portfolio/src/layout"
+import (
+	"github.com/henrriusdev/portfolio/pkg/model"
+	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/form"
+	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/layout"
+	"github.com/henrriusdev/portfolio/src/components"
+)
 
 templ Techs(techs ...model.Technology) {
     @layout.BaseInternal("Projects - HenrriusDev") {
@@ -12,12 +18,10 @@ templ Techs(techs ...model.Technology) {
                     Technologies
                 </h1>
                 <div class="flex gap-4">
-                    @components.ModalTrigger("tech-form-modal") {
-                        @components.Button(components.ButtonProps{
-                            Text:    "Create Technology",
-                            Variant: components.ButtonVariantDefault,
-                            Size:    components.ButtonSizeMd,
-                        })
+                    @modal.Trigger(modal.TriggerProps{ID: "tech-form-modal"}) {
+                        @button.Button(button.Props{Variant: button.VariantDefault}) {
+                            "Create Technology"
+                        }
                     }
                 </div>
             </div>
@@ -34,39 +38,34 @@ templ Techs(techs ...model.Technology) {
             </div>
         </div>
         <!-- Modal for Create/Update Technology -->
-        @components.Modal(components.ModalProps{ID: "tech-form-modal", Class: "max-w-lg mx-auto"}) {
-            @components.ModalHeader() {
+        @modal.Modal(modal.Props{ID: "tech-form-modal", Class: "max-w-lg mx-auto"}) {
+            @modal.Header() {
                 <h3 class="text-xl font-bold">Technology Form</h3>
             }
-            @components.ModalBody() {
+            @modal.Body() {
                 <form id="techForm" action="/dashboard/save-tech" method="POST">
-                    @components.FormItem(components.FormItemProps{Class: "mb-4"}) {
-                        @components.FormLabel(components.FormLabelProps{
-                            For:  "name",
-                            Text: "Tech name",
-                        })
-                        @components.Input(components.InputProps{
-                            ID:          "name",
-                            Name:        "name",
-                            Placeholder: "Go",
-                        })
+                    @form.Item(form.ItemProps{Class: "mb-4"}) {
+                        @form.Label(form.LabelProps{For: "name"}) {
+                            "Tech name"
+                        }
+                        @input.Input(input.Props{ID: "name", Name: "name", Placeholder: "Go"})
                     }
                 </form>
             }
-            @components.ModalFooter() {
+            @modal.Footer() {
                 <div class="flex gap-2">
-                    @components.ModalClose("tech-form-modal") {
-                        @components.Button(components.ButtonProps{
-                            Text:    "Cancel",
-                            Variant: components.ButtonVariantDefault,
-                        })
+                    @modal.Close(modal.CloseProps{ID: "tech-form-modal"}) {
+                        @button.Button(button.Props{Variant: button.VariantDefault}) {
+                            "Cancel"
+                        }
                     }
-                    @components.Button(components.ButtonProps{
-                        Text:       "Save",
-                        Variant:    components.ButtonVariantDefault,
-                        Type:       "submit",
-                        Attributes: templ.Attributes{ "form": "techForm" },
-                    })
+                    @button.Button(button.Props{
+                        Variant: button.VariantDefault,
+                        Type:    "submit",
+                        Attributes: templ.Attributes{"form": "techForm"},
+                    }) {
+                        "Save"
+                    }
                 </div>
             }
         }

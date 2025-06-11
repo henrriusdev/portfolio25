@@ -3,6 +3,11 @@ package components
 import (
     "github.com/henrriusdev/portfolio/pkg/model"
     "strconv"
+	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/components/form"
+	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/utils"
 )
 
 var contactFormHandle = templ.NewOnceHandle()
@@ -43,11 +48,11 @@ templ ContactModal(modalID string, contact model.Contact) {
             formID = "contactFormEdit-" + strconv.Itoa(int(contact.ID))
         }
         // Prepare JSON Data
-        contactDataJSON := parseTemplJsonString(contact)
+        contactDataJSON := utils.ParseTemplJsonString(contact)
     }}
     <!-- Modal Component -->
-    @Modal(ModalProps{ID: modalID, Class: "max-w-lg mx-auto"}) {
-        @ModalHeader() {
+    @modal.Modal(modal.Props{ID: modalID, Class: "max-w-lg mx-auto"}) {
+        @modal.Header() {
             <h3 class="text-xl font-bold">
                 if isEditing {
                     "Edit Link"
@@ -56,7 +61,7 @@ templ ContactModal(modalID string, contact model.Contact) {
                 }
             </h3>
         }
-        @ModalBody() {
+        @modal.Body() {
             <form
                 id={formID}
                 x-data={ `contactFormData(` + contactDataJSON + `)` }
@@ -65,18 +70,22 @@ templ ContactModal(modalID string, contact model.Contact) {
                 class="space-y-4"
             >
                 <input type="hidden" name="ID" x-model="contact.ID"/>
-                @FormItem(FormItemProps{Class: "mb-4"}) {
-                    @FormLabel(FormLabelProps{For: "contactPlatform", Text: "Platform"})
-                    @Input(InputProps{
+                @form.Item(form.ItemProps{Class: "mb-4"}) {
+                    @form.Label(form.LabelProps{For: "contactPlatform"}) {
+                        "Platform"
+                    }
+                    @input.Input(input.Props{
                         ID:          "contactPlatform",
                         Name:        "platform",
                         Placeholder: "e.g. Instagram",
                         Attributes:  templ.Attributes{"x-model": "contact.platform"},
                     })
                 }
-                @FormItem(FormItemProps{Class: "mb-4"}) {
-                    @FormLabel(FormLabelProps{For: "contactUrl", Text: "Url"})
-                    @Input(InputProps{
+                @form.Item(form.ItemProps{Class: "mb-4"}) {
+                    @form.Label(form.LabelProps{For: "contactUrl"}) {
+                        "Url"
+                    }
+                    @input.Input(input.Props{
                         ID:          "contactUrl",
                         Name:        "url",
                         Placeholder: "https://instagram.com/yourhandle",
@@ -85,17 +94,24 @@ templ ContactModal(modalID string, contact model.Contact) {
                 }
             </form>
         }
-        @ModalFooter() {
+        @modal.Footer() {
             <div class="flex gap-2">
-                @ModalClose(modalID) {
-                    @Button(ButtonProps{Text: "Cancel", Variant: ButtonVariantDefault})
+                @modal.Close(modal.CloseProps{ID: modalID}) {
+                    @button.Button(button.Props{Variant: button.VariantDefault}) {
+                        "Cancel"
+                    }
                 }
-                @Button(ButtonProps{
-                    Text:       isEdit(isEditing),
-                    Variant:    ButtonVariantDefault,
+                @button.Button(button.Props{
+                    Variant:    button.VariantDefault,
                     Type:       "submit",
                     Attributes: templ.Attributes{"form": formID},
-                })
+                }) {
+                    if isEditing {
+                        "Edit"
+                    } else {
+                        "Create"
+                    }
+                }
             </div>
         }
     }

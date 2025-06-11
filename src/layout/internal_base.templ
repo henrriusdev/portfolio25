@@ -1,7 +1,6 @@
 package layout
 
 import "github.com/henrriusdev/portfolio/src/components"
-import "github.com/axzilla/templui/pkg/helpers"
 
 templ BaseInternal(title string) {
 	<!DOCTYPE html>
@@ -14,12 +13,9 @@ templ BaseInternal(title string) {
 			<link href="/static/app.css" rel="stylesheet"/>
 			<!-- Alpine.js -->
 			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-			<!-- Component scripts -->
-			@helpers.ComponentScripts()
 			<!-- Theme switcher script -->
 			@ThemeSwitcherScript()
 			@components.TechCardScript()
-			@components.MultiSelectScript()
 			@components.ProjectFormScript()
 			@components.ProjectCardScript()
 			@components.ExperienceFormScript()

@@ -4,9 +4,15 @@ import (
 	"github.com/henrriusdev/portfolio/pkg/model"
 	"github.com/henrriusdev/portfolio/src/components"
 	"github.com/henrriusdev/portfolio/src/layout"
+	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/components/textarea"
+	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/form"
+	"github.com/henrriusdev/portfolio/src/components/selectbox"
 )
 
-templ Projects(techs []components.SelectOption, projects ...model.Project) {
+templ Projects(techs []selectbox.Option, projects ...model.Project) {
 	@layout.BaseInternal("Projects - HenrriusDev") {
 		<div class="container mx-auto px-4 py-8">
 			<div class="flex justify-between items-center mb-8">
@@ -14,13 +20,12 @@ templ Projects(techs []components.SelectOption, projects ...model.Project) {
 					Projects
 				</h1>
 				<div class="flex gap-4">
-					@components.ModalTrigger("project-form-modal") {
-						@components.Button(components.ButtonProps{
-							Text:    "Create Project",
-							Variant: components.ButtonVariantDefault,
-							Size:    components.ButtonSizeMd,
-						})
-						<!-- Removed the Update/Delete modal trigger -->
+					@modal.Trigger(modal.TriggerProps{ID: "project-form-modal"}) {
+						@button.Button(button.Props{
+							Variant: button.VariantDefault,
+						}) {
+							"Create Project"
+						}
 					}
 				</div>
 			</div>
@@ -36,76 +41,95 @@ templ Projects(techs []components.SelectOption, projects ...model.Project) {
 				}
 			</div>
 		</div>
-		<!-- Modal for Create/Update Project -->
-		@components.Modal(components.ModalProps{ID: "project-form-modal", Class: "max-w-lg mx-auto"}) {
-			@components.ModalHeader() {
+		@modal.Modal(modal.Props{ID: "project-form-modal", Class: "max-w-lg mx-auto"}) {
+			@modal.Header() {
 				<h3 class="text-xl font-bold">Project Form</h3>
 			}
-			@components.ModalBody() {
+			@modal.Body() {
 				<form id="projectForm" action="/dashboard/save-project" method="POST" class="space-y-4">
-					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
-						@components.FormLabel(components.FormLabelProps{
-							For:  "projectTitle",
-							Text: "Title",
-						})
-						@components.Input(components.InputProps{
+					@form.Item(form.ItemProps{Class: "mb-4"}) {
+						@form.Label(form.LabelProps{
+							For: "projectTitle",
+						}){
+							"Title"
+						}
+						@input.Input(input.Props{
 							ID:          "projectTitle",
 							Name:        "title",
 							Placeholder: "Enter project title",
 						})
 					}
-					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
-						@components.FormLabel(components.FormLabelProps{
-							For:  "projectDescription",
-							Text: "Description",
-						})
-						@components.Textarea(components.TextareaProps{
+					@form.Item(form.ItemProps{Class: "mb-4"}) {
+						@form.Label(form.LabelProps{
+							For: "projectDescription",
+						}) {
+							"Description"
+						}
+						@textarea.Textarea(textarea.Props{
 							ID:          "projectDescription",
 							Name:        "description",
 							Placeholder: "Enter project description",
 						})
 					}
-					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
-						@components.FormLabel(components.FormLabelProps{
-							For:  "projectTechs",
-							Text: "Technologies",
-						})
-						@components.Select(components.SelectProps{
-							ID:         "projectTechs",
-							Name:       "techs",
-							Placeholder: "Select technologies",
-							Options:    techs,
-							Multiple:   true,
-						})
+					@form.Item(form.ItemProps{Class: "mb-4"}) {
+						@form.Label(form.LabelProps{
+							For: "projectTechs",
+						}) {
+							"Technologies"
+						}
+						@selectbox.SelectBox() {
+							@selectbox.Trigger() {
+								@selectbox.Value(selectbox.ValueProps{
+									Placeholder: "Select technologies",
+								})
+							}
+							@selectbox.Content() {
+								@selectbox.Group() {
+									@selectbox.Label() {
+										Technologies
+									}
+									for _, tech := range techs {
+										@selectbox.Item(selectbox.ItemProps{
+											Value: tech.Value,
+										}) {
+											{ tech.Label }
+										}
+									}
+								}
+							}
+						}
 					}
-					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
-						@components.FormLabel(components.FormLabelProps{
-							For:  "projectImage",
-							Text: "Image URL",
-						})
-						@components.Input(components.InputProps{
+					@form.Item(form.ItemProps{Class: "mb-4"}) {
+						@form.Label(form.LabelProps{
+							For: "projectImage",
+						}) {
+							"Image URL"
+						}
+						@input.Input(input.Props{
 							ID:          "projectImage",
 							Name:        "image_url",
 							Placeholder: "Enter image URL",
 						})
 					}
-					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
-						@components.FormLabel(components.FormLabelProps{
-							For:  "projectLive",
-							Text: "Live URL",
-						})
-						@components.Input(components.InputProps{
+					@form.Item(form.ItemProps{Class: "mb-4"}) {
+						@form.Label(form.LabelProps{
+							For: "projectLive",
+						}) {
+							"Live URL"
+						}
+						@input.Input(input.Props{
 							ID:          "projectLive",
 							Name:        "url",
 							Placeholder: "Enter live URL",
 						})
 					}
-					@components.FormItem(components.FormItemProps{Class: "mb-4"}) {
-						@components.FormLabel(components.FormLabelProps{
-							For:  "projectRepo",
-							Text: "Repo URL",
-						})
-						@components.Input(components.InputProps{
+					@form.Item(form.ItemProps{Class: "mb-4"}) {
+						@form.Label(form.LabelProps{
+							For: "projectRepo",
+						}) {
+							"Repo URL"
+						}
+						@input.Input(input.Props{
 							ID:          "projectRepo",
 							Name:        "repo",
 							Placeholder: "Enter repository URL",
@@ -113,22 +137,24 @@ templ Projects(techs []components.SelectOption, projects ...model.Project) {
 					}
 				</form>
 			}
-			@components.ModalFooter() {
+			@modal.Footer() {
 				<div class="flex gap-2">
-					@components.ModalClose("project-form-modal") {
-						@components.Button(components.ButtonProps{
-							Text:    "Cancel",
-							Variant: components.ButtonVariantDefault,
-						})
+					@modal.Close(modal.CloseProps{ID: "project-form-modal"}) {
+						@button.Button(button.Props{
+							Variant: button.VariantDefault,
+						}) {
+							"Cancel"
+						}
 					}
-					@components.Button(components.ButtonProps{
-						Text:    "Save",
-						Variant: components.ButtonVariantDefault,
+					@button.Button(button.Props{
+						Variant: button.VariantDefault,
 						Type:    "submit",
 						Attributes: templ.Attributes{
-							"form": "projectForm",
+								"form": "projectForm",
 						},
-					})
+					}) {
+						"Save"
+					}
 				</div>
 			}
 		}

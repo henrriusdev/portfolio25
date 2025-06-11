@@ -2,7 +2,14 @@ package components
 
 import (
 	"github.com/henrriusdev/portfolio/pkg/model"
-  "strconv"
+	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/components/form"
+	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/components/textarea"
+	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/selectbox"
+	"github.com/henrriusdev/portfolio/src/utils"
+	"strconv"
 )
 
 // ✅ Ensures script loads only once
@@ -16,8 +23,8 @@ func isEdit(isEditing bool) string {
   return "Create"
 }
 
-func setSelected(projectTechs []model.Technology, techs []SelectOption) []SelectOption {
-  var selectedTechs []SelectOption
+func setSelected(projectTechs []model.Technology, techs []selectbox.Option) []selectbox.Option {
+  var selectedTechs []selectbox.Option
 
   for _, tech := range techs {
     for _, projectTech := range projectTechs {
@@ -64,18 +71,18 @@ templ ProjectFormScript() {
 	}
 }
 
-templ ProjectModal(modalID string, techs []SelectOption, project model.Project) {
+templ ProjectModal(modalID string, techs []selectbox.Option, project model.Project) {
 	{{
 		isEditing := project.ID != 0
 
 		// ✅ Prepare JSON Data
-		projectDataJSON := parseTemplJsonString(project)
-		techsJSON := parseTemplJsonString(techs)
+		projectDataJSON := utils.ParseTemplJsonString(project)
+		techsJSON := utils.ParseTemplJsonString(techs)
 	}}
 
 	<!-- ✅ Modal Component -->
-	@Modal(ModalProps{ID: modalID, Class: "max-w-lg mx-auto"}) {
-		@ModalHeader() {
+	@modal.Modal(modal.Props{ID: modalID, Class: "max-w-lg mx-auto"}) {
+		@modal.Header() {
 			<h3 class="text-xl font-bold">
 				if isEditing {
           "Edit Project"
@@ -84,7 +91,7 @@ templ ProjectModal(modalID string, techs []SelectOption, project model.Project) 
         }
 			</h3>
 		}
-		@ModalBody() {
+		@modal.Body() {
 			<form
 				id="projectFormEdit"
 				x-data={ `projectFormData(` + string(projectDataJSON) + `, ` + string(techsJSON) + `)` }
@@ -94,27 +101,33 @@ templ ProjectModal(modalID string, techs []SelectOption, project model.Project) 
 			>
 				<input type="hidden" name="id" x-model="project.ID">
 
-				@FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormLabel(FormLabelProps{For: "projectTitle", Text: "Title"})
-					@Input(InputProps{
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.Label(form.LabelProps{For: "projectTitle"}) {
+						"Title"
+					}
+					@input.Input(input.Props{
 						ID:          "projectTitle",
 						Name:        "title",
 						Placeholder: "Enter project title",
 						Attributes:  templ.Attributes{"x-model": "project.title"},
 					})
 				}
-				@FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormLabel(FormLabelProps{For: "projectDescription", Text: "Description"})
-					@Textarea(TextareaProps{
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.Label(form.LabelProps{For: "projectDescription"}) {
+						"Description"
+					}
+					@textarea.Textarea(textarea.Props{
 						ID:          "projectDescription",
 						Name:        "description",
 						Placeholder: "Enter project description",
 						Attributes:  templ.Attributes{"x-model": "project.description"},
 					})
 				}
-				@FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormLabel(FormLabelProps{For: "projectTechs", Text: "Technologies"})
-					@Select(SelectProps{
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.Label(form.LabelProps{For: "projectTechs"}) {
+						"Technologies"
+					}
+					@selectbox.Select(selectbox.SelectProps{
 						ID:          "projectTechs",
 						Name:        "techs",
 						Placeholder: "Select technologies",
@@ -122,27 +135,33 @@ templ ProjectModal(modalID string, techs []SelectOption, project model.Project) 
 						Multiple:    true,
 					})
 				}
-				@FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormLabel(FormLabelProps{For: "projectImage", Text: "Image URL"})
-					@Input(InputProps{
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.Label(form.LabelProps{For: "projectImage"}) {
+						"Image URL"
+					}
+					@input.Input(input.Props{
 						ID:          "projectImage",
 						Name:        "image_url",
 						Placeholder: "Enter image URL",
 						Attributes:  templ.Attributes{"x-model": "project.imageUrls"},
 					})
 				}
-				@FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormLabel(FormLabelProps{For: "projectLive", Text: "Live URL"})
-					@Input(InputProps{
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.Label(form.LabelProps{For: "projectLive"}) {
+						"Live URL"
+					}
+					@input.Input(input.Props{
 						ID:          "projectLive",
 						Name:        "url",
 						Placeholder: "Enter live URL",
 						Attributes:  templ.Attributes{"x-model": "project.url"},
 					})
 				}
-				@FormItem(FormItemProps{Class: "mb-4"}) {
-					@FormLabel(FormLabelProps{For: "projectRepo", Text: "Repo URL"})
-					@Input(InputProps{
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
+					@form.Label(form.LabelProps{For: "projectRepo"}) {
+						"Repo URL"
+					}
+					@input.Input(input.Props{
 						ID:          "projectRepo",
 						Name:        "repo",
 						Placeholder: "Enter repository URL",
@@ -151,17 +170,24 @@ templ ProjectModal(modalID string, techs []SelectOption, project model.Project) 
 				}
 			</form>
 		}
-		@ModalFooter() {
+		@modal.Footer() {
 			<div class="flex gap-2">
-				@ModalClose(modalID) {
-					@Button(ButtonProps{Text: "Cancel", Variant: ButtonVariantDefault})
+				@modal.Close(modal.CloseProps{ID: modalID}) {
+					@button.Button(button.Props{Variant: button.VariantDefault}) {
+						"Cancel"
+					}
 				}
-				@Button(ButtonProps{
-					Text: isEdit(isEditing),
-					Variant:    ButtonVariantDefault,
+				@button.Button(button.Props{
+					Variant:    button.VariantDefault,
 					Type:       "submit",
 					Attributes: templ.Attributes{"form": "projectFormEdit"},
-				})
+				}) {
+					if isEditing {
+						"Edit"
+					} else {
+						"Create"
+					}
+				}
 			</div>
 		}
 	}

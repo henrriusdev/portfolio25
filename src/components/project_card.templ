@@ -1,10 +1,17 @@
 package components
 
-import "github.com/henrriusdev/portfolio/pkg/model"
-import "github.com/axzilla/templui/pkg/icons"
-import "github.com/iota-uz/icons/phosphor"
-import "encoding/json"
-import "strconv"
+import (
+	"encoding/json"
+	"strconv"
+
+	"github.com/henrriusdev/portfolio/pkg/model"
+	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/card"
+	"github.com/henrriusdev/portfolio/src/components/icon"
+	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/components/selectbox"
+	"github.com/iota-uz/icons/phosphor"
+)
 
 var projectCardHandle = templ.NewOnceHandle()
 
@@ -32,23 +39,23 @@ func toString(value uint) string {
 	return strconv.FormatUint(uint64(value), 10)
 }
 
-templ ProjectCard(project model.Project, internal bool, techs ...SelectOption) {
+templ ProjectCard(project model.Project, internal bool, techs ...selectbox.Option) {
 	<div x-data="projectEditor()">
-		@Card(CardProps{Class: "bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden w-full max-w-[600px]"}) {
-			@CardImage(CardImageProps{
+		@card.Card(card.Props{Class: "bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden w-full max-w-[600px]"}) {
+			@card.Media(card.MediaProps{
 				Src:         project.ImageURL,
 				Alt:         project.Title,
-				Position:    CardImageTop,
+				Position:    card.MediaPositionTop,
 				AspectRatio: "16/9",
 				Width:       "full",
 				Class:       "mx-auto p-2",
 			})
-			@CardContent() {
-				@CardHeader() {
-					@CardTitle() {
+			@card.Content() {
+				@card.Header() {
+					@card.Title() {
 						<span class="text-3xl font-bold text-gray-900 dark:text-white">{ project.Title }</span>
 					}
-					@CardDescription() {
+					@card.Description() {
 						{ project.Description }
 					}
 				}
@@ -61,7 +68,7 @@ templ ProjectCard(project model.Project, internal bool, techs ...SelectOption) {
 					}
 				</div>
 			}
-			@CardFooter() {
+			@card.Footer() {
 				<div class="flex gap-4 justify-between items-center w-full">
 					<div class="flex gap-4 justify-start w-4/5">
 						if project.URL != "" {
@@ -70,7 +77,7 @@ templ ProjectCard(project model.Project, internal bool, techs ...SelectOption) {
 								class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium flex items-center gap-1"
 								target="_blank"
 							>
-								@icons.ExternalLink(icons.IconProps{Size: "14"})
+								@icon.ExternalLink(icon.Props{Size: 14})
 								Live Demo
 							</a>
 						}
@@ -88,21 +95,19 @@ templ ProjectCard(project model.Project, internal bool, techs ...SelectOption) {
 					<!-- ✅ Internal Admin Buttons -->
 					if internal {
 						<div class="flex w-full justify-end items-center gap-2 mt-2">
-							@ModalTrigger("edit-project-modal-" + toString(project.ID)) {
-								@Button(ButtonProps{
-									Text:    "Edit",
-									Variant: ButtonVariantDefault,
-									Size:    ButtonSizeSm,
-								})
+							@modal.Trigger(modal.TriggerProps{ID: "edit-project-modal-" + toString(project.ID)}) {
+								@button.Button(button.Props{Variant: button.VariantDefault}) {
+									"Edit"
+								}
 							}
-							@Button(ButtonProps{
-								Text:    "Remove",
-								Variant: ButtonVariantDestructive,
-								Size:    ButtonSizeSm,
+							@button.Button(button.Props{
+								Variant: button.VariantDestructive,
 								Attributes: templ.Attributes{
 									"x-on:click": "deleteProject('" + toString(project.ID) + "')",
 								},
-							})
+							}) {
+								"Remove"
+							}
 						</div>
 					}
 				</div>

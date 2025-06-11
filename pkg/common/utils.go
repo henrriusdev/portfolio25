@@ -6,7 +6,7 @@ import (
 	"github.com/gorilla/sessions"
 	"github.com/henrriusdev/portfolio/config"
 	"github.com/henrriusdev/portfolio/pkg/model"
-	"github.com/henrriusdev/portfolio/src/components"
+	"github.com/henrriusdev/portfolio/src/components/selectbox"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -41,10 +41,10 @@ func GetSimpleIconURL(iconName string) string {
 	return "https://cdn.simpleicons.org/" + strings.ToLower(iconName)
 }
 
-func TransformToOptions(base []model.Base) []components.SelectOption {
-	var options []components.SelectOption
+func TransformToOptions(base []model.Base) []selectbox.Option {
+	var options []selectbox.Option
 	for _, b := range base {
-		options = append(options, components.SelectOption{Label: b.GetLabel(), Value: b.GetValue()})
+		options = append(options, selectbox.Option{Label: b.GetLabel(), Value: b.GetValue()})
 	}
 	return options
 }

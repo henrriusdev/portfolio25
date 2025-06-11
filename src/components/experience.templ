@@ -1,10 +1,12 @@
 package components
 
 import (
-	"github.com/axzilla/templui/pkg/icons"
 	"github.com/henrriusdev/portfolio/pkg/model"
+	"github.com/henrriusdev/portfolio/src/components/icon"
 	"time"
 	"strconv"
+	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/modal"
 )
 
 func getEndDate(date *time.Time) string {
@@ -23,21 +25,19 @@ templ ExperienceItem(experience model.Experience, internal bool) {
 			{ experience.StartDate.Format(time.DateOnly) } - { getEndDate(experience.EndDate) }
 		</time>
 		<h3 class="text-2xl font-semibold text-gray-900 dark:text-white flex items-center gap-2 mb-2">
-			@icons.BriefcaseBusiness(icons.IconProps{Size: "24", Class: "text-muted-foreground"})
+			@icon.BriefcaseBusiness(icon.Props{Size: 24, Class: "text-muted-foreground"})
 			{ experience.Role }
 		</h3>
 		<p class="mb-2 font-normal text-gray-500 dark:text-gray-400 flex items-center gap-2 text-xl">
-			@icons.Building2(icons.IconProps{Size: "24", Class: "text-muted-foreground"})
+			@icon.Building2(icon.Props{Size: 24, Class: "text-muted-foreground"})
 			{ experience.Company }
 		</p>
 		<p class="mb-4 text-lg font-normal text-gray-500 dark:text-gray-400 w-[70ch]">{ experience.Description }</p>
 		if internal {
-			@ModalTrigger("experience-form-modal-" + strconv.Itoa(int(experience.ID))) {
-				@Button(ButtonProps{
-					Text:    "Edit",
-					Variant: ButtonVariantDefault,
-					Size:    ButtonSizeSm,
-				})
+			@modal.Trigger(modal.TriggerProps{ID: "experience-form-modal-" + strconv.Itoa(int(experience.ID))}) {
+				@button.Button(button.Props{Variant: button.VariantDefault}) {
+					"Edit"
+				}
 			}
 			@ExperienceModal("experience-form-modal-" + strconv.Itoa(int(experience.ID)), experience)
 		}

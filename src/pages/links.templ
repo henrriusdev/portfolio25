@@ -4,8 +4,11 @@ import (
 	"strconv"
 
 	"github.com/henrriusdev/portfolio/pkg/model"
-	"github.com/henrriusdev/portfolio/src/components"
 	"github.com/henrriusdev/portfolio/src/layout"
+	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/components/card"
+	"github.com/henrriusdev/portfolio/src/components"
 )
 
 templ Links(links ...model.Contact) {
@@ -13,12 +16,10 @@ templ Links(links ...model.Contact) {
 		<section class="container mx-auto px-4 py-8">
 			<h2 class="text-5xl font-bold text-center mb-8">Contact links</h2>
 			<div class="flex justify-end mb-8">
-				@components.ModalTrigger("contact-create-modal") {
-					@components.Button(components.ButtonProps{
-						Text:    "Create Link",
-						Variant: components.ButtonVariantDefault,
-						Size:    components.ButtonSizeMd,
-					})
+				@modal.Trigger(modal.TriggerProps{ID: "contact-create-modal"}) {
+					@button.Button(button.Props{Variant: button.VariantDefault}) {
+						"Create Link"
+					}
 				}
 			</div>
 			if len(links) == 0 {
@@ -28,7 +29,7 @@ templ Links(links ...model.Contact) {
 			} else {
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 					for _, link := range links {
-						@components.Card(components.CardProps{Class: "p-4"}) {
+						@card.Card(card.Props{Class: "p-4"}) {
 							<div class="flex flex-col items-center">
 								<img src={ link.Icon } alt={ link.Platform } class="w-12 h-12 mb-2"/>
 								<h3 class="text-lg font-semibold">
@@ -36,21 +37,21 @@ templ Links(links ...model.Contact) {
 								</h3>
 							</div>
 							<div class="flex justify-between mt-4">
-								@components.ModalTrigger("contact-edit-modal-" + strconv.Itoa(int(link.ID))) {
-									@components.Button(components.ButtonProps{
-										Text:    "Edit",
-										Variant: components.ButtonVariantDefault,
-										Size:    components.ButtonSizeSm,
-									})
+								@modal.Trigger(modal.TriggerProps{ID: "contact-edit-modal-" + strconv.Itoa(int(link.ID))}) {
+									@button.Button(button.Props{
+										Variant: button.VariantDefault,
+									}) {
+										"Edit"
+									}
 								}
 								<form action="/dashboard/delete-link" method="POST">
 									<input type="hidden" name="ID" value={ strconv.Itoa(int(link.ID)) }/>
-									@components.Button(components.ButtonProps{
-										Text:    "Delete",
-										Variant: components.ButtonVariantDestructive,
-										Size:    components.ButtonSizeSm,
+									@button.Button(button.Props{
+										Variant: button.VariantDestructive,
 										Type:    "submit",
-									})
+									}) {
+										"Delete"
+									}
 								</form>
 							</div>
 						}

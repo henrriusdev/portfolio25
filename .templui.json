@@ -1,0 +1,6 @@
+{
+  "componentsDir": "src/components",
+  "utilsDir": "src/utils",
+  "moduleName": "github.com/henrriusdev/portfolio",
+  "jsDir": "src/assets"
+}
