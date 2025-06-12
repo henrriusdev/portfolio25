@@ -2,16 +2,16 @@ package components
 
 import (
 	"github.com/henrriusdev/portfolio/pkg/model"
-	"time"
-  "strconv"
-	"github.com/henrriusdev/portfolio/src/components/modal"
-	"github.com/henrriusdev/portfolio/src/components/form"
-	"github.com/henrriusdev/portfolio/src/components/datepicker"
-	"github.com/henrriusdev/portfolio/src/components/checkbox"
 	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/checkbox"
+	"github.com/henrriusdev/portfolio/src/components/datepicker"
+	"github.com/henrriusdev/portfolio/src/components/form"
 	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/components/modal"
 	"github.com/henrriusdev/portfolio/src/components/textarea"
 	"github.com/henrriusdev/portfolio/src/utils"
+	"strconv"
+	"time"
 )
 
 func getEndDateValue(endDate *time.Time) time.Time {
@@ -62,11 +62,10 @@ templ ExperienceFormScript() {
 templ ExperienceModal(modalID string, experience model.Experience) {
 	{{
 		isEditing := experience.ID != 0
-    formID := "experienceForm"
-    if isEditing {
-      formID = "experienceFormEdit-" + strconv.Itoa(int(experience.ID))
-    }
-      
+		formID := "experienceForm"
+		if isEditing {
+			formID = "experienceFormEdit-" + strconv.Itoa(int(experience.ID))
+		}
 
 		// Prepare JSON Data
 		experienceDataJSON := utils.ParseTemplJsonString(experience)
@@ -84,14 +83,14 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 		}
 		@modal.Body() {
 			<form
-				id={formID}
+				id={ formID }
 				x-data={ `experienceFormData(` + experienceDataJSON + `)` }
 				x-bind:action="formAction()"
 				method="POST"
 				class="space-y-4"
 			>
 				<input type="hidden" name="id" x-model="experience.ID"/>
-        @form.Item(form.ItemProps{Class: "mb-4"}) {
+				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "experienceStartDate"}) {
 						Start Date
 					}
@@ -116,10 +115,10 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.ItemFlex(form.ItemProps{}) {
 						@checkbox.Checkbox(checkbox.Props{
-							ID:      "c1",
-							Name:    "is_current",
-							Value:   "false",
-							Checked: false,
+							ID:         "c1",
+							Name:       "is_current",
+							Value:      "false",
+							Checked:    false,
 							Attributes: templ.Attributes{"x-model": "experience.is_current", "@change": "toggleEndDate"},
 						})
 						@form.Label(form.LabelProps{For: "c1"}) {

@@ -3,13 +3,13 @@ package pages
 import (
 	"github.com/henrriusdev/portfolio/pkg/model"
 	"github.com/henrriusdev/portfolio/src/components"
-	"github.com/henrriusdev/portfolio/src/layout"
-	"github.com/henrriusdev/portfolio/src/components/modal"
-	"github.com/henrriusdev/portfolio/src/components/input"
-	"github.com/henrriusdev/portfolio/src/components/textarea"
 	"github.com/henrriusdev/portfolio/src/components/button"
 	"github.com/henrriusdev/portfolio/src/components/form"
+	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/components/modal"
 	"github.com/henrriusdev/portfolio/src/components/selectbox"
+	"github.com/henrriusdev/portfolio/src/components/textarea"
+	"github.com/henrriusdev/portfolio/src/layout"
 )
 
 templ Projects(techs []selectbox.Option, projects ...model.Project) {
@@ -50,7 +50,7 @@ templ Projects(techs []selectbox.Option, projects ...model.Project) {
 					@form.Item(form.ItemProps{Class: "mb-4"}) {
 						@form.Label(form.LabelProps{
 							For: "projectTitle",
-						}){
+						}) {
 							Title
 						}
 						@input.Input(input.Props{
@@ -142,7 +142,7 @@ templ Projects(techs []selectbox.Option, projects ...model.Project) {
 						Variant: button.VariantDefault,
 						Type:    "submit",
 						Attributes: templ.Attributes{
-								"form": "projectForm",
+							"form": "projectForm",
 						},
 					}) {
 						Save

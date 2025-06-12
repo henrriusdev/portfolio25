@@ -1,67 +1,63 @@
 package pages
 
 import (
-    "github.com/henrriusdev/portfolio/src/layout"
-    "github.com/henrriusdev/portfolio/src/components/editor"
-    "github.com/henrriusdev/portfolio/src/components/button"
-    "github.com/henrriusdev/portfolio/src/components/input"
-    "github.com/henrriusdev/portfolio/pkg/model"
-    "fmt"
+	"fmt"
+	"github.com/henrriusdev/portfolio/pkg/model"
+	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/editor"
+	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/layout"
 )
 
 templ BlogEdit(post model.BlogPost) {
-    @layout.BaseInternal("Crear o Editar Post") {
-        <div class="container mx-auto py-8">
-            <div class="max-w-4xl mx-auto">
-                <h1 class="text-4xl font-bold mb-8">
-                    if post.ID == 0 {
-                        Crear Post
-                    } else {
-                        Editar Post
-                    }
-                </h1>
-
-                <form method="POST" action="/blog/save" class="space-y-6">
-                    <input type="hidden" name="id" value={fmt.Sprint(post.ID)} />
-                    
-                    <div class="space-y-2">
-                        <label for="title" class="text-sm font-medium">Title</label>
-                        @input.Input(input.Props{
-                            ID: "title",
-                            Name: "title",
-                            Value: post.Title,
-                            Placeholder: "Enter post title",
-                        })
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="text-sm font-medium">Content</label>
-                        @editor.MarkdownEditor(editor.Props{
-                            Name: "content",
-                            Content: post.Content,
-                        })
-                    </div>
-
-                    <div class="flex gap-4">
-                        <a href="/blog">
-                            @button.Button(button.Props{
-                                Variant: button.VariantOutline,
-                            }) {
-                                Cancel
-                            }
-                        </a>
-                        @button.Button(button.Props{
-                            Type: "submit",
-                        }) {
-                            if post.ID == 0 {
-                                Crear Post
-                            } else {
-                                Actualizar Post
-                            }
-                        }
-                    </div>
-                </form>
-            </div>
-        </div>
-    }
+	@layout.BaseInternal("Crear o Editar Post") {
+		<div class="container mx-auto py-8">
+			<div class="max-w-4xl mx-auto">
+				<h1 class="text-4xl font-bold mb-8">
+					if post.ID == 0 {
+						Crear Post
+					} else {
+						Editar Post
+					}
+				</h1>
+				<form method="POST" action="/blog/save" class="space-y-6">
+					<input type="hidden" name="id" value={ fmt.Sprint(post.ID) }/>
+					<div class="space-y-2">
+						<label for="title" class="text-sm font-medium">Title</label>
+						@input.Input(input.Props{
+							ID:          "title",
+							Name:        "title",
+							Value:       post.Title,
+							Placeholder: "Enter post title",
+						})
+					</div>
+					<div class="space-y-2">
+						<label class="text-sm font-medium">Content</label>
+						@editor.MarkdownEditor(editor.Props{
+							Name:    "content",
+							Content: post.Content,
+						})
+					</div>
+					<div class="flex gap-4">
+						<a href="/blog">
+							@button.Button(button.Props{
+								Variant: button.VariantOutline,
+							}) {
+								Cancel
+							}
+						</a>
+						@button.Button(button.Props{
+							Type: "submit",
+						}) {
+							if post.ID == 0 {
+								Crear Post
+							} else {
+								Actualizar Post
+							}
+						}
+					</div>
+				</form>
+			</div>
+		</div>
+	}
 }

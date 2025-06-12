@@ -16,12 +16,12 @@ type SelectProps struct {
 // Select creates a complete select component with all necessary parts
 templ Select(props SelectProps) {
 	@SelectBox(Props{
-		ID: props.ID,
-		Class: props.Class,
+		ID:         props.ID,
+		Class:      props.Class,
 		Attributes: props.Attributes,
 	}) {
 		@Trigger(TriggerProps{
-			Name: props.Name,
+			Name:     props.Name,
 			Required: props.Required,
 			Disabled: props.Disabled,
 			HasError: props.HasError,
@@ -34,7 +34,7 @@ templ Select(props SelectProps) {
 			@Group() {
 				for _, option := range props.Options {
 					@Item(ItemProps{
-						Value: option.Value,
+						Value:    option.Value,
 						Selected: option.Selected,
 						Disabled: props.Disabled,
 					}) {

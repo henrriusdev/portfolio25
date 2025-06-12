@@ -3,6 +3,7 @@ package pages
 import (
 	"github.com/henrriusdev/portfolio/pkg/model"
 	"github.com/henrriusdev/portfolio/src/layout"
+	"github.com/henrriusdev/portfolio/pkg/common"
 	"strconv"
 )
 
@@ -25,12 +26,12 @@ templ Blog(posts []model.BlogPost) {
 								</div>
 								<p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
 									if len(post.Content) > 200 {
-										{ post.Content[:200] + "..." }
+										{ common.StripMarkdown(post.Content[:200]) + "..." }
 									} else {
-										{ post.Content }
+										{ common.StripMarkdown(post.Content) }
 									}
 								</p>
-								<a 
+								<a
 									href={ templ.SafeURL("/blog/" + strconv.Itoa(int(post.ID))) }
 									class="text-blue-500 hover:text-blue-600 font-medium inline-flex items-center"
 								>

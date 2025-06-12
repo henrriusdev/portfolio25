@@ -2,12 +2,12 @@ package components
 
 import (
 	"github.com/henrriusdev/portfolio/pkg/model"
-	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/components/button"
 	"github.com/henrriusdev/portfolio/src/components/form"
 	"github.com/henrriusdev/portfolio/src/components/input"
-	"github.com/henrriusdev/portfolio/src/components/textarea"
-	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/modal"
 	"github.com/henrriusdev/portfolio/src/components/selectbox"
+	"github.com/henrriusdev/portfolio/src/components/textarea"
 	"github.com/henrriusdev/portfolio/src/utils"
 	"strconv"
 )
@@ -16,29 +16,29 @@ import (
 var projectFormHandle = templ.NewOnceHandle()
 
 func isEdit(isEditing bool) string {
-  if isEditing {
-    return "Update"
-  }
+	if isEditing {
+		return "Update"
+	}
 
-  return "Create"
+	return "Create"
 }
 
 func setSelected(projectTechs []model.Technology, techs []selectbox.Option) []selectbox.Option {
-  var selectedTechs []selectbox.Option
+	var selectedTechs []selectbox.Option
 
-  for _, tech := range techs {
-    for _, projectTech := range projectTechs {
-      id := strconv.FormatUint(uint64(projectTech.ID), 10)
-      if tech.Value == id {
-        tech.Selected = true
-      }
-    }
+	for _, tech := range techs {
+		for _, projectTech := range projectTechs {
+			id := strconv.FormatUint(uint64(projectTech.ID), 10)
+			if tech.Value == id {
+				tech.Selected = true
+			}
+		}
 
-    selectedTechs = append(selectedTechs, tech)
-  }
+		selectedTechs = append(selectedTechs, tech)
+	}
 
-  return selectedTechs
-} 
+	return selectedTechs
+}
 
 templ ProjectFormScript() {
 	@projectFormHandle.Once() {
@@ -79,16 +79,15 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 		projectDataJSON := utils.ParseTemplJsonString(project)
 		techsJSON := utils.ParseTemplJsonString(techs)
 	}}
-
 	<!-- ✅ Modal Component -->
 	@modal.Modal(modal.Props{ID: modalID, Class: "max-w-lg mx-auto"}) {
 		@modal.Header() {
 			<h3 class="text-xl font-bold">
 				if isEditing {
-          Edit Project
-        } else {
-          Create Project
-        }
+					Edit Project
+				} else {
+					Create Project
+				}
 			</h3>
 		}
 		@modal.Body() {
@@ -99,8 +98,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 				method="POST"
 				class="space-y-4"
 			>
-				<input type="hidden" name="id" x-model="project.ID">
-
+				<input type="hidden" name="id" x-model="project.ID"/>
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "projectTitle"}) {
 						Title
@@ -131,7 +129,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 						ID:          "projectTechs",
 						Name:        "techs",
 						Placeholder: "Select technologies",
-						Options:     setSelected(project.Techs, techs), 
+						Options:     setSelected(project.Techs, techs),
 						Multiple:    true,
 					})
 				}

@@ -3,6 +3,7 @@ package common
 import (
 	"context"
 	"io"
+	"regexp"
 	"strings"
 
 	"github.com/a-h/templ"
@@ -57,4 +58,70 @@ func Unsafe(html string) templ.Component {
 		_, err = io.WriteString(w, html)
 		return
 	})
+}
+
+// StripMarkdown elimina la sintaxis Markdown para mostrar texto plano
+func StripMarkdown(md string) string {
+	// Procesar el texto línea por línea para manejar mejor los patrones multilinea
+	lines := strings.Split(md, "\n")
+	for i, line := range lines {
+		// Eliminar encabezados # Texto
+		if strings.HasPrefix(strings.TrimSpace(line), "#") {
+			line = regexp.MustCompile(`^\s*#{1,6}\s+(.+)$`).ReplaceAllString(line, "$1")
+		}
+
+		// Eliminar listas
+		if matched, _ := regexp.MatchString(`^\s*[\*\-\+]\s+`, line); matched {
+			line = regexp.MustCompile(`^\s*[\*\-\+]\s+(.+)$`).ReplaceAllString(line, "$1")
+		}
+
+		// Eliminar listas numeradas
+		if matched, _ := regexp.MatchString(`^\s*\d+\.\s+`, line); matched {
+			line = regexp.MustCompile(`^\s*\d+\.\s+(.+)$`).ReplaceAllString(line, "$1")
+		}
+
+		// Eliminar citas > texto
+		if strings.HasPrefix(strings.TrimSpace(line), ">") {
+			line = regexp.MustCompile(`^\s*>\s+(.+)$`).ReplaceAllString(line, "$1")
+		}
+
+		// Eliminar líneas horizontales
+		if matched, _ := regexp.MatchString(`^\s*(\*\*\*|---|___)\s*$`, line); matched {
+			line = ""
+		}
+
+		lines[i] = line
+	}
+
+	// Volver a unir el texto
+	md = strings.Join(lines, " ")
+
+	// Eliminar enlaces [texto](url)
+	md = regexp.MustCompile(`\[([^\]]+)\]\([^\)]+\)`).ReplaceAllString(md, "$1")
+
+	// Eliminar imágenes ![alt](url)
+	md = regexp.MustCompile(`!\[[^\]]*\]\([^\)]+\)`).ReplaceAllString(md, "")
+
+	// Eliminar énfasis *texto* o _texto_
+	md = regexp.MustCompile(`\*(.*?)\*`).ReplaceAllString(md, "$1")
+	md = regexp.MustCompile(`_(.*?)_`).ReplaceAllString(md, "$1")
+
+	// Eliminar negrita **texto** o __texto__
+	md = regexp.MustCompile(`\*\*(.*?)\*\*`).ReplaceAllString(md, "$1")
+	md = regexp.MustCompile(`__(.*?)__`).ReplaceAllString(md, "$1")
+
+	// Eliminar bloques de código ```código```
+	md = regexp.MustCompile("```[\\s\\S]*?```").ReplaceAllString(md, "")
+
+	// Eliminar código en línea `código`
+	md = regexp.MustCompile("`([^`]+)`").ReplaceAllString(md, "$1")
+
+	// Eliminar símbolos de lista de tareas
+	md = regexp.MustCompile(`\[[ xX]\]\s+`).ReplaceAllString(md, "")
+
+	// Eliminar múltiples espacios en blanco
+	md = regexp.MustCompile(`\s+`).ReplaceAllString(md, " ")
+
+	// Eliminar espacios en blanco al inicio y final
+	return strings.TrimSpace(md)
 }

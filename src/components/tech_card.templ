@@ -3,8 +3,8 @@ package components
 import (
 	"fmt"
 	"github.com/henrriusdev/portfolio/pkg/model"
-    "github.com/henrriusdev/portfolio/src/components/card"
-    "github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/card"
 )
 
 func getStringId(id uint) string {
@@ -12,7 +12,7 @@ func getStringId(id uint) string {
 }
 
 templ TechCardScript() {
-    <script nonce={ templ.GetNonce(ctx) }>
+	<script nonce={ templ.GetNonce(ctx) }>
         document.addEventListener('alpine:init', () => {
             Alpine.store('techActions', {
                 deleteTech(id) {
@@ -25,32 +25,32 @@ templ TechCardScript() {
 }
 
 templ TechCard(tech model.Technology) {
-    @card.Card(card.Props{
-        Class:      "bg-white dark:bg-gray-800 rounded-md overflow-hidden w-full max-w-[150px]",
-        Attributes: templ.Attributes{"x-data": "{}"},
-    }) {
-        @card.Media(card.MediaProps{
-            Src:         tech.Icon,
-            Alt:         tech.Name,
-            Position:    card.MediaPositionTop,
-            Class:       "w-full h-full p-1 pt-3 mx-auto",
-        })
-        @card.Header() {
-            @card.Title() {
-                { tech.Name }
-            }
-        }
-        @card.Footer() {
-            @button.Button(button.Props{
-                Variant: button.VariantDestructive,
-                Class:   "ml-auto mt-4",
-                Attributes: templ.Attributes{
-                    // Call the deleteTech method from the Alpine store
-                    "x-on:click": "$store.techActions.deleteTech('" + getStringId(tech.ID) + "')",
-                },
-            }){
-                "Delete"
-            }
-        }
-    }
+	@card.Card(card.Props{
+		Class:      "bg-white dark:bg-gray-800 rounded-md overflow-hidden w-full max-w-[150px]",
+		Attributes: templ.Attributes{"x-data": "{}"},
+	}) {
+		@card.Media(card.MediaProps{
+			Src:      tech.Icon,
+			Alt:      tech.Name,
+			Position: card.MediaPositionTop,
+			Class:    "w-full h-full p-1 pt-3 mx-auto",
+		})
+		@card.Header() {
+			@card.Title() {
+				{ tech.Name }
+			}
+		}
+		@card.Footer() {
+			@button.Button(button.Props{
+				Variant: button.VariantDestructive,
+				Class:   "ml-auto mt-4",
+				Attributes: templ.Attributes{
+					// Call the deleteTech method from the Alpine store
+					"x-on:click": "$store.techActions.deleteTech('" + getStringId(tech.ID) + "')",
+				},
+			}) {
+				"Delete"
+			}
+		}
+	}
 }

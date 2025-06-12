@@ -16,6 +16,9 @@ require (
 )
 
 require (
+	github.com/alecthomas/chroma v0.10.0 // indirect
+	github.com/alecthomas/chroma/v2 v2.2.0 // indirect
+	github.com/dlclark/regexp2 v1.7.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.9 // indirect
 	github.com/getkin/kin-openapi v0.132.0 // indirect
 	github.com/go-openapi/jsonpointer v0.21.1 // indirect
@@ -41,7 +44,13 @@ require (
 	github.com/oasdiff/yaml v0.0.0-20250309154309-f31be36b4037 // indirect
 	github.com/oasdiff/yaml3 v0.0.0-20250309153720-d2182401db90 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
+	github.com/quailyquaily/goldmark-enclave v0.1.9 // indirect
+	github.com/tenkoh/goldmark-img64 v0.1.2 // indirect
 	github.com/yuin/goldmark v1.7.12 // indirect
+	github.com/yuin/goldmark-highlighting v0.0.0-20220208100518-594be1970594 // indirect
+	github.com/yuin/goldmark-highlighting/v2 v2.0.0-20230729083705-37449abec8cc // indirect
+	go.abhg.dev/goldmark/anchor v0.2.0 // indirect
+	go.abhg.dev/goldmark/toc v0.12.0 // indirect
 	golang.org/x/net v0.41.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.26.0 // indirect

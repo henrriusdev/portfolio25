@@ -38,10 +38,10 @@ func DefaultExperiences() []model.Experience {
 func DefaultBlogPosts() []model.BlogPost {
 	return []model.BlogPost{
 		{
-			Title:     "Welcome to My Blog",
-			Content:   "This is a sample blog post to get you started.",
-			ImageURL:  "/assets/sample_blog.png",
-			Author:    model.User{Username: "admin"},
+			Title:    "Welcome to My Blog",
+			Content:  "This is a sample blog post to get you started.",
+			ImageURL: "/assets/sample_blog.png",
+			Author:   model.User{Username: "admin"},
 		},
 	}
 }
@@ -54,9 +54,9 @@ func truncate(s string, max int) string {
 }
 
 templ Dashboard() {
-	{{projects := DefaultProjects()}}
-	{{experiences := DefaultExperiences()}}
-	{{posts := DefaultBlogPosts()}}
+	{{ projects := DefaultProjects() }}
+	{{ experiences := DefaultExperiences() }}
+	{{ posts := DefaultBlogPosts() }}
 	@layout.BaseInternal("Dashboard - HenrriusDev") {
 		<div class="container mx-auto px-4 py-8">
 			<h1 class="text-5xl font-bold mb-6">Dashboard</h1>

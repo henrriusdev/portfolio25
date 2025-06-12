@@ -2,11 +2,11 @@ package components
 
 import (
 	"github.com/henrriusdev/portfolio/pkg/model"
-	"github.com/henrriusdev/portfolio/src/components/icon"
-	"time"
-	"strconv"
 	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/icon"
 	"github.com/henrriusdev/portfolio/src/components/modal"
+	"strconv"
+	"time"
 )
 
 func getEndDate(date *time.Time) string {
@@ -39,7 +39,7 @@ templ ExperienceItem(experience model.Experience, internal bool) {
 					"Edit"
 				}
 			}
-			@ExperienceModal("experience-form-modal-" + strconv.Itoa(int(experience.ID)), experience)
+			@ExperienceModal("experience-form-modal-"+strconv.Itoa(int(experience.ID)), experience)
 		}
 	</li>
 }

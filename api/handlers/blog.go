@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	chromahtml "github.com/alecthomas/chroma/formatters/html"
 	"github.com/go-fuego/fuego"
 	"github.com/go-fuego/fuego/option"
 	"github.com/henrriusdev/portfolio/api/middleware"
@@ -12,9 +13,15 @@ import (
 	"github.com/henrriusdev/portfolio/pkg/model"
 	"github.com/henrriusdev/portfolio/pkg/service"
 	"github.com/henrriusdev/portfolio/src/pages"
+	enclave "github.com/quailyquaily/goldmark-enclave"
+	"github.com/quailyquaily/goldmark-enclave/core"
+	img64 "github.com/tenkoh/goldmark-img64"
 	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark/extension"
-	"github.com/yuin/goldmark/renderer/html"
+	"github.com/yuin/goldmark/parser"
+	"go.abhg.dev/goldmark/anchor"
+	"go.abhg.dev/goldmark/toc"
 )
 
 type Blog struct {
@@ -83,10 +90,6 @@ func (b *Blog) List(c fuego.ContextNoBody) (fuego.Templ, error) {
 	return pages.Blog(posts), nil
 }
 
-type ViewParams struct {
-	ID uint `param:"id"`
-}
-
 func (b *Blog) View(c fuego.ContextNoBody) (fuego.Templ, error) {
 	param := c.PathParam("id")
 
@@ -102,11 +105,26 @@ func (b *Blog) View(c fuego.ContextNoBody) (fuego.Templ, error) {
 
 	// Convert markdown to HTML with custom rendering
 	markdown := goldmark.New(
+		goldmark.WithParserOptions(parser.WithAutoHeadingID()),
 		goldmark.WithExtensions(
 			extension.GFM,
+			&toc.Extender{
+				Title: "Table of Contents",
+			},
+			highlighting.NewHighlighting(
+				highlighting.WithStyle("tokyonight-night"),
+				highlighting.WithFormatOptions(
+					chromahtml.WithLineNumbers(true),
+				),
+			),
+			&anchor.Extender{
+				Texter: anchor.Text("#"),
+			},
+			img64.Img64,
+			enclave.New(&core.Config{}),
 		),
 		goldmark.WithRendererOptions(
-			html.WithUnsafe(),
+			img64.WithPathResolver(img64.ParentLocalPathResolver("/src/assets/images")),
 		),
 	)
 

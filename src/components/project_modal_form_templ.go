@@ -211,7 +211,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(`projectFormData(` + string(projectDataJSON) + `, ` + string(techsJSON) + `)`)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_modal_form.templ`, Line: 97, Col: 90}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_modal_form.templ`, Line: 96, Col: 90}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {

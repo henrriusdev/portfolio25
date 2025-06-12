@@ -197,7 +197,7 @@ func ExperienceModal(modalID string, experience model.Experience) templ.Componen
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(formID)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/experience_modal_form.templ`, Line: 87, Col: 14}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/experience_modal_form.templ`, Line: 86, Col: 15}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -210,7 +210,7 @@ func ExperienceModal(modalID string, experience model.Experience) templ.Componen
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(`experienceFormData(` + experienceDataJSON + `)`)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/experience_modal_form.templ`, Line: 88, Col: 61}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/experience_modal_form.templ`, Line: 87, Col: 61}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
