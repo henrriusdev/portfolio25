@@ -8,15 +8,17 @@ package layout
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "github.com/henrriusdev/portfolio/src/components"
-import "github.com/henrriusdev/portfolio/src/components/modal"
-import "github.com/henrriusdev/portfolio/src/components/popover"
-import "github.com/henrriusdev/portfolio/src/components/selectbox"
-import "github.com/henrriusdev/portfolio/src/components/datepicker"
-import "github.com/henrriusdev/portfolio/src/components/calendar"
-import "github.com/henrriusdev/portfolio/src/components/input"
-import "github.com/henrriusdev/portfolio/src/components/textarea"
-import "github.com/henrriusdev/portfolio/src/components/label"
+import (
+	"github.com/henrriusdev/portfolio/src/components"
+	"github.com/henrriusdev/portfolio/src/components/calendar"
+	"github.com/henrriusdev/portfolio/src/components/datepicker"
+	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/components/label"
+	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/components/popover"
+	"github.com/henrriusdev/portfolio/src/components/selectbox"
+	"github.com/henrriusdev/portfolio/src/components/textarea"
+)
 
 func BaseInternal(title string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -46,13 +48,13 @@ func BaseInternal(title string) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layout/internal_base.templ`, Line: 17, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layout/internal_base.templ`, Line: 19, Col: 17}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><!-- Tailwind CSS (output) --><link href=\"/static/app.css\" rel=\"stylesheet\"><!-- Alpine.js --><script defer src=\"https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js\"></script><!-- Theme switcher script -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><!-- Tailwind CSS (output) --><link href=\"/static/app.css\" rel=\"stylesheet\"><!-- Toast UI Editor CSS --><link rel=\"stylesheet\" href=\"https://uicdn.toast.com/editor/latest/toastui-editor.min.css\"><!-- Alpine.js --><script defer src=\"https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js\"></script><!-- Toast UI Editor JS --><script src=\"https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js\"></script><!-- Theme switcher script -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

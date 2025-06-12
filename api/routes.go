@@ -15,3 +15,8 @@ func dashboardRoutes(f *fuego.Server, services service.Service) {
 	dashboard := handlers.NewDashboard(services)
 	dashboard.RegisterRoutes(fuego.Group(f, "/dashboard"))
 }
+
+func blogRoutes(f *fuego.Server, services service.Service) {
+	blog := handlers.NewBlog(services)
+	blog.RegisterRoutes(fuego.Group(f, "/blog"))
+}

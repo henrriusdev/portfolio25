@@ -12,6 +12,7 @@ type Service struct {
 	Technology *Technology
 	User       *User
 	Visit      *Visit
+	Blog       *Blog
 }
 
 type Base[T any] struct {

@@ -1,8 +1,11 @@
 package common
 
 import (
+	"context"
+	"io"
 	"strings"
 
+	"github.com/a-h/templ"
 	"github.com/gorilla/sessions"
 	"github.com/henrriusdev/portfolio/config"
 	"github.com/henrriusdev/portfolio/pkg/model"
@@ -47,4 +50,11 @@ func TransformToOptions(base []model.Base) []selectbox.Option {
 		options = append(options, selectbox.Option{Label: b.GetLabel(), Value: b.GetValue()})
 	}
 	return options
+}
+
+func Unsafe(html string) templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, w io.Writer) (err error) {
+		_, err = io.WriteString(w, html)
+		return
+	})
 }

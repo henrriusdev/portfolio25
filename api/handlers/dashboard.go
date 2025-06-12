@@ -52,6 +52,11 @@ func (d *Dashboard) RegisterRoutes(f *fuego.Server) {
 		option.Summary("Links"),
 		option.Tags("dashboard", "links"),
 	)
+	fuego.Get(f, "/blog", d.Blog,
+		option.Description("Show blog"),
+		option.Summary("Blog"),
+		option.Tags("dashboard", "blog"),
+	)
 	fuego.Post(f, "/save-project", d.SaveProject,
 		option.Description("Save project"),
 		option.Summary("Save project"),
@@ -306,4 +311,12 @@ func (d *Dashboard) DeleteProject(c fuego.ContextWithBody[model.DeleteRequest]) 
 
 	// Return a success message or redirect as needed.
 	return "Project deleted successfully", nil
+}
+
+func (d *Dashboard) Blog(c fuego.ContextNoBody) (fuego.Templ, error) {
+	posts, err := d.services.Blog.GetAllWithAuthor()
+	if err != nil {
+		return nil, err
+	}
+	return pages.BlogDashboard(posts), nil
 }

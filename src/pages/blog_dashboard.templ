@@ -1,0 +1,76 @@
+package pages
+
+import (
+	"github.com/henrriusdev/portfolio/pkg/model"
+	"github.com/henrriusdev/portfolio/src/layout"
+	"strconv"
+	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/components/button"
+)
+
+templ BlogDashboard(posts []model.BlogPost) {
+	@layout.BaseInternal("Blog Dashboard") {
+		<div class="container mx-auto py-8">
+			<div class="max-w-4xl mx-auto">
+				<div class="flex justify-between items-center mb-8">
+					<h1 class="text-4xl font-bold">Blog Posts</h1>
+					<a href="/blog/new" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+						Nuevo Post
+					</a>
+				</div>
+				<div class="space-y-6">
+					for _, post := range posts {
+						<article class="border p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+							<div class="flex justify-between items-start">
+								<div>
+									<h2 class="text-2xl font-bold mb-2">
+										<a href={ templ.SafeURL("/blog/" + strconv.Itoa(int(post.ID))) } class="hover:text-blue-500">
+											{ post.Title }
+										</a>
+									</h2>
+									<p class="text-gray-600 mb-4">{ post.Content[:200] + "..." }</p>
+									<div class="text-sm text-gray-500">
+										{ post.CreatedAt.Format("January 2, 2006") }
+									</div>
+								</div>
+								<div class="flex space-x-2">
+									<a 
+										href={ templ.SafeURL("/blog/" + strconv.Itoa(int(post.ID)) + "/edit") }
+										class="text-blue-500 hover:text-blue-600"
+									>
+										Editar
+									</a>
+									<button
+										@click={ "showDeleteModal = true; postToDelete = " + strconv.Itoa(int(post.ID)) }
+										class="text-red-500 hover:text-red-600"
+									>
+										Eliminar
+									</button>
+                                    @modal.Trigger(modal.TriggerProps{ModalID: "deleteModal-" + strconv.Itoa(int(post.ID))}){
+                                        @button.Button(button.Props{Variant: button.VariantDestructive}) {
+                                            Eliminar
+                                        }
+                                    }
+								</div>
+							</div>
+						</article>
+                    @modal.Modal(modal.Props{ID: "deleteModal-" + strconv.Itoa(int(post.ID))}){
+                        @modal.Header(){
+                            Confirmar Eliminación
+                        }
+                        @modal.Body(){
+                            ¿Estás seguro de que quieres eliminar este post? Esta acción no se puede deshacer.
+                        }
+                        @modal.Footer(){
+                            <form action="/blog/delete" method="post">
+                                <input type="hidden" name="id" value={strconv.Itoa(int(post.ID))}>
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Eliminar</button>
+                            </form>
+                        }
+                    }   
+					}
+				</div>
+			</div>
+		</div>
+	}
+}

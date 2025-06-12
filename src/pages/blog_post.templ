@@ -1,0 +1,26 @@
+package pages
+
+import (
+	"github.com/henrriusdev/portfolio/pkg/model"
+	"github.com/henrriusdev/portfolio/src/layout"
+)
+
+templ BlogPost(post model.BlogPost, content templ.Component) {
+	@layout.Base("Post") {
+		<div class="container mx-auto py-8">
+			<div class="max-w-4xl mx-auto">
+				<div class="mb-8">
+					<h1 class="text-4xl font-bold mb-4">{ post.Title }</h1>
+					<div class="flex justify-between items-center text-sm text-gray-500">
+						<div class="flex items-center">
+							<span>{ post.CreatedAt.Format("2006-01-02") }</span>
+						</div>
+					</div>
+				</div>
+				<div class="prose prose-lg dark:prose-invert prose-headings:font-bold prose-a:text-blue-600 hover:prose-a:text-blue-500 prose-img:rounded-lg prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:p-1 prose-code:rounded prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800 max-w-none">
+					@content
+				</div>
+			</div>
+		</div>
+	}
+}

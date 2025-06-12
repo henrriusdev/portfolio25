@@ -1,0 +1,58 @@
+package editor
+
+import (
+    "github.com/henrriusdev/portfolio/src/utils"
+)
+
+type Props struct {
+    ID string
+    Name string
+    Content string
+    Class string
+}
+
+templ MarkdownEditor(props ...Props) {
+    {{
+        var p Props
+        if len(props) > 0 {
+            p = props[0]
+        }
+        if p.ID == "" {
+            p.ID = utils.RandomID()
+        }
+    }}
+    <div 
+        id={ p.ID } 
+        class={ utils.TwMerge("w-full", p.Class) }
+    >
+            <!-- Editor -->
+            <div class="py-4">
+                <div id={ p.ID + "-toast-editor" }></div>
+            </div>
+        <!-- Hidden input for form submission -->
+        <input 
+            type="hidden" 
+            name={ p.Name }
+            id={ p.ID + "-hidden" }
+        />
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.toastui && window.toastui.Editor) {
+                var editor = new toastui.Editor({
+                    el: document.getElementById("{{ p.ID }}-toast-editor"),
+                    height: '300px',
+                    initialEditType: 'wysiwyg',
+                    previewStyle: 'vertical',
+                    initialValue: "{{ p.Content }}",
+                    events: {
+                        change: function() {
+                            document.getElementById("{{ p.ID }}-hidden").value = editor.getMarkdown();
+                        }
+                    }
+                });
+                document.getElementById("{{ p.ID }}-hidden").value = editor.getMarkdown();
+            }
+        });
+        </script>
+    </div>
+}

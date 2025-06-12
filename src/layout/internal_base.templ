@@ -1,14 +1,16 @@
 package layout
 
-import "github.com/henrriusdev/portfolio/src/components"
-import "github.com/henrriusdev/portfolio/src/components/modal"
-import "github.com/henrriusdev/portfolio/src/components/popover"
-import "github.com/henrriusdev/portfolio/src/components/selectbox"
-import "github.com/henrriusdev/portfolio/src/components/datepicker"
-import "github.com/henrriusdev/portfolio/src/components/calendar"
-import "github.com/henrriusdev/portfolio/src/components/input"
-import "github.com/henrriusdev/portfolio/src/components/textarea"
-import "github.com/henrriusdev/portfolio/src/components/label"
+import (
+	"github.com/henrriusdev/portfolio/src/components"
+	"github.com/henrriusdev/portfolio/src/components/modal"
+	"github.com/henrriusdev/portfolio/src/components/popover"
+	"github.com/henrriusdev/portfolio/src/components/selectbox"
+	"github.com/henrriusdev/portfolio/src/components/datepicker"
+	"github.com/henrriusdev/portfolio/src/components/calendar"
+	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/components/textarea"
+	"github.com/henrriusdev/portfolio/src/components/label"
+)
 
 templ BaseInternal(title string) {
 	<!DOCTYPE html>
@@ -19,8 +21,12 @@ templ BaseInternal(title string) {
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<!-- Tailwind CSS (output) -->
 			<link href="/static/app.css" rel="stylesheet"/>
+			<!-- Toast UI Editor CSS -->
+			<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 			<!-- Alpine.js -->
 			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+			<!-- Toast UI Editor JS -->
+			<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 			<!-- Theme switcher script -->
 			@ThemeSwitcherScript()
 			@components.TechCardScript()
