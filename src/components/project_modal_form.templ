@@ -3,6 +3,7 @@ package components
 import (
 	"github.com/henrriusdev/portfolio/pkg/model"
 	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/checkbox"
 	"github.com/henrriusdev/portfolio/src/components/form"
 	"github.com/henrriusdev/portfolio/src/components/input"
 	"github.com/henrriusdev/portfolio/src/components/modal"
@@ -14,14 +15,6 @@ import (
 
 // ✅ Ensures script loads only once
 var projectFormHandle = templ.NewOnceHandle()
-
-func isEdit(isEditing bool) string {
-	if isEditing {
-		return "Update"
-	}
-
-	return "Create"
-}
 
 func setSelected(projectTechs []model.Technology, techs []selectbox.Option) []selectbox.Option {
 	var selectedTechs []selectbox.Option
@@ -73,8 +66,6 @@ templ ProjectFormScript() {
 
 templ ProjectModal(modalID string, techs []selectbox.Option, project model.Project) {
 	{{
-		isEditing := project.ID != 0
-
 		// ✅ Prepare JSON Data
 		projectDataJSON := utils.ParseTemplJsonString(project)
 		techsJSON := utils.ParseTemplJsonString(techs)
@@ -82,13 +73,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 	<!-- ✅ Modal Component -->
 	@modal.Modal(modal.Props{ID: modalID, Class: "max-w-lg mx-auto"}) {
 		@modal.Header() {
-			<h3 class="text-xl font-bold">
-				if isEditing {
-					Edit Project
-				} else {
-					Create Project
-				}
-			</h3>
+			<h3 class="text-xl font-bold">Edit Project</h3>
 		}
 		@modal.Body() {
 			<form
@@ -125,13 +110,14 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 					@form.Label(form.LabelProps{For: "projectTechs"}) {
 						Technologies
 					}
-					@selectbox.Select(selectbox.SelectProps{
-						ID:          "projectTechs",
-						Name:        "techs",
-						Placeholder: "Select technologies",
-						Options:     setSelected(project.Techs, techs),
-						Multiple:    true,
-					})
+					<div class="mt-2">
+						@checkbox.CheckboxGroup(checkbox.GroupProps{
+							ID:      "projectTechs",
+							Name:    "techs",
+							Options: setSelected(project.Techs, techs),
+							Class:   "max-h-60 overflow-y-auto",
+						})
+					</div>
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "projectImage"}) {
@@ -141,7 +127,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 						ID:          "projectImage",
 						Name:        "image_url",
 						Placeholder: "Enter image URL",
-						Attributes:  templ.Attributes{"x-model": "project.imageUrls"},
+						Attributes:  templ.Attributes{"x-model": "project.image_url"},
 					})
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
@@ -180,11 +166,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 					Type:       "submit",
 					Attributes: templ.Attributes{"form": "projectFormEdit"},
 				}) {
-					if isEditing {
-						Edit
-					} else {
-						Create
-					}
+					Edit
 				}
 			</div>
 		}

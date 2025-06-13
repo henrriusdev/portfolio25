@@ -11,7 +11,9 @@ import (
 )
 
 func Start(db *gorm.DB) {
-	s := fuego.NewServer()
+	s := fuego.NewServer(
+		fuego.WithAddr("0.0.0.0:9999"),
+	)
 	s.OpenAPI.Description().Info.Title = "Portfolio API"
 	s.OpenAPI.Description().Info.Version = "1.0.0"
 	common.InitStore()

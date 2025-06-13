@@ -1,0 +1,48 @@
+package checkbox
+
+import (
+	"github.com/henrriusdev/portfolio/src/components/selectbox"
+	"github.com/henrriusdev/portfolio/src/utils"
+)
+
+type GroupProps struct {
+	ID         string
+	Name       string
+	Options    []selectbox.Option
+	Class      string
+	Attributes templ.Attributes
+}
+
+templ CheckboxGroup(props ...GroupProps) {
+	{{ var p GroupProps }}
+	if len(props) > 0 {
+		{{ p = props[0] }}
+	}
+	<div 
+		class={ utils.TwMerge("flex flex-wrap gap-2", p.Class) }
+		{ p.Attributes... }
+	>
+		for _, option := range p.Options {
+			{{
+				selectedClass := "bg-background border-border"
+				if option.Selected {
+					selectedClass = "bg-primary/10 border-primary/30"
+				}
+			}}
+			<label class={ utils.TwMerge(
+				"flex items-center gap-2 px-3 py-2 border rounded-md cursor-pointer transition-colors",
+				"hover:bg-gray-100 dark:hover:bg-gray-800",
+				selectedClass,
+			) }>
+				@Checkbox(Props{
+					ID:       p.ID + "-" + option.Value,
+					Name:     p.Name + "[]",  // Añadir [] para indicar que es un array
+					Value:    option.Value,
+					Checked:  option.Selected,
+					Class:    "transition-all",
+				})
+				<span class="text-sm font-medium">{ option.Label }</span>
+			</label>
+		}
+	</div>
+}

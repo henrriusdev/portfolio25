@@ -11,6 +11,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"github.com/henrriusdev/portfolio/pkg/model"
 	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/checkbox"
 	"github.com/henrriusdev/portfolio/src/components/form"
 	"github.com/henrriusdev/portfolio/src/components/input"
 	"github.com/henrriusdev/portfolio/src/components/modal"
@@ -22,14 +23,6 @@ import (
 
 // ✅ Ensures script loads only once
 var projectFormHandle = templ.NewOnceHandle()
-
-func isEdit(isEditing bool) string {
-	if isEditing {
-		return "Update"
-	}
-
-	return "Create"
-}
 
 func setSelected(projectTechs []model.Technology, techs []selectbox.Option) []selectbox.Option {
 	var selectedTechs []selectbox.Option
@@ -88,7 +81,7 @@ func ProjectFormScript() templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(templ.GetNonce(ctx))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_modal_form.templ`, Line: 45, Col: 37}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_modal_form.templ`, Line: 38, Col: 37}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -130,8 +123,6 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 		}
 		ctx = templ.ClearChildren(ctx)
 
-		isEditing := project.ID != 0
-
 		// ✅ Prepare JSON Data
 		projectDataJSON := utils.ParseTemplJsonString(project)
 		techsJSON := utils.ParseTemplJsonString(techs)
@@ -163,22 +154,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<h3 class=\"text-xl font-bold\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				if isEditing {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "Edit Project")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-				} else {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "Create Project")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</h3>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<h3 class=\"text-xl font-bold\">Edit Project</h3>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -188,7 +164,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, " ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -204,20 +180,20 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<form id=\"projectFormEdit\" x-data=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<form id=\"projectFormEdit\" x-data=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(`projectFormData(` + string(projectDataJSON) + `, ` + string(techsJSON) + `)`)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_modal_form.templ`, Line: 96, Col: 90}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/project_modal_form.templ`, Line: 81, Col: 90}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" x-bind:action=\"formAction()\" method=\"POST\" class=\"space-y-4\"><input type=\"hidden\" name=\"id\" x-model=\"project.ID\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" x-bind:action=\"formAction()\" method=\"POST\" class=\"space-y-4\"><input type=\"hidden\" name=\"id\" x-model=\"project.ID\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -245,7 +221,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "Title")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "Title")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -255,7 +231,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -298,7 +274,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "Description")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "Description")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -308,7 +284,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -351,7 +327,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "Technologies")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "Technologies")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -361,17 +337,20 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, " <div class=\"mt-2\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = selectbox.Select(selectbox.SelectProps{
-						ID:          "projectTechs",
-						Name:        "techs",
-						Placeholder: "Select technologies",
-						Options:     setSelected(project.Techs, techs),
-						Multiple:    true,
+					templ_7745c5c3_Err = checkbox.CheckboxGroup(checkbox.GroupProps{
+						ID:      "projectTechs",
+						Name:    "techs",
+						Options: setSelected(project.Techs, techs),
+						Class:   "max-h-60 overflow-y-auto",
 					}).Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -405,7 +384,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "Image URL")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "Image URL")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -415,7 +394,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -423,7 +402,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 						ID:          "projectImage",
 						Name:        "image_url",
 						Placeholder: "Enter image URL",
-						Attributes:  templ.Attributes{"x-model": "project.imageUrls"},
+						Attributes:  templ.Attributes{"x-model": "project.image_url"},
 					}).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -458,7 +437,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "Live URL")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "Live URL")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -468,7 +447,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -511,7 +490,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "Repo URL")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "Repo URL")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -521,7 +500,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, " ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -540,7 +519,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</form>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</form>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -550,7 +529,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, " ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, " ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -566,7 +545,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<div class=\"flex gap-2\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"flex gap-2\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -594,7 +573,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "Cancel")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "Cancel")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -622,16 +601,9 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					if isEditing {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "Edit")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-					} else {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "Create")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "Edit")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
 					}
 					return nil
 				})
@@ -643,7 +615,7 @@ func ProjectModal(modalID string, techs []selectbox.Option, project model.Projec
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

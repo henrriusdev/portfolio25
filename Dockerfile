@@ -1,5 +1,5 @@
 # Etapa de compilación
-FROM golang:1.21-alpine AS builder
+FROM golang:1.24-alpine AS builder
 
 # Instalar dependencias necesarias
 RUN apk add --no-cache git gcc musl-dev
@@ -17,7 +17,7 @@ RUN go mod download
 COPY . .
 
 # Compilar la aplicación
-RUN go build -o portfolio
+RUN go build -o portfolio ./cmd/app
 
 # Etapa de ejecución
 FROM alpine:latest
@@ -35,8 +35,8 @@ WORKDIR /app
 COPY --from=builder /app/portfolio /app/
 
 # Copiar archivos estáticos y plantillas
-COPY --from=builder /app/static /app/static
 COPY --from=builder /app/src /app/src
+COPY --from=builder /app/.env /app/.env
 
 # Asegurar que los directorios tienen los permisos correctos
 RUN chown -R appuser:appuser /app

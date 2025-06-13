@@ -10,7 +10,26 @@ import (
 	"github.com/henrriusdev/portfolio/src/components/selectbox"
 	"github.com/henrriusdev/portfolio/src/components/textarea"
 	"github.com/henrriusdev/portfolio/src/layout"
+	"github.com/henrriusdev/portfolio/src/components/checkbox"
+	"strconv"
 )
+
+func setSelected(projectTechs []model.Technology, techs []selectbox.Option) []selectbox.Option {
+	var selectedTechs []selectbox.Option
+
+	for _, tech := range techs {
+		for _, projectTech := range projectTechs {
+			id := strconv.FormatUint(uint64(projectTech.ID), 10)
+			if tech.Value == id {
+				tech.Selected = true
+			}
+		}
+
+		selectedTechs = append(selectedTechs, tech)
+	}
+
+	return selectedTechs
+}
 
 templ Projects(techs []selectbox.Option, projects ...model.Project) {
 	@layout.BaseInternal("Projects - HenrriusDev") {
@@ -78,17 +97,12 @@ templ Projects(techs []selectbox.Option, projects ...model.Project) {
 							Technologies
 						}
 						<div class="flex flex-wrap gap-2">
-							for _, tech := range techs {
-								<label class="flex items-center gap-1 text-sm">
-									<input
-										type="checkbox"
-										name="techs"
-										value={ tech.Value }
-										class="accent-primary"
-									/>
-									{ tech.Label }
-								</label>
-							}
+							@checkbox.CheckboxGroup(checkbox.GroupProps{
+								ID:      "projectTechs",
+								Name:    "techs",
+								Options: techs,
+								Class:   "max-h-60 overflow-y-auto",
+							})
 						</div>
 					}
 					@form.Item(form.ItemProps{Class: "mb-4"}) {
