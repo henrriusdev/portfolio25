@@ -22,6 +22,7 @@ func Start(db *gorm.DB) {
 	portfolioRoutes(s, services)
 	dashboardRoutes(s, services)
 	blogRoutes(s, services)
+	categoryRoutes(s, services)
 
 	if err := s.Run(); err != nil {
 		log.Fatal(err)
@@ -37,5 +38,6 @@ func newServices(db *gorm.DB) service.Service {
 		User:       service.NewUser(db),
 		Blog:       service.NewBlog(db),
 		Visit:      service.NewVisit(db),
+		Category:   service.NewCategory(db),
 	}
 }

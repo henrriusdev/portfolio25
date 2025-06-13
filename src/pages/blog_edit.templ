@@ -9,15 +9,15 @@ import (
 	"github.com/henrriusdev/portfolio/src/layout"
 )
 
-templ BlogEdit(post model.BlogPost) {
-	@layout.BaseInternal("Crear o Editar Post") {
+templ BlogEdit(post model.BlogPost, allCategories []model.Category) {
+	@layout.BaseInternal("Create or Edit Post") {
 		<div class="container mx-auto py-8">
 			<div class="max-w-4xl mx-auto">
 				<h1 class="text-4xl font-bold mb-8">
 					if post.ID == 0 {
-						Crear Post
+						Create Post
 					} else {
-						Editar Post
+						Edit Post
 					}
 				</h1>
 				<form method="POST" action="/blog/save" class="space-y-6">
@@ -38,6 +38,31 @@ templ BlogEdit(post model.BlogPost) {
 							Content: post.Content,
 						})
 					</div>
+					
+					<!-- Categories -->
+					<div class="space-y-2">
+						<label class="text-sm font-medium">Categories</label>
+						<div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+							for _, category := range allCategories {
+								<div class="flex items-center">
+									<input 
+										type="checkbox" 
+										id={ "category-" + fmt.Sprint(category.ID) } 
+										name="categories" 
+										value={ fmt.Sprint(category.ID) }
+										class="mr-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+										checked?={ IsCategorySelected(post.Categories, category.ID) }
+									/>
+									<label for={ "category-" + fmt.Sprint(category.ID) } class="text-sm text-gray-700 dark:text-gray-300">
+										{ category.Name }
+									</label>
+								</div>
+							}
+						</div>
+						<div class="mt-2">
+							<a href="/categories" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Manage categories</a>
+						</div>
+					</div>
 					<div class="flex gap-4">
 						<a href="/blog">
 							@button.Button(button.Props{
@@ -50,9 +75,9 @@ templ BlogEdit(post model.BlogPost) {
 							Type: "submit",
 						}) {
 							if post.ID == 0 {
-								Crear Post
+								Create Post
 							} else {
-								Actualizar Post
+								Update Post
 							}
 						}
 					</div>

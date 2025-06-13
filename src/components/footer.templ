@@ -4,8 +4,8 @@ import "github.com/henrriusdev/portfolio/pkg/model"
 import "github.com/henrriusdev/portfolio/src/components/card"
 
 templ Footer(links ...model.Contact) {
-	<footer class="w-full flex flex-col justify-center items-start p-5 pt-8D">
-		<h2 class="text-3xl font-bold mb-8 text-center">Technologies</h2>
+	<footer class="w-full flex flex-col justify-center items-center p-5 pt-8D">
+		<h2 class="text-3xl font-bold mb-8 text-center">Contact</h2>
 		<div class="flex justify-center gap-4 mt-4 items-center w-full flex-wrap">
 			for _, link := range links {
 				@card.Card(card.Props{Class: "py-4 bg-transparent max-w-[150px] w-full"}) {

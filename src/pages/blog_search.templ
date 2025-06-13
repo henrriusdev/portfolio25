@@ -1,0 +1,97 @@
+package pages
+
+import (
+	"github.com/henrriusdev/portfolio/pkg/model"
+	"github.com/henrriusdev/portfolio/src/layout"
+	"github.com/henrriusdev/portfolio/pkg/common"
+	"strconv"
+)
+
+templ BlogSearch(posts []model.BlogPost, query string) {
+	@layout.Base("Search: " + query) {
+		<div class="container mx-auto py-12">
+			<div class="max-w-4xl mx-auto">
+				<div class="mb-8">
+					<h1 class="text-4xl font-bold mb-4 text-center">Blog Search</h1>
+					<form action="/blog/search" method="get" class="flex items-center justify-center">
+						<div class="relative w-full max-w-lg">
+							<input 
+								type="text" 
+								name="q" 
+								value={query}
+								placeholder="Search posts..." 
+								class="w-full px-4 py-2 pr-10 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+							/>
+							<button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2">
+								<svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+								</svg>
+							</button>
+						</div>
+					</form>
+				</div>
+
+				if len(posts) > 0 {
+					<p class="text-center mb-6 text-gray-600 dark:text-gray-400">
+						if query != "" {
+							Showing { strconv.Itoa(len(posts)) } results for "{ query }"
+						} else {
+							Showing all posts
+						}
+					</p>
+					<div class="grid gap-8">
+						for _, post := range posts {
+							<article class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+								<div class="p-6">
+									<h2 class="text-2xl font-bold mb-4 hover:text-blue-500 transition-colors">
+										<a href={ templ.SafeURL("/blog/" + strconv.Itoa(int(post.ID))) }>
+											{ post.Title }
+										</a>
+									</h2>
+									<div class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+										<span>{ post.CreatedAt.Format("January 2, 2006") }</span>
+									</div>
+									<p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+										if len(post.Content) > 200 {
+											{ common.StripMarkdown(post.Content[:200]) + "..." }
+										} else {
+											{ common.StripMarkdown(post.Content) }
+										}
+									</p>
+									<a
+										href={ templ.SafeURL("/blog/" + strconv.Itoa(int(post.ID))) }
+										class="text-blue-500 hover:text-blue-600 font-medium inline-flex items-center"
+									>
+										Read more
+										<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+										</svg>
+									</a>
+								</div>
+							</article>
+						}
+					</div>
+				} else {
+					<div class="text-center py-12">
+						<svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+						</svg>
+						<h3 class="mt-2 text-lg font-medium text-gray-900 dark:text-gray-100">No results found</h3>
+						<p class="mt-1 text-gray-500 dark:text-gray-400">
+							if query != "" {
+								No posts match "{ query }"
+							} else {
+								No posts published yet
+							}
+						</p>
+						<div class="mt-6">
+							<a href="/blog" class="text-blue-500 hover:text-blue-600 font-medium">
+								Back to blog
+							</a>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	}
+}

@@ -85,7 +85,7 @@ type BlogPost struct {
 }
 
 type Category struct {
-	Name        string `gorm:"not null"`
+	Name        string     `gorm:"not null"`
 	Description string
 	BlogPosts   []BlogPost `gorm:"many2many:blog_post_categories;"` // Many-to-many relationship
 	gorm.Model
@@ -95,3 +95,5 @@ type BlogPostCategory struct {
 	BlogPostID uint `gorm:"primaryKey"`
 	CategoryID uint `gorm:"primaryKey"`
 }
+
+

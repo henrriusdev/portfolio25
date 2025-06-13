@@ -11,6 +11,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"github.com/henrriusdev/portfolio/pkg/model"
 	"github.com/henrriusdev/portfolio/src/layout"
+	"strconv"
 )
 
 func BlogPost(post model.BlogPost, content templ.Component) templ.Component {
@@ -53,7 +54,7 @@ func BlogPost(post model.BlogPost, content templ.Component) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(post.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/pages/blog_post.templ`, Line: 13, Col: 53}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/pages/blog_post.templ`, Line: 14, Col: 53}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -64,15 +65,61 @@ func BlogPost(post model.BlogPost, content templ.Component) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(post.CreatedAt.Format("2006-01-02"))
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(post.CreatedAt.Format("January 2, 2006"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/pages/blog_post.templ`, Line: 16, Col: 50}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/pages/blog_post.templ`, Line: 17, Col: 55}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></div></div></div><div class=\"prose prose-lg dark:prose-invert max-w-none\n\t\t\t\t\t/* Tipografía y espaciado */\n\t\t\t\t\tprose-p:text-gray-800 dark:prose-p:text-gray-200 prose-p:leading-relaxed\n\t\t\t\t\tprose-li:my-1\n\t\t\t\t\t\n\t\t\t\t\t/* Encabezados */\n\t\t\t\t\tprose-headings:font-bold prose-headings:text-primary\n\t\t\t\t\tprose-h1:text-4xl prose-h1:mb-8 prose-h1:pb-2 prose-h1:border-b prose-h1:border-gray-200 dark:prose-h1:border-gray-700\n\t\t\t\t\tprose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-4\n\t\t\t\t\tprose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3\n\t\t\t\t\t\n\t\t\t\t\t/* Enlaces */\n\t\t\t\t\tprose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-500 dark:hover:prose-a:text-blue-300\n\t\t\t\t\tprose-a:font-medium prose-a:underline prose-a:underline-offset-2 prose-a:decoration-blue-300 dark:prose-a:decoration-blue-700\n\t\t\t\t\t\n\t\t\t\t\t/* Imágenes */\n\t\t\t\t\tprose-img:rounded-lg prose-img:shadow-md prose-img:mx-auto\n\t\t\t\t\t\n\t\t\t\t\t/* Código */\n\t\t\t\t\tprose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:p-1 prose-code:rounded prose-code:text-sm\n\t\t\t\t\tprose-pre:bg-gray-100 dark:prose-pre:bg-gray-800 prose-pre:rounded-lg prose-pre:shadow-sm prose-pre:p-4 prose-pre:overflow-x-auto\n\t\t\t\t\t\n\t\t\t\t\t/* Listas */\n\t\t\t\t\tprose-ul:pl-6 prose-ol:pl-6\n\t\t\t\t\t\n\t\t\t\t\t/* Tablas */\n\t\t\t\t\tprose-table:border-collapse prose-table:w-full\n\t\t\t\t\tprose-thead:bg-gray-100 dark:prose-thead:bg-gray-800\n\t\t\t\t\tprose-th:p-2 prose-th:text-left prose-th:font-semibold\n\t\t\t\t\tprose-td:p-2 prose-td:border-t prose-td:border-gray-200 dark:prose-td:border-gray-700\n\t\t\t\t\t\n\t\t\t\t\t/* Citas */\n\t\t\t\t\tprose-blockquote:border-l-4 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-600\n\t\t\t\t\tprose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-300\n\t\t\t\t\"><!-- Estilos personalizados para las extensiones de Goldmark --><style>\n\t\t\t\t\t\t/* Tabla de contenidos */\n\t\t\t\t\t\t.toc-container {\n\t\t\t\t\t\t\tmargin: 2rem 0;\n\t\t\t\t\t\t\tpadding: 1.5rem;\n\t\t\t\t\t\t\tborder-radius: 0.5rem;\n\t\t\t\t\t\t\tbackground-color: rgba(243, 244, 246, 0.7);\n\t\t\t\t\t\t\tborder: 1px solid #e5e7eb;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.dark .toc-container {\n\t\t\t\t\t\t\tbackground-color: rgba(31, 41, 55, 0.7);\n\t\t\t\t\t\t\tborder-color: #374151;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t/* Anclas de encabezados */\n\t\t\t\t\t\t.anchor {\n\t\t\t\t\t\t\tmargin-left: 0.25rem;\n\t\t\t\t\t\t\topacity: 0.5;\n\t\t\t\t\t\t\ttransition: opacity 0.2s;\n\t\t\t\t\t\t\ttext-decoration: none;\n\t\t\t\t\t\t}\n\t\t\t\t\t\th1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor {\n\t\t\t\t\t\t\topacity: 1;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t/* Resaltado de código */\n\t\t\t\t\t\t.chroma {\n\t\t\t\t\t\t\tborder-radius: 0.375rem;\n\t\t\t\t\t\t\toverflow: hidden;\n\t\t\t\t\t\t\tmargin: 1.5rem 0;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.chroma .lnt, .chroma .line-numbers {\n\t\t\t\t\t\t\tpadding-right: 1rem;\n\t\t\t\t\t\t\tborder-right: 1px solid #e5e7eb;\n\t\t\t\t\t\t\tcolor: #9ca3af;\n\t\t\t\t\t\t\tuser-select: none;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.dark .chroma .lnt, .dark .chroma .line-numbers {\n\t\t\t\t\t\t\tborder-right-color: #374151;\n\t\t\t\t\t\t\tcolor: #6b7280;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t/* Listas de tareas */\n\t\t\t\t\t\t.task-list-item {\n\t\t\t\t\t\t\tlist-style-type: none;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.task-list-item input[type=\"checkbox\"] {\n\t\t\t\t\t\t\tmargin-right: 0.5rem;\n\t\t\t\t\t\t}\n\t\t\t\t\t</style>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></div></div><!-- Categories -->")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if len(post.Categories) > 0 {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"flex flex-wrap gap-2 mt-3\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				for _, category := range post.Categories {
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<span class=\"px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-full\"><a href=\"")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var5 templ.SafeURL
+					templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(templ.SafeURL("/categories/" + strconv.Itoa(int(category.ID))))
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/pages/blog_post.templ`, Line: 26, Col: 81}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" class=\"no-underline\">")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var6 string
+					templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(category.Name)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/pages/blog_post.templ`, Line: 26, Col: 120}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</a></span>")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div><div class=\"prose prose-lg dark:prose-invert max-w-none\n\t\t\t\t\t/* Typography and spacing */\n\t\t\t\t\tprose-p:text-gray-800 dark:prose-p:text-gray-200 prose-p:leading-relaxed\n\t\t\t\t\tprose-li:my-1\n\t\t\t\t\t\n\t\t\t\t\t/* Headings */\n\t\t\t\t\tprose-headings:font-bold prose-headings:text-primary\n\t\t\t\t\tprose-h1:text-4xl prose-h1:mb-8 prose-h1:pb-2 prose-h1:border-b prose-h1:border-gray-200 dark:prose-h1:border-gray-700\n\t\t\t\t\tprose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-4\n\t\t\t\t\tprose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3\n\t\t\t\t\t\n\t\t\t\t\t/* Links */\n\t\t\t\t\tprose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:text-blue-500 dark:hover:prose-a:text-blue-300\n\t\t\t\t\tprose-a:font-medium prose-a:underline prose-a:underline-offset-2 prose-a:decoration-blue-300 dark:prose-a:decoration-blue-700\n\t\t\t\t\t\n\t\t\t\t\t/* Images */\n\t\t\t\t\tprose-img:rounded-lg prose-img:shadow-md prose-img:mx-auto\n\t\t\t\t\t\n\t\t\t\t\t/* Lists */\n\t\t\t\t\tprose-ul:pl-6 prose-ol:pl-6\n\t\t\t\t\t\n\t\t\t\t\t/* Tables */\n\t\t\t\t\tprose-table:border-collapse prose-table:w-full\n\t\t\t\t\tprose-thead:bg-gray-100 dark:prose-thead:bg-gray-800\n\t\t\t\t\tprose-th:p-2 prose-th:text-left prose-th:font-semibold\n\t\t\t\t\tprose-td:p-2 prose-td:border-t prose-td:border-gray-200 dark:prose-td:border-gray-700\n\t\t\t\t\t\n\t\t\t\t\t/* Quotes */\n\t\t\t\t\tprose-blockquote:border-l-4 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-600\n\t\t\t\t\tprose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-300\n\t\t\t\t\"><!-- Custom styles for Goldmark extensions --><style>\n\n\t\t\t\t\t\th1#table-of-contents {\n\t\t\t\t\t\t\tfont-size: 2rem !important;\n\t\t\t\t\t\t}\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t/* Table of contents */\n\t\t\t\t\t\t.toc-container {\n\t\t\t\t\t\t\tmargin: 2rem 0;\n\t\t\t\t\t\t\tpadding: 1.5rem;\n\t\t\t\t\t\t\tborder-radius: 0.5rem;\n\t\t\t\t\t\t\tbackground-color: rgba(243, 244, 246, 0.7);\n\t\t\t\t\t\t\tborder: 1px solid #e5e7eb;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.dark .toc-container {\n\t\t\t\t\t\t\tbackground-color: rgba(31, 41, 55, 0.7);\n\t\t\t\t\t\t\tborder-color: #374151;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t/* Heading anchors */\n\t\t\t\t\t\t.anchor {\n\t\t\t\t\t\t\tmargin-left: 0.25rem;\n\t\t\t\t\t\t\topacity: 0.5;\n\t\t\t\t\t\t\ttransition: opacity 0.2s;\n\t\t\t\t\t\t\ttext-decoration: none;\n\t\t\t\t\t\t}\n\t\t\t\t\t\th1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor {\n\t\t\t\t\t\t\topacity: 1;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t/* Task lists */\n\t\t\t\t\t\t.task-list-item {\n\t\t\t\t\t\t\tlist-style-type: none;\n\t\t\t\t\t\t}\n\t\t\t\t\t\t.task-list-item input[type=\"checkbox\"] {\n\t\t\t\t\t\t\tmargin-right: 0.5rem;\n\t\t\t\t\t\t}\n\t\t\t\t\t</style>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -80,13 +127,13 @@ func BlogPost(post model.BlogPost, content templ.Component) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = layout.Base("Post").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = layout.Base(post.Title).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
