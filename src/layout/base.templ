@@ -15,6 +15,7 @@ templ ThemeSwitcherScript() {
 						return this.isDark ? 'bg-gray-900 text-white' : 'bg-white! text-black'
 					},
 					toggleTheme() {
+						// Toggle theme
 						this.isDark = !this.isDark;
 						localStorage.setItem('appTheme', this.isDark ? 'dark' : 'light');
 						document.documentElement.classList.toggle('dark', this.isDark);
@@ -27,13 +28,15 @@ templ ThemeSwitcherScript() {
 
 templ Base(title string) {
 	<!DOCTYPE html>
-	<html lang="en" class="h-full">
+	<html lang="en" class="h-full transition-colors duration-300">
 		<head>
-			<title>{ title } | HenrriusDev</title>
+			<title>{ title } | HenrriusDev 👨🏻‍💻</title>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<!-- Tailwind CSS (output) -->
 			<link href="/static/app.css" rel="stylesheet"/>
+			<!-- Animations CSS -->
+			<link href="/static/animations.css" rel="stylesheet"/>
 			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 			<!-- Theme switcher script -->
 			@ThemeSwitcherScript()
@@ -41,6 +44,7 @@ templ Base(title string) {
 		<body
 			x-data="themeHandler"
 			x-bind:class="themeClasses"
+			class="transition-colors duration-300"
 		>
 			@components.Navbar()
 			{ children... }

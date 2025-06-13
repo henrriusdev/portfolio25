@@ -11,6 +11,7 @@ templ themeSwitcherHandler() {
 		<script nonce={ templ.GetNonce(ctx) }>
 			document.addEventListener('alpine:init', () => {
 				Alpine.data('themeSwitcherHandler', () => ({
+					isAnimating: false,
 					isDarkMode() {
 						return this.isDark
 					},
@@ -43,10 +44,18 @@ templ ThemeSwitcher(props ThemeSwitcherProps) {
 
 templ DynamicThemeIcon() {
 	<div x-data="themeSwitcherHandler">
-		<span x-show="isDarkMode" class="block">
+		<span 
+			x-show="isDarkMode" 
+			class="block transition-all duration-300" 
+			x-transition:enter="animate-spin"
+		>
 			@LightIcon()
 		</span>
-		<span x-show="isLightMode" class="block">
+		<span 
+			x-show="isLightMode" 
+			class="block transition-all duration-300" 
+			x-transition:enter="animate-spin"
+		>
 			@DarkIcon()
 		</span>
 	</div>

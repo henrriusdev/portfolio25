@@ -1,109 +1,14 @@
 package pages
 
 import (
-	"github.com/henrriusdev/portfolio/pkg/model"
-	"github.com/henrriusdev/portfolio/src/components"
 	"github.com/henrriusdev/portfolio/src/layout"
-	"time"
 )
 
-func DefaultProjects() []model.Project {
-	return []model.Project{
-		{
-			Title:       "Sample Project",
-			Description: "This is a sample project for demonstration purposes.",
-			ImageURL:    "/assets/sample_project.png",
-			URL:         "https://example.com",
-			Repo:        "https://github.com/example/repo",
-			Techs: []model.Technology{
-				{Name: "Go"},
-				{Name: "Tailwind"},
-			},
-		},
-	}
-}
-
-func DefaultExperiences() []model.Experience {
-	return []model.Experience{
-		{
-			Company:     "Example Corp",
-			Role:        "Software Engineer",
-			StartDate:   time.Date(2021, time.January, 1, 0, 0, 0, 0, time.UTC),
-			EndDate:     nil,
-			Description: "Working on innovative solutions.",
-		},
-	}
-}
-
-func DefaultBlogPosts() []model.BlogPost {
-	return []model.BlogPost{
-		{
-			Title:    "Welcome to My Blog",
-			Content:  "This is a sample blog post to get you started.",
-			ImageURL: "/assets/sample_blog.png",
-			Author:   model.User{Username: "admin"},
-		},
-	}
-}
-
-func truncate(s string, max int) string {
-	if len(s) > max {
-		return s[:max] + "..."
-	}
-	return s
-}
-
 templ Dashboard() {
-	{{ projects := DefaultProjects() }}
-	{{ experiences := DefaultExperiences() }}
-	{{ posts := DefaultBlogPosts() }}
-	@layout.BaseInternal("Dashboard - HenrriusDev") {
+	@layout.BaseInternal("Dashboard") {
 		<div class="container mx-auto px-4 py-8">
 			<h1 class="text-5xl font-bold mb-6">Dashboard</h1>
 			<p>Welcome to the dashboard</p>
-			<!-- Projects Section -->
-			<section class="mb-8">
-				<h2 class="text-2xl font-semibold mb-4">Projects</h2>
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-					for _, p := range projects {
-						@components.ProjectCard(p, false)
-					}
-				</div>
-			</section>
-			<!-- Experience Section -->
-			<section class="mb-8">
-				<h2 class="text-2xl font-semibold mb-4">Experience</h2>
-				<div class="space-y-4">
-					for _, exp := range experiences {
-						<div class="p-4 bg-white dark:bg-gray-800 shadow rounded-lg">
-							<h3 class="text-xl font-bold">{ exp.Role } at { exp.Company }</h3>
-							<p class="text-sm text-gray-600 dark:text-gray-400">{ exp.Description }</p>
-							<p class="text-xs text-gray-500">
-								{ exp.StartDate.Format("Jan 2006") } - 
-								if exp.EndDate != nil {
-									exp.EndDate.Format("Jan 2006")
-								} else {
-									"Present"
-								}
-							</p>
-						</div>
-					}
-				</div>
-			</section>
-			<section class="mb-8">
-				<h2 class="text-2xl font-semibold mb-4">Blog Posts</h2>
-				<div class="space-y-4">
-					for _, post := range posts {
-						<div class="p-4 bg-white dark:bg-gray-800 shadow rounded-lg">
-							<h3 class="text-xl font-bold">{ post.Title }</h3>
-							<p class="text-sm text-gray-600 dark:text-gray-400">{ truncate(post.Content, 100) }</p>
-							<p class="text-xs text-gray-500">
-								by { post.Author.Username } on { post.CreatedAt.Format("Jan 2, 2006") }
-							</p>
-						</div>
-					}
-				</div>
-			</section>
 		</div>
 	}
 }

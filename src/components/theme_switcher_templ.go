@@ -60,7 +60,7 @@ func themeSwitcherHandler() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\r\n\t\t\tdocument.addEventListener('alpine:init', () => {\r\n\t\t\t\tAlpine.data('themeSwitcherHandler', () => ({\r\n\t\t\t\t\tisDarkMode() {\r\n\t\t\t\t\t\treturn this.isDark\r\n\t\t\t\t\t},\r\n\t\t\t\t\tisLightMode() {\r\n\t\t\t\t\t\treturn !this.isDark\r\n\t\t\t\t\t}\r\n\t\t\t\t}))\r\n\t\t\t})\r\n\t\t</script>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\n\t\t\tdocument.addEventListener('alpine:init', () => {\n\t\t\t\tAlpine.data('themeSwitcherHandler', () => ({\n\t\t\t\t\tisAnimating: false,\n\t\t\t\t\tisDarkMode() {\n\t\t\t\t\t\treturn this.isDark\n\t\t\t\t\t},\n\t\t\t\t\tisLightMode() {\n\t\t\t\t\t\treturn !this.isDark\n\t\t\t\t\t}\n\t\t\t\t}))\n\t\t\t})\n\t\t</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -157,7 +157,7 @@ func DynamicThemeIcon() templ.Component {
 			templ_7745c5c3_Var6 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div x-data=\"themeSwitcherHandler\"><span x-show=\"isDarkMode\" class=\"block\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div x-data=\"themeSwitcherHandler\"><span x-show=\"isDarkMode\" class=\"block transition-all duration-300\" x-transition:enter=\"animate-spin\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -165,7 +165,7 @@ func DynamicThemeIcon() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span> <span x-show=\"isLightMode\" class=\"block\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span> <span x-show=\"isLightMode\" class=\"block transition-all duration-300\" x-transition:enter=\"animate-spin\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

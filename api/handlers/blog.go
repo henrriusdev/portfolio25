@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"net/http"
 	"strconv"
+	"strings"
 
 	chromahtml "github.com/alecthomas/chroma/formatters/html"
 	"github.com/go-fuego/fuego"
@@ -138,8 +139,11 @@ func (b *Blog) View(c fuego.ContextNoBody) (fuego.Templ, error) {
 		),
 	)
 
+	// Normalizar saltos de línea para asegurar compatibilidad con SQLite
+	normalizedContent := strings.ReplaceAll(post.Content, "\r\n", "\n")
+	
 	var buf bytes.Buffer
-	if err := markdown.Convert([]byte(post.Content), &buf); err != nil {
+	if err := markdown.Convert([]byte(normalizedContent), &buf); err != nil {
 		return nil, err
 	}
 	return pages.BlogPost(*post, common.Unsafe(buf.String())), nil
@@ -214,7 +218,8 @@ func (b *Blog) Save(c fuego.ContextWithBody[BlogPostForm], user *model.User) (mo
 	// Update post fields
 	post.ID = form.ID
 	post.Title = form.Title
-	post.Content = form.Content
+	// Normalizar saltos de línea para asegurar compatibilidad con SQLite
+	post.Content = strings.ReplaceAll(form.Content, "\r\n", "\n")
 	post.AuthorID = user.ID
 	post.Author = *user
 	post.Categories = []model.Category{} // Initialize empty slice

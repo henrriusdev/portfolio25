@@ -54,14 +54,14 @@ func (s *Blog) Update(post *model.BlogPost) error {
 // SearchPosts busca posts por término de búsqueda en título y contenido
 func (s *Blog) SearchPosts(query string) ([]model.BlogPost, error) {
 	var posts []model.BlogPost
-	
+
 	// Usar LIKE para buscar en título y contenido
 	err := s.DB.Preload("Author").Preload("Categories").Where(
-		"title LIKE ? OR content LIKE ?", 
-		"%"+query+"%", 
+		"title LIKE ? OR content LIKE ?",
+		"%"+query+"%",
 		"%"+query+"%",
 	).Find(&posts).Error
-	
+
 	return posts, err
 }
 

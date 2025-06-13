@@ -57,7 +57,7 @@ func ThemeSwitcherScript() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\n\t\t\t// Initial theme setup\n\t\t\tdocument.documentElement.classList.toggle('dark', localStorage.getItem('appTheme') === 'dark');\n\t\t\tdocument.addEventListener('alpine:init', () => {\n\t\t\t\tAlpine.data('themeHandler', () => ({\n\t\t\t\t\tisDark: localStorage.getItem('appTheme') === 'dark',\n\t\t\t\t\tthemeClasses() {\n\t\t\t\t\t\treturn this.isDark ? 'bg-gray-900 text-white' : 'bg-white! text-black'\n\t\t\t\t\t},\n\t\t\t\t\ttoggleTheme() {\n\t\t\t\t\t\tthis.isDark = !this.isDark;\n\t\t\t\t\t\tlocalStorage.setItem('appTheme', this.isDark ? 'dark' : 'light');\n\t\t\t\t\t\tdocument.documentElement.classList.toggle('dark', this.isDark);\n\t\t\t\t\t}\n\t\t\t\t}))\n\t\t\t})\n\t\t</script>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\n\t\t\t// Initial theme setup\n\t\t\tdocument.documentElement.classList.toggle('dark', localStorage.getItem('appTheme') === 'dark');\n\t\t\tdocument.addEventListener('alpine:init', () => {\n\t\t\t\tAlpine.data('themeHandler', () => ({\n\t\t\t\t\tisDark: localStorage.getItem('appTheme') === 'dark',\n\t\t\t\t\tthemeClasses() {\n\t\t\t\t\t\treturn this.isDark ? 'bg-gray-900 text-white' : 'bg-white! text-black'\n\t\t\t\t\t},\n\t\t\t\t\ttoggleTheme() {\n\t\t\t\t\t\t// Toggle theme\n\t\t\t\t\t\tthis.isDark = !this.isDark;\n\t\t\t\t\t\tlocalStorage.setItem('appTheme', this.isDark ? 'dark' : 'light');\n\t\t\t\t\t\tdocument.documentElement.classList.toggle('dark', this.isDark);\n\t\t\t\t\t}\n\t\t\t\t}))\n\t\t\t})\n\t\t</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -92,20 +92,20 @@ func Base(title string) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!doctype html><html lang=\"en\" class=\"h-full\"><head><title>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!doctype html><html lang=\"en\" class=\"h-full transition-colors duration-300\"><head><title>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layout/base.templ`, Line: 32, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/layout/base.templ`, Line: 33, Col: 17}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " | HenrriusDev</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><!-- Tailwind CSS (output) --><link href=\"/static/app.css\" rel=\"stylesheet\"><script defer src=\"https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js\"></script><!-- Theme switcher script -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " | HenrriusDev 👨🏻\u200d💻</title><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><!-- Tailwind CSS (output) --><link href=\"/static/app.css\" rel=\"stylesheet\"><!-- Animations CSS --><link href=\"/static/animations.css\" rel=\"stylesheet\"><script defer src=\"https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js\"></script><!-- Theme switcher script -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -113,7 +113,7 @@ func Base(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</head><body x-data=\"themeHandler\" x-bind:class=\"themeClasses\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</head><body x-data=\"themeHandler\" x-bind:class=\"themeClasses\" class=\"transition-colors duration-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
