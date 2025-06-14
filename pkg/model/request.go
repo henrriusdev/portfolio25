@@ -31,13 +31,13 @@ type SaveProjectRequest struct {
 }
 
 type SaveWorkRequest struct {
-	ID          uint   `form:"id,omitempty" json:"id,omitempty"`
-	Role        string `form:"role" json:"role,omitempty"`
-	Company     string `form:"company" json:"company,omitempty"`
-	Description string `form:"description" json:"description,omitempty"`
-	StartDate   string `form:"start_date" json:"start_date,omitempty"`
-	EndDate     string `form:"end_date" json:"end_date,omitempty"`
-	IsCurrent   bool   `form:"is_current" json:"is_current,omitempty"`
+	ID          uint   `schema:"id,omitempty" json:"id,omitempty"`
+	Role        string `schema:"role" json:"role,omitempty"`
+	Company     string `schema:"company" json:"company,omitempty"`
+	Description string `schema:"description" json:"description,omitempty"`
+	StartDate   string `schema:"start_date" json:"start_date,omitempty"`
+	EndDate     string `schema:"end_date" json:"end_date,omitempty"`
+	IsCurrent   bool   `schema:"is_current" json:"is_current,omitempty"`
 }
 
 type SaveLinkRequest struct {

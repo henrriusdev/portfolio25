@@ -9,10 +9,13 @@ templ themeSwitcherHandler() {
 	{{ handle := templ.NewOnceHandle() }}
 	@handle.Once() {
 		<script nonce={ templ.GetNonce(ctx) }>
-			// Función para manejar el cambio de tema usando JavaScript vanilla
-			function setupThemeSwitcher() {
+			// Función para actualizar los iconos según el tema actual
+			function updateThemeIcons() {
 				const darkIcon = document.getElementById('darkThemeIcon');
 				const lightIcon = document.getElementById('lightThemeIcon');
+				
+				if (!darkIcon || !lightIcon) return; // Salir si los iconos no existen
+				
 				const isDarkMode = document.documentElement.classList.contains('dark');
 				
 				// Mostrar el icono correcto según el tema actual
@@ -20,38 +23,38 @@ templ themeSwitcherHandler() {
 				lightIcon.style.display = isDarkMode ? 'block' : 'none';
 			}
 			
-			// Configurar el cambio de tema cuando se carga la página
-			document.addEventListener('DOMContentLoaded', setupThemeSwitcher);
-			
-			// Función para alternar el tema
-			function toggleTheme() {
+			// Función para manejar el cambio de tema
+			function handleThemeToggle() {
+				// Usar la función global toggleTheme definida en base.templ
+				if (window.toggleTheme) {
+					window.toggleTheme();
+				}
+				
+				// Actualizar los iconos después de un pequeño retraso para permitir que el tema cambie
+				setTimeout(updateThemeIcons, 10);
+				
+				// Añadir animación
 				const isDarkMode = document.documentElement.classList.contains('dark');
 				const darkIcon = document.getElementById('darkThemeIcon');
 				const lightIcon = document.getElementById('lightThemeIcon');
+				const visibleIcon = isDarkMode ? lightIcon : darkIcon;
 				
-				// Cambiar el tema
-				if (isDarkMode) {
-					document.documentElement.classList.remove('dark');
-					localStorage.setItem('theme', 'light');
-					darkIcon.style.display = 'block';
-					lightIcon.style.display = 'none';
-				} else {
-					document.documentElement.classList.add('dark');
-					localStorage.setItem('theme', 'dark');
-					darkIcon.style.display = 'none';
-					lightIcon.style.display = 'block';
+				if (visibleIcon) {
+					visibleIcon.classList.add('animate-spin');
+					setTimeout(() => {
+						visibleIcon.classList.remove('animate-spin');
+					}, 500);
 				}
-				
-				// Añadir animación
-				const visibleIcon = isDarkMode ? darkIcon : lightIcon;
-				visibleIcon.classList.add('animate-spin');
-				setTimeout(() => {
-					visibleIcon.classList.remove('animate-spin');
-				}, 500);
 			}
 			
-			// Exponer la función globalmente para que pueda ser llamada desde el botón
-			window.toggleTheme = toggleTheme;
+			// Configurar los iconos cuando se carga la página
+			document.addEventListener('DOMContentLoaded', updateThemeIcons);
+			
+			// También actualizar inmediatamente para evitar parpadeos
+			updateThemeIcons();
+			
+			// Exponer la función para el botón
+			window.handleThemeToggle = handleThemeToggle;
 		</script>
 	}
 }
@@ -67,7 +70,7 @@ templ ThemeSwitcher(props ThemeSwitcherProps) {
 		Variant: button.VariantGhost,
 		Class:   props.Class,
 		Attributes: templ.Attributes{
-			"onclick": "toggleTheme()",
+			"onclick": "handleThemeToggle()",
 		},
 	}) {
 		@DynamicThemeIcon()

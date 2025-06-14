@@ -18,7 +18,7 @@ templ Links(links ...model.Contact) {
 			<div class="flex justify-end mb-8">
 				@modal.Trigger(modal.TriggerProps{ModalID: "contact-create-modal"}) {
 					@button.Button(button.Props{Variant: button.VariantDefault}) {
-						"Create Link"
+						Create Link
 					}
 				}
 			</div>
@@ -41,7 +41,7 @@ templ Links(links ...model.Contact) {
 									@button.Button(button.Props{
 										Variant: button.VariantDefault,
 									}) {
-										"Edit"
+										Edit
 									}
 								}
 								<form action="/dashboard/delete-link" method="POST">
@@ -50,7 +50,7 @@ templ Links(links ...model.Contact) {
 										Variant: button.VariantDestructive,
 										Type:    "submit",
 									}) {
-										"Delete"
+										Delete
 									}
 								</form>
 							</div>

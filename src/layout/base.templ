@@ -8,20 +8,28 @@ templ ThemeSwitcherScript() {
 		<script nonce={ templ.GetNonce(ctx) }>
 			// Initial theme setup
 			function setupTheme() {
-				// Verificar el tema guardado en localStorage
-				const isDarkMode = localStorage.getItem('appTheme') === 'dark';
+				// Verificar el tema guardado en localStorage o usar preferencia del sistema
+				let isDarkMode;
+				const storedTheme = localStorage.getItem('appTheme');
+				
+				if (storedTheme) {
+					// Usar preferencia guardada
+					isDarkMode = storedTheme === 'dark';
+				} else {
+					// Usar preferencia del sistema
+					isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+					// Guardar la preferencia del sistema
+					localStorage.setItem('appTheme', isDarkMode ? 'dark' : 'light');
+				}
 				
 				// Aplicar el tema inicial
+				applyTheme(isDarkMode);
+			}
+			
+			// Función para aplicar el tema
+			function applyTheme(isDarkMode) {
+				// Aplicar clase al html
 				document.documentElement.classList.toggle('dark', isDarkMode);
-				
-				// Aplicar clases al body
-				if (isDarkMode) {
-					document.body.classList.add('bg-gray-900', 'text-white');
-					document.body.classList.remove('bg-white', 'text-black');
-				} else {
-					document.body.classList.add('bg-white', 'text-black');
-					document.body.classList.remove('bg-gray-900', 'text-white');
-				}
 			}
 			
 			// Función global para cambiar el tema
@@ -33,16 +41,7 @@ templ ThemeSwitcherScript() {
 				localStorage.setItem('appTheme', newMode ? 'dark' : 'light');
 				
 				// Aplicar cambio
-				document.documentElement.classList.toggle('dark', newMode);
-				
-				// Actualizar clases del body
-				if (newMode) {
-					document.body.classList.add('bg-gray-900', 'text-white');
-					document.body.classList.remove('bg-white', 'text-black');
-				} else {
-					document.body.classList.add('bg-white', 'text-black');
-					document.body.classList.remove('bg-gray-900', 'text-white');
-				}
+				applyTheme(newMode);
 			};
 			
 			// Configurar el tema cuando se carga la página

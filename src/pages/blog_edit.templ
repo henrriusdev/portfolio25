@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"github.com/henrriusdev/portfolio/pkg/model"
 	"github.com/henrriusdev/portfolio/src/components/button"
+	"github.com/henrriusdev/portfolio/src/components/checkbox"
 	"github.com/henrriusdev/portfolio/src/components/editor"
 	"github.com/henrriusdev/portfolio/src/components/input"
+	"github.com/henrriusdev/portfolio/src/components/selectbox"
 	"github.com/henrriusdev/portfolio/src/layout"
 )
 
@@ -42,23 +44,23 @@ templ BlogEdit(post model.BlogPost, allCategories []model.Category) {
 					<!-- Categories -->
 					<div class="space-y-2">
 						<label class="text-sm font-medium">Categories</label>
-						<div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+						{{
+							// Convertir las categorías a opciones para el CheckboxGroup
+							var options []selectbox.Option
 							for _, category := range allCategories {
-								<div class="flex items-center">
-									<input 
-										type="checkbox" 
-										id={ "category-" + fmt.Sprint(category.ID) } 
-										name="categories" 
-										value={ fmt.Sprint(category.ID) }
-										class="mr-2 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-										checked?={ IsCategorySelected(post.Categories, category.ID) }
-									/>
-									<label for={ "category-" + fmt.Sprint(category.ID) } class="text-sm text-gray-700 dark:text-gray-300">
-										{ category.Name }
-									</label>
-								</div>
+								options = append(options, selectbox.Option{
+									Label:    category.Name,
+									Value:    fmt.Sprint(category.ID),
+									Selected: IsCategorySelected(post.Categories, category.ID),
+								})
 							}
-						</div>
+						}}
+						@checkbox.CheckboxGroup(checkbox.GroupProps{
+							ID:      "post-categories",
+							Name:    "categories",
+							Options: options,
+							Class:   "grid grid-cols-2 md:grid-cols-3 gap-3",
+						})
 						<div class="mt-2">
 							<a href="/categories" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Manage categories</a>
 						</div>

@@ -36,7 +36,7 @@ templ ExperienceItem(experience model.Experience, internal bool) {
 		if internal {
 			@modal.Trigger(modal.TriggerProps{ModalID: "experience-form-modal-" + strconv.Itoa(int(experience.ID))}) {
 				@button.Button(button.Props{Variant: button.VariantDefault}) {
-					"Edit"
+					Edit
 				}
 			}
 			@ExperienceModal("experience-form-modal-"+strconv.Itoa(int(experience.ID)), experience)

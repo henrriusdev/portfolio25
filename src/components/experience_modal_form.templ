@@ -20,6 +20,13 @@ func getEndDateValue(endDate *time.Time) time.Time {
 	return time.Time{}
 }
 
+func getStartDateValue(startDate time.Time) time.Time {
+	if startDate.IsZero() {
+		return time.Now() // Usar la fecha actual como valor predeterminado
+	}
+	return startDate
+}
+
 templ ExperienceFormScript() {
 	<script nonce={ templ.GetNonce(ctx) }>
 		document.addEventListener("DOMContentLoaded", function() {
@@ -78,7 +85,7 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 					@datepicker.DatePicker(datepicker.Props{
 						ID:         "experienceStartDate",
 						Name:       "start_date",
-						Value:      experience.StartDate,
+						Value:      getStartDateValue(experience.StartDate),
 						Required:   true,
 					})
 				}

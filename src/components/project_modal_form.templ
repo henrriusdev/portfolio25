@@ -36,7 +36,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 		}
 		@modal.Body() {
 			<form
-				id="projectFormEdit"
+				id={ "projectFormEdit-" + strconv.Itoa(int(project.ID)) }
 				action="/dashboard/save-project"
 				method="POST"
 				class="space-y-4"
@@ -73,7 +73,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 					<div class="mt-2">
 						@checkbox.CheckboxGroup(checkbox.GroupProps{
 							ID:      "projectTechs",
-							Name:    "techs",
+							Name:    "techs", // El componente añadirá automáticamente [] al final
 							Options: setSelected(project.Techs, techs),
 							Class:   "max-h-60 overflow-y-auto",
 						})
@@ -124,7 +124,7 @@ templ ProjectModal(modalID string, techs []selectbox.Option, project model.Proje
 				@button.Button(button.Props{
 					Variant:    button.VariantDefault,
 					Type:       "submit",
-					Attributes: templ.Attributes{"form": "projectFormEdit"},
+					Attributes: templ.Attributes{"form": "projectFormEdit-" + strconv.Itoa(int(project.ID))},
 				}) {
 					Edit
 				}

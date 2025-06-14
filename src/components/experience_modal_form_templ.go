@@ -28,6 +28,13 @@ func getEndDateValue(endDate *time.Time) time.Time {
 	return time.Time{}
 }
 
+func getStartDateValue(startDate time.Time) time.Time {
+	if startDate.IsZero() {
+		return time.Now() // Usar la fecha actual como valor predeterminado
+	}
+	return startDate
+}
+
 func ExperienceFormScript() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -56,7 +63,7 @@ func ExperienceFormScript() templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(templ.GetNonce(ctx))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/experience_modal_form.templ`, Line: 24, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/experience_modal_form.templ`, Line: 31, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -169,7 +176,7 @@ func ExperienceModal(modalID string, experience model.Experience) templ.Componen
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(formID)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/experience_modal_form.templ`, Line: 68, Col: 15}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/experience_modal_form.templ`, Line: 75, Col: 15}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -182,7 +189,7 @@ func ExperienceModal(modalID string, experience model.Experience) templ.Componen
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(int(experience.ID)))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/experience_modal_form.templ`, Line: 73, Col: 75}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/experience_modal_form.templ`, Line: 80, Col: 75}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -233,7 +240,7 @@ func ExperienceModal(modalID string, experience model.Experience) templ.Componen
 					templ_7745c5c3_Err = datepicker.DatePicker(datepicker.Props{
 						ID:       "experienceStartDate",
 						Name:     "start_date",
-						Value:    experience.StartDate,
+						Value:    getStartDateValue(experience.StartDate),
 						Required: true,
 					}).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
