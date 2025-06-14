@@ -1,6 +1,70 @@
 package components
 
+templ NavbarScript() {
+	<script nonce={ templ.GetNonce(ctx) }>
+		// Función para manejar el menú móvil
+		function setupMobileMenu() {
+			const mobileMenuButton = document.getElementById('mobileMenuButton');
+			const mobileMenu = document.getElementById('mobileMenu');
+			let isOpen = false;
+			
+			// Función para abrir/cerrar el menú
+			function toggleMenu() {
+				isOpen = !isOpen;
+				if (isOpen) {
+					mobileMenu.classList.remove('hidden');
+					// Añadir animación de entrada
+					mobileMenu.classList.add('animate-fade-in-scale');
+					mobileMenuButton.querySelector('svg').classList.add('rotate-180');
+				} else {
+					// Añadir animación de salida y luego ocultar
+					mobileMenu.classList.add('animate-fade-out-scale');
+					mobileMenuButton.querySelector('svg').classList.remove('rotate-180');
+					setTimeout(() => {
+						mobileMenu.classList.add('hidden');
+						mobileMenu.classList.remove('animate-fade-out-scale');
+					}, 150);
+				}
+			}
+			
+			// Evento para el botón del menú
+			mobileMenuButton.addEventListener('click', toggleMenu);
+			
+			// Cerrar el menú cuando se hace clic fuera
+			document.addEventListener('click', (event) => {
+				if (isOpen && !mobileMenuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+					toggleMenu();
+				}
+			});
+		}
+		
+		// Inicializar cuando el DOM esté listo
+		document.addEventListener('DOMContentLoaded', setupMobileMenu);
+		
+		// Añadir estilos para las animaciones
+		const style = document.createElement('style');
+		style.textContent = `
+			@keyframes fadeInScale {
+				from { opacity: 0; transform: scale(0.95); }
+				to { opacity: 1; transform: scale(1); }
+			}
+			@keyframes fadeOutScale {
+				from { opacity: 1; transform: scale(1); }
+				to { opacity: 0; transform: scale(0.95); }
+			}
+			.animate-fade-in-scale {
+				animation: fadeInScale 0.2s ease-out forwards;
+			}
+			.animate-fade-out-scale {
+				animation: fadeOutScale 0.15s ease-in forwards;
+			}
+		`;
+		document.head.appendChild(style);
+	</script>
+}
+
 templ Navbar() {
+	@NavbarScript()
 	<nav class="border-b py-3 bg-white dark:bg-gray-800 top-0 sticky z-[1000] transition-colors duration-300">
 		<div class="container mx-auto px-4">
 			<div class="flex items-center justify-between">
@@ -17,16 +81,14 @@ templ Navbar() {
 					<a href="/blog" class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Blog</a>
 					@ThemeSwitcher(ThemeSwitcherProps{})
 				</div>
-				<!-- Mobile Menu Button (usando Alpine.js) -->
-				<div class="md:hidden relative" x-data="{ isOpen: false }">
+				<!-- Mobile Menu Button (usando JavaScript vanilla) -->
+				<div class="md:hidden relative">
 					<button
-						@click="isOpen = !isOpen"
-						@click.away="isOpen = false"
+						id="mobileMenuButton"
 						class="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white focus:outline-none"
 					>
 						<svg
 							class="h-6 w-6 transition-transform duration-200"
-							:class="{'rotate-180': isOpen}"
 							fill="none"
 							stroke="currentColor"
 							viewBox="0 0 24 24"
@@ -37,15 +99,8 @@ templ Navbar() {
 					</button>
 					<!-- Mobile Menu Dropdown -->
 					<div
-						x-show="isOpen"
-						x-transition:enter="transition ease-out duration-200"
-						x-transition:enter-start="opacity-0 transform scale-95"
-						x-transition:enter-end="opacity-100 transform scale-100"
-						x-transition:leave="transition ease-in duration-150"
-						x-transition:leave-start="opacity-100 transform scale-100"
-						x-transition:leave-end="opacity-0 transform scale-95"
-						class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5"
-						style="display: none;"
+						id="mobileMenu"
+						class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5"
 					>
 						<div class="py-1 rounded-md bg-white dark:bg-gray-700 shadow-xs">
 							<a

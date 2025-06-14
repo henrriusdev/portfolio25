@@ -53,7 +53,7 @@ func TechCardScript() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\r\n        document.addEventListener('alpine:init', () => {\r\n            Alpine.store('techActions', {\r\n                deleteTech(id) {\r\n                    fetch(`/dashboard/delete-tech/${id}`, { method: 'DELETE' })\r\n                        .then(() => window.location.reload());\r\n                }\r\n            });\r\n        });\r\n    </script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\n        // Función para eliminar tecnología usando JavaScript vanilla\n        function deleteTech(id) {\n            if (confirm('¿Estás seguro de que deseas eliminar esta tecnología?')) {\n                fetch(`/dashboard/delete-tech/${id}`, { method: 'DELETE' })\n                    .then(response => {\n                        if (response.ok) {\n                            window.location.reload();\n                        } else {\n                            console.error('Error al eliminar la tecnología');\n                        }\n                    })\n                    .catch(error => {\n                        console.error('Error:', error);\n                    });\n            }\n        }\n        \n        // Exponer la función globalmente\n        window.deleteTech = deleteTech;\n    </script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -134,7 +134,7 @@ func TechCard(tech model.Technology) templ.Component {
 					var templ_7745c5c3_Var7 string
 					templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(tech.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/tech_card.templ`, Line: 40, Col: 15}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `src/components/tech_card.templ`, Line: 50, Col: 15}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 					if templ_7745c5c3_Err != nil {
@@ -190,8 +190,7 @@ func TechCard(tech model.Technology) templ.Component {
 					Variant: button.VariantDestructive,
 					Class:   "ml-auto mt-4",
 					Attributes: templ.Attributes{
-						// Call the deleteTech method from the Alpine store
-						"x-on:click": "$store.techActions.deleteTech('" + getStringId(tech.ID) + "')",
+						"onclick": "deleteTech('" + getStringId(tech.ID) + "')",
 					},
 				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
@@ -206,8 +205,7 @@ func TechCard(tech model.Technology) templ.Component {
 			return nil
 		})
 		templ_7745c5c3_Err = card.Card(card.Props{
-			Class:      "bg-white dark:bg-gray-800 rounded-md overflow-hidden w-full max-w-[150px]",
-			Attributes: templ.Attributes{"x-data": "{}"},
+			Class: "bg-white dark:bg-gray-800 rounded-md overflow-hidden w-full max-w-[150px]",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err

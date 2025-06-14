@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -160,16 +161,33 @@ func (d *Dashboard) SaveWork(c fuego.ContextWithBody[model.SaveWorkRequest]) (mo
 		})
 	}
 
-	startDate, err := time.Parse("2006-01-02", req.StartDate)
-	if err != nil {
-		return model.Experience{}, err
+	// Ensure start_date is not empty
+	if req.StartDate == "" {
+		return model.Experience{}, fuego.SendJSON(c.Response(), c.Request(), map[string]interface{}{
+			"error":   "Validation failed",
+			"details": "Start date cannot be empty",
+		})
 	}
 
+	// Parse start date
+	startDate, err := time.Parse("2006-01-02", req.StartDate)
+	if err != nil {
+		return model.Experience{}, fuego.SendJSON(c.Response(), c.Request(), map[string]interface{}{
+			"error":   "Date parsing failed",
+			"details": fmt.Sprintf("Invalid start date format: %s", err.Error()),
+		})
+	}
+
+	// Handle end date based on is_current flag
 	var endDate *time.Time
-	if req.EndDate != "" {
+	// Si is_current está marcado o end_date está vacío, dejamos endDate como nil
+	if !req.IsCurrent && req.EndDate != "" {
 		parsedEndDate, err := time.Parse("2006-01-02", req.EndDate)
 		if err != nil {
-			return model.Experience{}, err
+			return model.Experience{}, fuego.SendJSON(c.Response(), c.Request(), map[string]interface{}{
+				"error":   "Date parsing failed",
+				"details": fmt.Sprintf("Invalid end date format: %s", err.Error()),
+			})
 		}
 		endDate = &parsedEndDate
 	}

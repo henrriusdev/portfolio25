@@ -9,7 +9,6 @@ import (
 	"github.com/henrriusdev/portfolio/src/components/input"
 	"github.com/henrriusdev/portfolio/src/components/modal"
 	"github.com/henrriusdev/portfolio/src/components/textarea"
-	"github.com/henrriusdev/portfolio/src/utils"
 	"strconv"
 	"time"
 )
@@ -21,42 +20,29 @@ func getEndDateValue(endDate *time.Time) time.Time {
 	return time.Time{}
 }
 
-var experienceFormHandle = templ.NewOnceHandle()
-
 templ ExperienceFormScript() {
-	@experienceFormHandle.Once() {
-		<script nonce={ templ.GetNonce(ctx) }>
-			document.addEventListener("alpine:init", () => {
-				Alpine.data("experienceFormData", (initialExperience = null) => {
-					return {
-						experience: initialExperience || {
-							id: "",
-							role: "",
-							company: "",
-							description: "",
-							start_date: "",
-							end_date: null,
-							is_current: false
-						},
-
-						formAction() {
-							return "/dashboard/save-work";
-						},
-
-						setExperience(data) {
-							this.experience = data;
-						},
-
-						toggleEndDate() {
-							if (this.experience.is_current) {
-								this.experience.end_date = null;
-							}
+	<script nonce={ templ.GetNonce(ctx) }>
+		document.addEventListener("DOMContentLoaded", function() {
+			const currentCheckbox = document.getElementById("is_current");
+			const endDateInput = document.getElementById("experienceEndDate");
+			
+			if (currentCheckbox && endDateInput) {
+				currentCheckbox.addEventListener("change", function() {
+					endDateInput.disabled = this.checked;
+					if (this.checked) {
+						// Limpiar el campo de fecha final cuando se marca como trabajo actual
+						const hiddenEndDateInput = document.querySelector('input[name="end_date"]');
+						if (hiddenEndDateInput) {
+							hiddenEndDateInput.value = "";
 						}
 					}
 				});
-			});
-		</script>
-	}
+				
+				// Inicializar el estado del campo de fecha final
+				endDateInput.disabled = currentCheckbox.checked;
+			}
+		});
+	</script>
 }
 
 templ ExperienceModal(modalID string, experience model.Experience) {
@@ -66,11 +52,7 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 		if isEditing {
 			formID = "experienceFormEdit-" + strconv.Itoa(int(experience.ID))
 		}
-
-		// Prepare JSON Data
-		experienceDataJSON := utils.ParseTemplJsonString(experience)
 	}}
-	<!-- Modal Component -->
 	@modal.Modal(modal.Props{ID: modalID, Class: "max-w-lg mx-auto"}) {
 		@modal.Header() {
 			<h3 class="text-xl font-bold">
@@ -84,12 +66,11 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 		@modal.Body() {
 			<form
 				id={ formID }
-				x-data={ `experienceFormData(` + experienceDataJSON + `)` }
-				x-bind:action="formAction()"
+				action="/dashboard/save-work"
 				method="POST"
 				class="space-y-4"
 			>
-				<input type="hidden" name="id" x-model="experience.ID"/>
+				<input type="hidden" name="id" value={ strconv.Itoa(int(experience.ID)) }/>
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "experienceStartDate"}) {
 						Start Date
@@ -98,7 +79,7 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 						ID:         "experienceStartDate",
 						Name:       "start_date",
 						Value:      experience.StartDate,
-						Attributes: templ.Attributes{"x-model": "experience.start_date"},
+						Required:   true,
 					})
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
@@ -109,19 +90,18 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 						ID:         "experienceEndDate",
 						Name:       "end_date",
 						Value:      getEndDateValue(experience.EndDate),
-						Attributes: templ.Attributes{"x-model": "experience.end_date", ":disabled": "experience.is_current"},
+						Disabled:   experience.EndDate == nil,
 					})
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.ItemFlex(form.ItemProps{}) {
 						@checkbox.Checkbox(checkbox.Props{
-							ID:         "c1",
+							ID:         "is_current",
 							Name:       "is_current",
-							Value:      "false",
-							Checked:    false,
-							Attributes: templ.Attributes{"x-model": "experience.is_current", "@change": "toggleEndDate"},
+							Value:      "true",
+							Checked:    experience.EndDate == nil,
 						})
-						@form.Label(form.LabelProps{For: "c1"}) {
+						@form.Label(form.LabelProps{For: "is_current"}) {
 							I currently work here
 						}
 					}
@@ -134,7 +114,8 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 						ID:          "experienceRole",
 						Name:        "role",
 						Placeholder: "Enter role",
-						Attributes:  templ.Attributes{"x-model": "experience.role"},
+						Value:       experience.Role,
+						Required:    true,
 					})
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
@@ -145,7 +126,8 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 						ID:          "experienceCompany",
 						Name:        "company",
 						Placeholder: "Enter company name",
-						Attributes:  templ.Attributes{"x-model": "experience.company"},
+						Value:       experience.Company,
+						Required:    true,
 					})
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
@@ -156,7 +138,7 @@ templ ExperienceModal(modalID string, experience model.Experience) {
 						ID:          "experienceDescription",
 						Name:        "description",
 						Placeholder: "Enter description",
-						Attributes:  templ.Attributes{"x-model": "experience.description"},
+						Value:       experience.Description,
 					})
 				}
 			</form>

@@ -14,21 +14,30 @@ import (
 	"github.com/iota-uz/icons/phosphor"
 )
 
-var projectCardHandle = templ.NewOnceHandle()
+// Ya no necesitamos el handle para Alpine.js
 
 templ ProjectCardScript() {
-	@projectCardHandle.Once() {
-		<script nonce={ templ.GetNonce(ctx) }>
-			document.addEventListener("alpine:init", () => {
-				Alpine.data("projectEditor", () => ({
-					deleteProject(id) {
-                    fetch(`/dashboard/delete-project/${id}`, { method: 'DELETE' })
-                        .then(() => window.location.reload());
-                }
-				}));
-			});
-		</script>
-	}
+	<script nonce={ templ.GetNonce(ctx) }>
+		// Función para eliminar proyecto usando JavaScript vanilla
+		function deleteProject(id) {
+			if (confirm('¿Estás seguro de que deseas eliminar este proyecto?')) {
+				fetch(`/dashboard/delete-project/${id}`, { method: 'DELETE' })
+					.then(response => {
+						if (response.ok) {
+							window.location.reload();
+						} else {
+							console.error('Error al eliminar el proyecto');
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+					});
+			}
+		}
+		
+		// Exponer la función globalmente
+		window.deleteProject = deleteProject;
+	</script>
 }
 
 func getAsJSON(techs []model.Technology) string {
@@ -41,7 +50,7 @@ func toString(value uint) string {
 }
 
 templ ProjectCard(project model.Project, internal bool, techs ...selectbox.Option) {
-	<div x-data="projectEditor()">
+	<div>
 		@card.Card(card.Props{Class: "bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden w-full max-w-[600px]"}) {
 			@card.Media(card.MediaProps{
 				Src:         project.ImageURL,
@@ -51,10 +60,12 @@ templ ProjectCard(project model.Project, internal bool, techs ...selectbox.Optio
 				Width:       "full",
 				Class:       "mx-auto p-2",
 			})
-			@card.Content() {
+			@card.Header(){
 				@card.Title() {
 					<span class="text-3xl font-bold text-gray-900 dark:text-white">{ project.Title }</span>
 				}
+			}
+			@card.Content() {
 				@card.Description() {
 					{ project.Description }
 				}
@@ -102,7 +113,7 @@ templ ProjectCard(project model.Project, internal bool, techs ...selectbox.Optio
 							@button.Button(button.Props{
 								Variant: button.VariantDestructive,
 								Attributes: templ.Attributes{
-									"x-on:click": "deleteProject('" + toString(project.ID) + "')",
+									"onclick": "deleteProject('" + toString(project.ID) + "')",
 								},
 							}) {
 								Remove

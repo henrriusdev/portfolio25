@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 )
 
-// parseTemplJsonString converts any value to a JSON string that can be safely used in templ templates
-// and with Alpine.js data initialization. It handles the JSON marshaling and escaping.
+// ParseTemplJsonString converts any value to a JSON string that can be safely used in templ templates.
+// It handles the JSON marshaling and escaping for use in JavaScript contexts.
 func ParseTemplJsonString(v interface{}) string {
 	jsonBytes, err := json.Marshal(v)
 	if err != nil {

@@ -6,39 +6,8 @@ import (
 	"github.com/henrriusdev/portfolio/src/components/form"
 	"github.com/henrriusdev/portfolio/src/components/input"
 	"github.com/henrriusdev/portfolio/src/components/modal"
-	"github.com/henrriusdev/portfolio/src/utils"
 	"strconv"
 )
-
-var contactFormHandle = templ.NewOnceHandle()
-
-templ ContactFormScript() {
-	@contactFormHandle.Once() {
-		<script nonce={ templ.GetNonce(ctx) }>
-            document.addEventListener("alpine:init", () => {
-                Alpine.data("contactFormData", (initialContact = null) => {
-                    return {
-                        contact: initialContact || {
-                            // Using gorm.Model.ID for edit creation (empty when creating new)
-                            ID: "",
-                            platform: "",
-                            url: "",
-                            icon: ""
-                        },
-
-                        formAction() {
-                            return "/dashboard/save-link";
-                        },
-
-                        setContact(data) {
-                            this.contact = data;
-                        }
-                    }
-                });
-            });
-        </script>
-	}
-}
 
 templ ContactModal(modalID string, contact model.Contact) {
 	{{
@@ -47,10 +16,7 @@ templ ContactModal(modalID string, contact model.Contact) {
 	if isEditing {
 		formID = "contactFormEdit-" + strconv.Itoa(int(contact.ID))
 	}
-	// Prepare JSON Data
-	contactDataJSON := utils.ParseTemplJsonString(contact)
 	}}
-	<!-- Modal Component -->
 	@modal.Modal(modal.Props{ID: modalID, Class: "max-w-lg mx-auto"}) {
 		@modal.Header() {
 			<h3 class="text-xl font-bold">
@@ -64,12 +30,11 @@ templ ContactModal(modalID string, contact model.Contact) {
 		@modal.Body() {
 			<form
 				id={ formID }
-				x-data={ `contactFormData(` + contactDataJSON + `)` }
-				x-bind:action="formAction()"
+				action="/dashboard/save-link"
 				method="POST"
 				class="space-y-4"
 			>
-				<input type="hidden" name="ID" x-model="contact.ID"/>
+				<input type="hidden" name="ID" value={ strconv.Itoa(int(contact.ID)) }/>
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
 					@form.Label(form.LabelProps{For: "contactPlatform"}) {
 						Platform
@@ -78,7 +43,8 @@ templ ContactModal(modalID string, contact model.Contact) {
 						ID:          "contactPlatform",
 						Name:        "platform",
 						Placeholder: "e.g. Instagram",
-						Attributes:  templ.Attributes{"x-model": "contact.platform"},
+						Value:       contact.Platform,
+						Required:    true,
 					})
 				}
 				@form.Item(form.ItemProps{Class: "mb-4"}) {
@@ -89,7 +55,8 @@ templ ContactModal(modalID string, contact model.Contact) {
 						ID:          "contactUrl",
 						Name:        "url",
 						Placeholder: "https://instagram.com/yourhandle",
-						Attributes:  templ.Attributes{"x-model": "contact.url"},
+						Value:       contact.URL,
+						Required:    true,
 					})
 				}
 			</form>

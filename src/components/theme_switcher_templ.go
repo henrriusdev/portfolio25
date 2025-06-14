@@ -60,7 +60,7 @@ func themeSwitcherHandler() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\n\t\t\tdocument.addEventListener('alpine:init', () => {\n\t\t\t\tAlpine.data('themeSwitcherHandler', () => ({\n\t\t\t\t\tisAnimating: false,\n\t\t\t\t\tisDarkMode() {\n\t\t\t\t\t\treturn this.isDark\n\t\t\t\t\t},\n\t\t\t\t\tisLightMode() {\n\t\t\t\t\t\treturn !this.isDark\n\t\t\t\t\t}\n\t\t\t\t}))\n\t\t\t})\n\t\t</script>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">\n\t\t\t// Función para manejar el cambio de tema usando JavaScript vanilla\n\t\t\tfunction setupThemeSwitcher() {\n\t\t\t\tconst darkIcon = document.getElementById('darkThemeIcon');\n\t\t\t\tconst lightIcon = document.getElementById('lightThemeIcon');\n\t\t\t\tconst isDarkMode = document.documentElement.classList.contains('dark');\n\t\t\t\t\n\t\t\t\t// Mostrar el icono correcto según el tema actual\n\t\t\t\tdarkIcon.style.display = isDarkMode ? 'none' : 'block';\n\t\t\t\tlightIcon.style.display = isDarkMode ? 'block' : 'none';\n\t\t\t}\n\t\t\t\n\t\t\t// Configurar el cambio de tema cuando se carga la página\n\t\t\tdocument.addEventListener('DOMContentLoaded', setupThemeSwitcher);\n\t\t\t\n\t\t\t// Función para alternar el tema\n\t\t\tfunction toggleTheme() {\n\t\t\t\tconst isDarkMode = document.documentElement.classList.contains('dark');\n\t\t\t\tconst darkIcon = document.getElementById('darkThemeIcon');\n\t\t\t\tconst lightIcon = document.getElementById('lightThemeIcon');\n\t\t\t\t\n\t\t\t\t// Cambiar el tema\n\t\t\t\tif (isDarkMode) {\n\t\t\t\t\tdocument.documentElement.classList.remove('dark');\n\t\t\t\t\tlocalStorage.setItem('theme', 'light');\n\t\t\t\t\tdarkIcon.style.display = 'block';\n\t\t\t\t\tlightIcon.style.display = 'none';\n\t\t\t\t} else {\n\t\t\t\t\tdocument.documentElement.classList.add('dark');\n\t\t\t\t\tlocalStorage.setItem('theme', 'dark');\n\t\t\t\t\tdarkIcon.style.display = 'none';\n\t\t\t\t\tlightIcon.style.display = 'block';\n\t\t\t\t}\n\t\t\t\t\n\t\t\t\t// Añadir animación\n\t\t\t\tconst visibleIcon = isDarkMode ? darkIcon : lightIcon;\n\t\t\t\tvisibleIcon.classList.add('animate-spin');\n\t\t\t\tsetTimeout(() => {\n\t\t\t\t\tvisibleIcon.classList.remove('animate-spin');\n\t\t\t\t}, 500);\n\t\t\t}\n\t\t\t\n\t\t\t// Exponer la función globalmente para que pueda ser llamada desde el botón\n\t\t\twindow.toggleTheme = toggleTheme;\n\t\t</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -126,7 +126,7 @@ func ThemeSwitcher(props ThemeSwitcherProps) templ.Component {
 			Variant: button.VariantGhost,
 			Class:   props.Class,
 			Attributes: templ.Attributes{
-				"@click": "toggleTheme",
+				"onclick": "toggleTheme()",
 			},
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
@@ -157,7 +157,7 @@ func DynamicThemeIcon() templ.Component {
 			templ_7745c5c3_Var6 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div x-data=\"themeSwitcherHandler\"><span x-show=\"isDarkMode\" class=\"block transition-all duration-300\" x-transition:enter=\"animate-spin\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div><span id=\"lightThemeIcon\" class=\"block transition-all duration-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -165,7 +165,7 @@ func DynamicThemeIcon() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span> <span x-show=\"isLightMode\" class=\"block transition-all duration-300\" x-transition:enter=\"animate-spin\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span> <span id=\"darkThemeIcon\" class=\"block transition-all duration-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

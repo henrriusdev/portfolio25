@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/go-fuego/fuego"
 )
@@ -30,13 +31,13 @@ type SaveProjectRequest struct {
 }
 
 type SaveWorkRequest struct {
-	ID          uint   `schema:"id,omitempty" json:"id,omitempty"`
-	Role        string `schema:"role" json:"role,omitempty"`
-	Company     string `schema:"company" json:"company,omitempty"`
-	Description string `schema:"description" json:"description,omitempty"`
-	StartDate   string `schema:"start_date" json:"start_date,omitempty"`
-	EndDate     string `schema:"end_date" json:"end_date,omitempty"`
-	IsCurrent   bool   `schema:"is_current" json:"is_current,omitempty"`
+	ID          uint   `form:"id,omitempty" json:"id,omitempty"`
+	Role        string `form:"role" json:"role,omitempty"`
+	Company     string `form:"company" json:"company,omitempty"`
+	Description string `form:"description" json:"description,omitempty"`
+	StartDate   string `form:"start_date" json:"start_date,omitempty"`
+	EndDate     string `form:"end_date" json:"end_date,omitempty"`
+	IsCurrent   bool   `form:"is_current" json:"is_current,omitempty"`
 }
 
 type SaveLinkRequest struct {
@@ -46,12 +47,20 @@ type SaveLinkRequest struct {
 }
 
 func (r *SaveWorkRequest) InTransform(ctx context.Context) error {
-	// check if startdate has extra text T00:00:00Z and remove it
-	if len(r.StartDate) > 10 {
+	// Handle start_date: trim if too long or ensure it's not empty
+	if r.StartDate == "" {
+		return fmt.Errorf("start date cannot be empty")
+	} else if len(r.StartDate) > 10 {
 		r.StartDate = r.StartDate[:10]
 	}
 
-	if len(r.EndDate) > 10 {
+	// Handle end_date: if is_current is true, ensure end_date is empty
+	// El checkbox is_current enviará "true" como string cuando está marcado
+	if r.IsCurrent {
+		// Si es trabajo actual, la fecha de fin debe estar vacía
+		r.EndDate = ""
+	} else if len(r.EndDate) > 10 {
+		// Si no es trabajo actual pero tiene fecha de fin, la recortamos si es necesario
 		r.EndDate = r.EndDate[:10]
 	}
 

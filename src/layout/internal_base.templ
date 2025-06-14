@@ -21,19 +21,18 @@ templ BaseInternal(title string) {
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<!-- Tailwind CSS (output) -->
 			<link href="/static/app.css" rel="stylesheet"/>
+			<!-- Animations CSS -->
+			<link href="/static/animations.css" rel="stylesheet"/>
 			<!-- Toast UI Editor CSS -->
 			<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
-			<!-- Alpine.js -->
-			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+			<!-- Ya no usamos Alpine.js -->
 			<!-- Toast UI Editor JS -->
 			<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 			<!-- Theme switcher script -->
 			@ThemeSwitcherScript()
 			@components.TechCardScript()
-			@components.ProjectFormScript()
 			@components.ProjectCardScript()
 			@components.ExperienceFormScript()
-			@components.ContactFormScript()
 			@modal.Script()
 			@popover.Script()
 			@selectbox.Script()
@@ -43,10 +42,7 @@ templ BaseInternal(title string) {
 			@textarea.Script()
 			@label.Script()
 		</head>
-		<body
-			x-data="themeHandler"
-			x-bind:class="themeClasses"
-		>
+		<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
 			@components.NavbarInternal()
 			{ children... }
 		</body>

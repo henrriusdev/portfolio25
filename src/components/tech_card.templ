@@ -13,21 +13,31 @@ func getStringId(id uint) string {
 
 templ TechCardScript() {
 	<script nonce={ templ.GetNonce(ctx) }>
-        document.addEventListener('alpine:init', () => {
-            Alpine.store('techActions', {
-                deleteTech(id) {
-                    fetch(`/dashboard/delete-tech/${id}`, { method: 'DELETE' })
-                        .then(() => window.location.reload());
-                }
-            });
-        });
+        // Función para eliminar tecnología usando JavaScript vanilla
+        function deleteTech(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar esta tecnología?')) {
+                fetch(`/dashboard/delete-tech/${id}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            console.error('Error al eliminar la tecnología');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+        
+        // Exponer la función globalmente
+        window.deleteTech = deleteTech;
     </script>
 }
 
 templ TechCard(tech model.Technology) {
 	@card.Card(card.Props{
 		Class:      "bg-white dark:bg-gray-800 rounded-md overflow-hidden w-full max-w-[150px]",
-		Attributes: templ.Attributes{"x-data": "{}"},
 	}) {
 		@card.Media(card.MediaProps{
 			Src:      tech.Icon,
@@ -45,8 +55,7 @@ templ TechCard(tech model.Technology) {
 				Variant: button.VariantDestructive,
 				Class:   "ml-auto mt-4",
 				Attributes: templ.Attributes{
-					// Call the deleteTech method from the Alpine store
-					"x-on:click": "$store.techActions.deleteTech('" + getStringId(tech.ID) + "')",
+					"onclick": "deleteTech('" + getStringId(tech.ID) + "')",
 				},
 			}) {
 				"Delete"

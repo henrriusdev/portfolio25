@@ -7,21 +7,49 @@ templ ThemeSwitcherScript() {
 	@handle.Once() {
 		<script nonce={ templ.GetNonce(ctx) }>
 			// Initial theme setup
-			document.documentElement.classList.toggle('dark', localStorage.getItem('appTheme') === 'dark');
-			document.addEventListener('alpine:init', () => {
-				Alpine.data('themeHandler', () => ({
-					isDark: localStorage.getItem('appTheme') === 'dark',
-					themeClasses() {
-						return this.isDark ? 'bg-gray-900 text-white' : 'bg-white! text-black'
-					},
-					toggleTheme() {
-						// Toggle theme
-						this.isDark = !this.isDark;
-						localStorage.setItem('appTheme', this.isDark ? 'dark' : 'light');
-						document.documentElement.classList.toggle('dark', this.isDark);
-					}
-				}))
-			})
+			function setupTheme() {
+				// Verificar el tema guardado en localStorage
+				const isDarkMode = localStorage.getItem('appTheme') === 'dark';
+				
+				// Aplicar el tema inicial
+				document.documentElement.classList.toggle('dark', isDarkMode);
+				
+				// Aplicar clases al body
+				if (isDarkMode) {
+					document.body.classList.add('bg-gray-900', 'text-white');
+					document.body.classList.remove('bg-white', 'text-black');
+				} else {
+					document.body.classList.add('bg-white', 'text-black');
+					document.body.classList.remove('bg-gray-900', 'text-white');
+				}
+			}
+			
+			// Función global para cambiar el tema
+			window.toggleTheme = function() {
+				const isDarkMode = document.documentElement.classList.contains('dark');
+				const newMode = !isDarkMode;
+				
+				// Guardar preferencia
+				localStorage.setItem('appTheme', newMode ? 'dark' : 'light');
+				
+				// Aplicar cambio
+				document.documentElement.classList.toggle('dark', newMode);
+				
+				// Actualizar clases del body
+				if (newMode) {
+					document.body.classList.add('bg-gray-900', 'text-white');
+					document.body.classList.remove('bg-white', 'text-black');
+				} else {
+					document.body.classList.add('bg-white', 'text-black');
+					document.body.classList.remove('bg-gray-900', 'text-white');
+				}
+			};
+			
+			// Configurar el tema cuando se carga la página
+			document.addEventListener('DOMContentLoaded', setupTheme);
+			
+			// También ejecutar inmediatamente para evitar parpadeos
+			setupTheme();
 		</script>
 	}
 }
@@ -37,15 +65,11 @@ templ Base(title string) {
 			<link href="/static/app.css" rel="stylesheet"/>
 			<!-- Animations CSS -->
 			<link href="/static/animations.css" rel="stylesheet"/>
-			<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+			<!-- Ya no usamos Alpine.js -->
 			<!-- Theme switcher script -->
 			@ThemeSwitcherScript()
 		</head>
-		<body
-			x-data="themeHandler"
-			x-bind:class="themeClasses"
-			class="transition-colors duration-300"
-		>
+		<body class="transition-colors duration-300 bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
 			@components.Navbar()
 			{ children... }
 		</body>
