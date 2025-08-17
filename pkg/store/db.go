@@ -9,11 +9,14 @@ import (
 	"github.com/henrriusdev/portfolio/pkg/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func InitDatabase() (*gorm.DB, error) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s channel_binding=%s", config.Env.DBHost, config.Env.DBUser, config.Env.DBPass, config.Env.DBName, config.Env.DBPort, config.Env.DBSSLMode, config.Env.DBSSLMode)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if err != nil {
 		log.Fatal("No se pudo conectar a la base de datos:", err)
 	}
