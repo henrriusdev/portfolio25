@@ -24,7 +24,7 @@ func NewPortfolio(user *service.User, project *service.Project, exp *service.Exp
 }
 
 func (p *Portfolio) RegisterRoutes(f *fuego.Server) {
-	fuego.Get(f, "/home", p.Index)
+	fuego.All(f, "/", p.Index)
 	fuego.Get(f, "/log-in", p.Login)
 	fuego.Post(f, "/log-in", p.LoginPost)
 }

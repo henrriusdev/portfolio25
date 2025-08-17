@@ -17,9 +17,10 @@ func Start(db *gorm.DB) {
 	s.OpenAPI.Description().Info.Title = "Portfolio API"
 	s.OpenAPI.Description().Info.Version = "1.0.0"
 	common.InitStore()
-	// fuego.Handle(s, "/static/{filepath...}", assets.Handler())
-	fuego.Handle(s, "/static/", assets.Static())
 	services := newServices(db)
+
+	// Register static files first
+	fuego.Handle(s, "/static/", assets.Static())
 
 	portfolioRoutes(s, services)
 	dashboardRoutes(s, services)

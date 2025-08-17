@@ -1,5 +1,5 @@
 /.env
 /tailwindcss.exe
+/tailwindcss
 .idea/
 tmp/
-db/
