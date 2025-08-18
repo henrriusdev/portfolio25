@@ -110,7 +110,7 @@ func CheckboxGroup(props ...GroupProps) templ.Component {
 			}
 			templ_7745c5c3_Err = Checkbox(Props{
 				ID:      p.ID + "-" + option.Value,
-				Name:    p.Name + "[]", // Añadir [] para indicar que es un array
+				Name:    p.Name, // Use the name directly, gorilla/schema handles multiple values
 				Value:   option.Value,
 				Checked: option.Selected,
 				Class:   "transition-all",
