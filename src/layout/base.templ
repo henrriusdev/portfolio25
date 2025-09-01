@@ -12,6 +12,10 @@ templ ThemeSwitcherScript() {
 				let isDarkMode;
 				const storedTheme = localStorage.getItem('appTheme');
 				
+				// Asegurar que no haya estilos inline en <body> (p. ej., de extensiones)
+				stripBodyInlineStyles();
+				startBodyStyleGuard();
+				
 				if (storedTheme) {
 					// Usar preferencia guardada
 					isDarkMode = storedTheme === 'dark';
@@ -24,6 +28,30 @@ templ ThemeSwitcherScript() {
 				
 				// Aplicar el tema inicial
 				applyTheme(isDarkMode);
+			}
+			
+			// Elimina el atributo style del body si está presente
+			function stripBodyInlineStyles() {
+				if (document.body && document.body.hasAttribute('style')) {
+					document.body.removeAttribute('style');
+				}
+			}
+			
+			// Observa y elimina futuros cambios al atributo style del body
+			function startBodyStyleGuard() {
+				if (window.__stripBodyStyleObserver || !('MutationObserver' in window)) return;
+				const obs = new MutationObserver(() => stripBodyInlineStyles());
+				if (document.body) {
+					obs.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+					window.__stripBodyStyleObserver = obs;
+				} else {
+					document.addEventListener('DOMContentLoaded', () => {
+						if (!window.__stripBodyStyleObserver && document.body) {
+							obs.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+							window.__stripBodyStyleObserver = obs;
+						}
+					});
+				}
 			}
 			
 			// Función para aplicar el tema

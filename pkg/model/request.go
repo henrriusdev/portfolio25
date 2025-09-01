@@ -24,7 +24,7 @@ type SaveProjectRequest struct {
 	ID           uint     `schema:"id,omitempty" json:"id,omitempty"`
 	Title        string   `schema:"title" json:"title,omitempty"`
 	Description  string   `schema:"description" json:"description,omitempty"`
-	Technologies []string `schema:"techs[]" json:"techs,omitempty"`
+	Technologies []string `schema:"techs" json:"techs,omitempty"`
 	ImageURL     string   `schema:"image_url" json:"image_url,omitempty"`
 	LiveURL      string   `schema:"url" json:"url,omitempty"`
 	RepoURL      string   `schema:"repo" json:"repo,omitempty"`
